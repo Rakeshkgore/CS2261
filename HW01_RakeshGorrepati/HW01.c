@@ -32,11 +32,6 @@ int main() {
 
     REG_DISPCTL = MODE3 | BG2_ENABLE;
     
-    drawTriangle(0,0,RED);
-    //drawTriangle(100,100);
-
-    // TODO: Call your drawTriangle function twice your drawRect function once
-
     while(1){
         drawTriangle(0,0,BLACK);
         drawTriangle(50,50,RED);
@@ -59,28 +54,26 @@ int main() {
 
 void setPixel(int col, int row, unsigned short color) {
 
-    // TODO: Complete this function
     videoBuffer[OFFSET(col,row,240)] = color;
 
 }
 
 void drawTriangle(int col, int row, unsigned short color) {
 
-    // TODO: Complete this function
     
     for(int i = 10; i < 50; i++){
          
-        setPixel(col + i ,row+i,color);
+        setPixel(col + i, row+i, color);
 
     }
     for(int i = 10; i < 50; i++){
          
-        setPixel(col+10,row+i,color);
+        setPixel(col+10, row+i, color);
 
     }
     for(int i = 10; i < 50; i++){
          
-        setPixel(col+i,row+50,color);
+        setPixel(col+i, row+50, color);
 
     }
 

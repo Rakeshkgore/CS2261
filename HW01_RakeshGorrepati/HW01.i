@@ -14,8 +14,6 @@ int main() {
 
     (*(volatile unsigned short *)0x4000000) = 3 | (1<<10);
 
-    drawTriangle(0,0,((31) | (0)<<5 | (0)<<10));
-
 
 
 
@@ -41,7 +39,6 @@ int main() {
 
 void setPixel(int col, int row, unsigned short color) {
 
-
     videoBuffer[((row)*(240)+(col))] = color;
 
 }
@@ -49,20 +46,19 @@ void setPixel(int col, int row, unsigned short color) {
 void drawTriangle(int col, int row, unsigned short color) {
 
 
-
     for(int i = 10; i < 50; i++){
 
-        setPixel(col + i ,row+i,color);
+        setPixel(col + i, row+i, color);
 
     }
     for(int i = 10; i < 50; i++){
 
-        setPixel(col+10,row+i,color);
+        setPixel(col+10, row+i, color);
 
     }
     for(int i = 10; i < 50; i++){
 
-        setPixel(col+i,row+50,color);
+        setPixel(col+i, row+50, color);
 
     }
 

@@ -104,18 +104,13 @@ main:
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 0, uses_anonymous_args = 0
 	mov	r3, #67108864
-	mov	r1, #0
+	mov	r5, #0
 	str	lr, [sp, #-4]!
 	ldr	r2, .L27
-	mov	r0, r1
-	strh	r2, [r3]	@ movhi
 	ldr	r4, .L27+4
-	mov	r2, #31
-	sub	sp, sp, #20
-	mov	lr, pc
-	bx	r4
-	mov	r5, #0
+	strh	r2, [r3]	@ movhi
 	ldr	r6, .L27+8
+	sub	sp, sp, #20
 .L22:
 	mov	r2, #0
 	mov	r1, r2
