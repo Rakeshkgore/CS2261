@@ -183,17 +183,17 @@ main:
 .L27:
 	.word	1027
 	.word	drawTriangle
-	.word	300000
+	.word	500000
 	.word	32767
 	.size	main, .-main
 	.text
 	.align	2
-	.global	delay
+	.global	setDelay
 	.syntax unified
 	.arm
 	.fpu softvfp
-	.type	delay, %function
-delay:
+	.type	setDelay, %function
+setDelay:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
@@ -218,7 +218,7 @@ delay:
 	add	sp, sp, #8
 	@ sp needed
 	bx	lr
-	.size	delay, .-delay
+	.size	setDelay, .-setDelay
 	.global	videoBuffer
 	.data
 	.align	2

@@ -33,20 +33,22 @@ int main() {
     REG_DISPCTL = MODE3 | BG2_ENABLE;
     
     while(1){
-        drawTriangle(0,0,BLACK);
-        drawTriangle(50,50,RED);
+        
+        //loops indefinitely 
+        drawTriangle(0,0,BLACK); //setting my first frame to black
+        drawTriangle(50,50,RED); //triangle 1 appears in red
 
-        delay(300);      
+        setDelay(500);//setDelay function
 
-        drawTriangle(50,50,BLACK); 
-        drawTriangle(100,100,WHITE);
+        drawTriangle(50,50,BLACK); // triangle 1 is made black 
+        drawTriangle(100,100,WHITE);// triangle 2 appears in white
 
-        delay(300);
+        setDelay(500); // setDelay function
 
-        drawTriangle(100,100,BLACK);
-        drawTriangle(0,0,BLUE);
+        drawTriangle(100,100,BLACK); // triangle 2 is made black
+        drawTriangle(0,0,BLUE); // triangle 3 appears in blue
 
-        delay(300);
+        setDelay(500); // setDelay function
 
     }
 }
@@ -61,12 +63,12 @@ void setPixel(int col, int row, unsigned short color) {
 void drawTriangle(int col, int row, unsigned short color) {
 
     
-    for(int i = 10; i < 50; i++){
+    for(int i = 10; i < 50; i++) {
          
         setPixel(col + i, row+i, color);
 
     }
-    for(int i = 10; i < 50; i++){
+    for(int i = 10; i < 50; i++) {
          
         setPixel(col+10, row+i, color);
 
@@ -79,8 +81,10 @@ void drawTriangle(int col, int row, unsigned short color) {
 
 }
 
-void delay(int time){
+void setDelay(int time) {
 
-    for(volatile int i =0; i < time * 1000; i++){
+    for(volatile int i =0; i < time * 1000; i++) {
+
     }
+
 }

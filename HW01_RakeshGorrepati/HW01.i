@@ -14,24 +14,23 @@ int main() {
 
     (*(volatile unsigned short *)0x4000000) = 3 | (1<<10);
 
-
-
-
     while(1){
+
+
         drawTriangle(0,0,0);
         drawTriangle(50,50,((31) | (0)<<5 | (0)<<10));
 
-        delay(300);
+        setDelay(500);
 
         drawTriangle(50,50,0);
         drawTriangle(100,100,((31) | (31)<<5 | (31)<<10));
 
-        delay(300);
+        setDelay(500);
 
         drawTriangle(100,100,0);
         drawTriangle(0,0,((0) | (0)<<5 | (31)<<10));
 
-        delay(300);
+        setDelay(500);
 
     }
 }
@@ -46,12 +45,12 @@ void setPixel(int col, int row, unsigned short color) {
 void drawTriangle(int col, int row, unsigned short color) {
 
 
-    for(int i = 10; i < 50; i++){
+    for(int i = 10; i < 50; i++) {
 
         setPixel(col + i, row+i, color);
 
     }
-    for(int i = 10; i < 50; i++){
+    for(int i = 10; i < 50; i++) {
 
         setPixel(col+10, row+i, color);
 
@@ -64,8 +63,10 @@ void drawTriangle(int col, int row, unsigned short color) {
 
 }
 
-void delay(int time){
+void setDelay(int time) {
 
-    for(volatile int i =0; i < time * 1000; i++){
+    for(volatile int i =0; i < time * 1000; i++) {
+
     }
+
 }
