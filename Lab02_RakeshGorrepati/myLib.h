@@ -67,10 +67,10 @@ extern unsigned short buttons;
 
 // button macros
 // TODO #3.0: complete these macros
+// Macros for button held and pressed
+// Initlialize these in main.c and in main while loop
 #define BUTTON_HELD(key) (~buttons & (key))
 #define BUTTON_PRESSED(key) (!(~oldButtons & (key))) && (~buttons & (key))
-
-
 
 
 // ============================== MISCELLANEOUS ===============================
