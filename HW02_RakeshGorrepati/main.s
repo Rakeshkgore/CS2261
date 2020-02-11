@@ -23,8 +23,11 @@ initialize:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	mov	r3, #67108864
 	mov	r0, #0
+	push	{r4, r5, r6, r7, r8, r9, r10, lr}
+	mov	r6, #8
+	mov	r5, #135
+	mov	r4, #20
 	ldr	r2, .L4
-	push	{r4, r5, r6, r7, r8, lr}
 	ldr	lr, .L4+4
 	ldrh	ip, [r2, #48]
 	ldr	r1, .L4+8
@@ -35,48 +38,64 @@ initialize:
 	strh	r0, [r2]	@ movhi
 	mov	lr, pc
 	bx	r3
-	mov	r2, #8
-	mov	ip, #135
-	mov	r6, #20
 	mov	r3, #120
-	mov	r5, #110
-	mov	lr, #220
-	mov	r4, #15
-	mov	r0, #155
+	mov	r9, #110
+	mov	r8, #220
+	mov	lr, #60
+	mov	r7, #170
+	mov	r2, #5
+	ldr	r10, .L4+20
+	str	r6, [r10]
+	ldr	r10, .L4+24
+	mov	ip, #10
+	str	r6, [r10]
+	ldr	r6, .L4+28
+	mov	r0, #160
+	str	r5, [r6]
 	mov	r1, #1
-	ldr	r7, .L4+20
-	str	r2, [r7]
-	ldr	r7, .L4+24
-	str	r2, [r7]
-	ldr	r7, .L4+28
-	str	r2, [r7]
-	ldr	r2, .L4+32
-	str	ip, [r2]
-	ldr	r2, .L4+36
-	str	ip, [r2]
-	ldr	r2, .L4+40
-	str	r6, [r2]
-	ldr	r2, .L4+44
-	str	r3, [r2]
-	ldr	r2, .L4+48
-	str	r3, [r2]
-	ldr	r2, .L4+52
-	str	r3, [r2]
-	ldr	r3, .L4+56
-	ldr	r2, .L4+60
-	str	r5, [r3]
+	ldr	r6, .L4+32
+	str	r5, [r6]
+	ldr	r5, .L4+36
+	str	r4, [r5]
+	ldr	r5, .L4+40
+	str	r4, [r5]
+	ldr	r4, .L4+44
+	str	r3, [r4]
+	ldr	r4, .L4+48
+	str	r3, [r4]
+	ldr	r4, .L4+52
+	str	r3, [r4]
+	ldr	r4, .L4+56
+	str	r3, [r4]
+	ldr	r3, .L4+60
+	str	r9, [r3]
 	ldr	r3, .L4+64
-	str	lr, [r2]
-	str	r4, [r3]
-	ldr	lr, .L4+68
-	ldr	ip, .L4+72
-	ldr	r2, .L4+76
+	str	r8, [r3]
+	ldr	r3, .L4+68
+	str	lr, [r3]
+	ldr	r3, .L4+72
+	str	lr, [r3]
+	ldr	r3, .L4+76
+	str	r7, [r3]
 	ldr	r3, .L4+80
+	ldr	lr, .L4+84
+	str	r2, [r3]
+	ldr	r3, .L4+88
+	str	r2, [lr]
+	str	r2, [r3]
+	ldr	lr, .L4+92
+	ldr	r3, .L4+96
+	ldr	r4, .L4+100
+	str	ip, [lr]
+	str	ip, [r3]
+	ldr	lr, .L4+104
+	ldr	r2, .L4+108
+	ldr	r3, .L4+112
+	str	r0, [r4]
 	str	r0, [lr]
-	str	r0, [ip]
 	str	r1, [r2]
 	str	r1, [r3]
-	pop	{r4, r5, r6, r7, r8, lr}
+	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
 	bx	lr
 .L5:
 	.align	2
@@ -88,15 +107,23 @@ initialize:
 	.word	fillScreen
 	.word	rHeight
 	.word	rWidth
-	.word	uHeight
 	.word	redRow1
 	.word	redRow2
 	.word	redCol1
+	.word	redCol4
 	.word	redCol2
+	.word	targetCol
 	.word	uCol
 	.word	uOldCol
 	.word	redRow3
 	.word	redCol3
+	.word	redRow4
+	.word	redRow5
+	.word	redCol5
+	.word	targetRow
+	.word	tHeight
+	.word	uHeight
+	.word	tWidth
 	.word	uWidth
 	.word	uRow
 	.word	uOldRow
@@ -140,8 +167,8 @@ draw:
 	mov	lr, pc
 	bx	r4
 	ldr	r6, .L8+28
-	str	r7, [sp]
 	ldr	r5, .L8+32
+	str	r7, [sp]
 	ldr	r1, .L8+36
 	ldr	r0, .L8+40
 	ldr	r3, [r6]
@@ -166,6 +193,36 @@ draw:
 	ldr	r2, [r5]
 	ldr	r1, [r1]
 	ldr	r0, [r0]
+	mov	lr, pc
+	bx	r4
+	str	r7, [sp]
+	ldr	r1, .L8+60
+	ldr	r0, .L8+64
+	ldr	r3, [r6]
+	ldr	r2, [r5]
+	ldr	r1, [r1]
+	ldr	r0, [r0]
+	mov	lr, pc
+	bx	r4
+	str	r7, [sp]
+	ldr	r1, .L8+68
+	ldr	r0, .L8+72
+	ldr	r3, [r6]
+	ldr	r2, [r5]
+	ldr	r1, [r1]
+	ldr	r0, [r0]
+	mov	lr, pc
+	bx	r4
+	ldr	ip, .L8+76
+	ldr	r3, .L8+80
+	ldr	r2, .L8+84
+	ldr	r1, .L8+88
+	ldr	r0, .L8+92
+	ldr	r3, [r3]
+	ldr	r2, [r2]
+	ldr	r1, [r1]
+	ldr	r0, [r0]
+	str	ip, [sp]
 	mov	lr, pc
 	bx	r4
 	ldr	r2, [fp]
@@ -194,6 +251,15 @@ draw:
 	.word	redCol2
 	.word	redRow3
 	.word	redCol3
+	.word	redRow4
+	.word	redCol4
+	.word	redRow5
+	.word	redCol5
+	.word	1023
+	.word	tHeight
+	.word	tWidth
+	.word	targetRow
+	.word	targetCol
 	.size	draw, .-draw
 	.align	2
 	.global	movingRectangles
@@ -203,109 +269,90 @@ draw:
 	.type	movingRectangles, %function
 movingRectangles:
 	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 16
+	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
-	ldr	r8, .L21
-	ldr	r3, [r8]
-	cmp	r3, #0
-	sub	sp, sp, #36
-	ble	.L10
-	mov	r6, #0
-	mov	r7, #8
-	add	r3, r8, #20
-	str	r3, [sp, #24]
-	add	r3, r8, #52
-	str	r3, [sp, #20]
-	add	r3, r8, #68
-	ldr	fp, .L21+4
-	ldr	r10, .L21+8
-	ldr	r9, .L21+12
-	str	r3, [sp, #28]
-	add	r4, r8, #4
-	add	r5, r8, #36
-.L17:
-	ldr	r2, [sp, #28]
-	ldr	r0, [r4], #4
-	ldr	r3, [r2], #4
-	ldr	lr, [sp, #24]
-	ldr	ip, [r5], #4
-	stmib	sp, {r0, r7}
-	str	r3, [sp]
-	str	r7, [sp, #12]
-	str	r0, [lr], #4
-	str	lr, [sp, #24]
-	ldr	lr, [sp, #20]
-	ldr	r0, .L21+16
-	str	ip, [lr], #4
-	str	r2, [sp, #28]
+	ldr	fp, .L21
 	ldr	r3, [fp]
-	ldr	r2, [r10]
-	ldr	r1, [r9]
+	cmp	r3, #0
+	sub	sp, sp, #28
+	ble	.L10
+	add	r3, fp, #104
+	mov	r7, #0
+	mov	r6, #8
+	str	r3, [sp, #20]
+	add	r5, fp, #4
+	add	r10, fp, #24
+	add	r4, fp, #44
+	add	r9, fp, #64
+	add	r8, fp, #84
+	b	.L15
+.L12:
+	ldr	r3, [sp, #20]
+	ldr	r2, [r3], #4
+	str	r3, [sp, #20]
+	ldr	r3, [r4, #-4]
+	stm	sp, {r2, r3, r6}
+	str	r6, [sp, #12]
+	ldr	r3, .L21+4
+	ldr	r2, .L21+8
+	ldr	r1, .L21+12
+	ldr	r0, .L21+16
+	ldr	r3, [r3]
+	ldr	r2, [r2]
+	ldr	r1, [r1]
 	ldr	r0, [r0]
 	ldr	ip, .L21+20
-	str	lr, [sp, #20]
+	mov	lr, pc
+	bx	ip
+	cmp	r0, #0
+	bne	.L13
+	ldr	r2, [r5, #-4]
+	ldr	r3, [r4, #-4]
+	add	r2, r2, #1
+	add	r3, r3, #1
+	cmp	r2, #220
+	cmple	r3, #220
+	str	r3, [r4, #-4]
+	ldr	r3, [fp]
+	add	r7, r7, #1
+	str	r2, [r5, #-4]
+	strgt	r0, [r4, #-4]
+	strgt	r0, [r5, #-4]
+	cmp	r3, r7
+	ble	.L10
+.L15:
+	ldr	r0, [r5], #4
+	ldr	r3, [r8], #4
+	ldr	ip, [r4], #4
+	stmib	sp, {r0, r6}
+	str	r3, [sp]
+	str	r6, [sp, #12]
+	ldr	r3, .L21+4
+	str	r0, [r10], #4
+	ldr	r2, .L21+8
+	ldr	r1, .L21+12
+	ldr	r0, .L21+16
+	str	ip, [r9], #4
+	ldr	r3, [r3]
+	ldr	r2, [r2]
+	ldr	r1, [r1]
+	ldr	r0, [r0]
+	ldr	ip, .L21+20
 	mov	lr, pc
 	bx	ip
 	cmp	r0, #0
 	beq	.L12
-.L14:
-	ldr	r2, [fp]
-	ldr	r3, [r10]
-	add	r2, r2, r2, lsr #31
-	asr	r2, r2, #1
-	rsb	r2, r2, #80
-	add	r3, r3, r3, lsr #31
-	str	r2, [r9]
-	asr	r3, r3, #1
-	ldr	r2, .L21+16
-	rsb	r3, r3, #120
-	str	r3, [r2]
-	ldr	r3, [r4, #-4]
 .L13:
-	cmp	r3, #220
-	ldr	r2, [r8]
-	add	r6, r6, #1
-	bgt	.L15
-	ldr	r3, [r5, #-4]
-	cmp	r3, #220
-	ble	.L16
-.L15:
-	mov	r3, #0
-	str	r3, [r4, #-4]
-	str	r3, [r5, #-4]
-.L16:
-	cmp	r2, r6
-	bgt	.L17
+	mov	r0, #0
+	ldr	r3, .L21+24
+	mov	lr, pc
+	bx	r3
 .L10:
-	add	sp, sp, #36
+	add	sp, sp, #28
 	@ sp needed
 	pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
 	bx	lr
-.L12:
-	ldr	r3, .L21+24
-	ldr	r2, [r5, #-4]
-	ldr	r3, [r3, r6, lsl #2]
-	stmib	sp, {r2, r7}
-	str	r3, [sp]
-	str	r7, [sp, #12]
-	ldr	r0, .L21+16
-	ldr	r3, [fp]
-	ldr	r2, [r10]
-	ldr	r1, [r9]
-	ldr	r0, [r0]
-	ldr	ip, .L21+20
-	mov	lr, pc
-	bx	ip
-	cmp	r0, #0
-	bne	.L14
-	ldr	r3, [r4, #-4]
-	ldr	r2, [r5, #-4]
-	add	r3, r3, #1
-	add	r2, r2, #1
-	str	r3, [r4, #-4]
-	str	r2, [r5, #-4]
-	b	.L13
 .L22:
 	.align	2
 .L21:
@@ -315,7 +362,7 @@ movingRectangles:
 	.word	uRow
 	.word	uCol
 	.word	collision
-	.word	.LANCHOR0+84
+	.word	exit
 	.size	movingRectangles, .-movingRectangles
 	.align	2
 	.global	fallingRectangles
@@ -336,8 +383,8 @@ fallingRectangles:
 	mov	r6, #0
 	mov	r9, r6
 	ldr	r5, .L36+4
-	add	r8, r4, #20
-	add	r7, r4, #100
+	add	r8, r4, #24
+	add	r7, r4, #124
 .L25:
 	mov	r3, #8
 	str	r9, [sp]
@@ -355,7 +402,7 @@ fallingRectangles:
 	mov	r6, #0
 	mov	r9, #31
 	ldr	r7, .L36+8
-	add	r8, r7, #64
+	add	r8, r7, #80
 .L26:
 	mov	r3, #8
 	str	r9, [sp]
@@ -373,7 +420,7 @@ fallingRectangles:
 	mov	r6, #0
 	mov	r9, r6
 	ldr	r7, .L36+12
-	add	r8, r7, #64
+	add	r8, r7, #80
 .L28:
 	mov	r3, #8
 	str	r9, [sp]
@@ -391,7 +438,7 @@ fallingRectangles:
 	mov	r6, #0
 	mov	r9, #31
 	ldr	r7, .L36+16
-	add	r8, r7, #48
+	add	r8, r7, #60
 .L30:
 	mov	r3, #8
 	str	r9, [sp]
@@ -415,8 +462,8 @@ fallingRectangles:
 	.word	.LANCHOR0
 	.word	drawRect
 	.word	.LANCHOR0+4
-	.word	.LANCHOR0+52
-	.word	.LANCHOR0+36
+	.word	.LANCHOR0+64
+	.word	.LANCHOR0+44
 	.size	fallingRectangles, .-fallingRectangles
 	.align	2
 	.global	inBoundry
@@ -517,113 +564,159 @@ isCollision:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
-	ldr	r2, .L61
-	ldr	r10, .L61+4
-	ldr	r9, .L61+8
-	ldr	r3, .L61+12
+	push	{r4, r5, r6, r7, r8, r9, r10, lr}
+	ldr	r2, .L56
+	ldr	r10, .L56+4
+	ldr	r9, .L56+8
+	ldr	r3, .L56+12
 	ldr	r0, [r10]
 	ldr	r1, [r9]
 	ldr	r2, [r2]
 	ldr	r3, [r3]
-	ldr	r5, .L61+16
-	ldr	r4, .L61+20
-	ldr	r7, .L61+24
-	ldr	r6, .L61+28
-	sub	sp, sp, #20
-	ldr	r8, .L61+32
+	ldr	r8, .L56+16
+	ldr	r7, .L56+20
+	ldr	r6, .L56+24
+	ldr	r5, .L56+28
+	sub	sp, sp, #16
 	str	r0, [sp, #12]
 	str	r1, [sp, #8]
 	str	r2, [sp, #4]
-	ldr	r1, [r5]
 	str	r3, [sp]
-	ldr	r2, [r6]
-	ldr	r3, [r7]
-	ldr	r0, [r4]
-	mov	lr, pc
-	bx	r8
-	ldr	lr, .L61+36
-	ldr	ip, .L61+40
-	ldr	lr, [lr]
-	ldr	ip, [ip]
-	str	lr, [sp, #4]
-	ldr	r3, [r7]
-	ldr	lr, [r10]
-	ldr	r2, [r6]
-	str	ip, [sp]
-	cmp	r0, #0
-	addne	r1, r3, r3, lsr #31
-	addne	r0, r2, r2, lsr #31
-	ldr	ip, [r9]
-	asrne	r1, r1, #1
-	asrne	r0, r0, #1
-	rsbne	r1, r1, #80
-	ldreq	r1, [r5]
-	rsbne	r0, r0, #120
-	ldreq	r0, [r4]
-	str	lr, [sp, #12]
-	str	ip, [sp, #8]
-	strne	r1, [r5]
-	strne	r0, [r4]
-	mov	lr, pc
-	bx	r8
-	ldr	fp, .L61+44
-	ldr	r3, [r7]
-	ldr	r2, [r6]
-	ldr	ip, .L61+48
-	cmp	r0, #0
-	ldr	lr, [r10]
-	addne	r1, r3, r3, lsr #31
-	addne	r0, r2, r2, lsr #31
-	ldr	r9, [r9]
-	ldr	ip, [ip]
-	ldr	r10, [fp]
-	asrne	r1, r1, #1
-	asrne	r0, r0, #1
-	rsbne	r1, r1, #80
-	rsbne	r0, r0, #120
-	ldreq	r0, [r4]
-	ldreq	r1, [r5]
-	stm	sp, {r10, ip}
-	str	lr, [sp, #12]
-	str	r9, [sp, #8]
-	strne	r1, [r5]
-	strne	r0, [r4]
-	mov	lr, pc
-	bx	r8
-	cmp	r0, #0
-	beq	.L51
 	ldr	r2, [r7]
-	ldr	r3, [r6]
-	add	r2, r2, r2, lsr #31
-	add	r3, r3, r3, lsr #31
-	asr	r2, r2, #1
-	asr	r3, r3, #1
-	rsb	r2, r2, #80
-	rsb	r3, r3, #120
-	str	r2, [r5]
-	str	r3, [r4]
-.L51:
-	add	sp, sp, #20
+	ldr	r3, [r8]
+	ldr	r1, [r6]
+	ldr	r0, [r5]
+	ldr	r4, .L56+32
+	mov	lr, pc
+	bx	r4
+	cmp	r0, #0
+	bne	.L53
+	ldr	r2, .L56+36
+	ldr	r3, .L56+40
+	ldr	r0, [r2]
+	ldr	r1, [r3]
+	ldr	r2, [r10]
+	ldr	r3, [r9]
+	str	r0, [sp, #4]
+	str	r1, [sp]
+	str	r2, [sp, #12]
+	str	r3, [sp, #8]
+	ldr	r2, [r7]
+	ldr	r3, [r8]
+	ldr	r1, [r6]
+	ldr	r0, [r5]
+	mov	lr, pc
+	bx	r4
+	cmp	r0, #0
+	beq	.L55
+.L53:
+	mov	r0, #0
+	ldr	r3, .L56+44
+	mov	lr, pc
+	bx	r3
+.L55:
+	ldr	r2, .L56+48
+	ldr	r3, .L56+52
+	ldr	r0, [r2]
+	ldr	r1, [r3]
+	ldr	r2, [r10]
+	ldr	r3, [r9]
+	str	r0, [sp, #4]
+	str	r1, [sp]
+	str	r2, [sp, #12]
+	str	r3, [sp, #8]
+	ldr	r2, [r7]
+	ldr	r3, [r8]
+	ldr	r1, [r6]
+	ldr	r0, [r5]
+	mov	lr, pc
+	bx	r4
+	cmp	r0, #0
+	bne	.L53
+	ldr	r2, .L56+56
+	ldr	r3, .L56+60
+	ldr	r0, [r2]
+	ldr	r1, [r3]
+	ldr	r2, [r10]
+	ldr	r3, [r9]
+	str	r0, [sp, #4]
+	str	r1, [sp]
+	str	r2, [sp, #12]
+	str	r3, [sp, #8]
+	ldr	r2, [r7]
+	ldr	r3, [r8]
+	ldr	r1, [r6]
+	ldr	r0, [r5]
+	mov	lr, pc
+	bx	r4
+	cmp	r0, #0
+	bne	.L53
+	ldr	r2, .L56+64
+	ldr	r3, .L56+68
+	ldr	r0, [r10]
+	ldr	r1, [r9]
+	ldr	r2, [r2]
+	ldr	r3, [r3]
+	str	r0, [sp, #12]
+	str	r1, [sp, #8]
+	str	r2, [sp, #4]
+	str	r3, [sp]
+	ldr	r2, [r7]
+	ldr	r3, [r8]
+	ldr	r1, [r6]
+	ldr	r0, [r5]
+	mov	lr, pc
+	bx	r4
+	cmp	r0, #0
+	bne	.L53
+	ldr	r3, .L56+72
+	ldr	r1, .L56+76
+	ldr	lr, [r3]
+	ldr	r2, .L56+80
+	ldr	r3, .L56+84
+	ldr	r10, [r1]
+	ldr	r9, [r2]
+	ldr	ip, [r3]
+	ldr	r2, [r7]
+	stm	sp, {ip, lr}
+	ldr	r3, [r8]
+	ldr	r1, [r6]
+	ldr	r0, [r5]
+	str	r10, [sp, #12]
+	str	r9, [sp, #8]
+	mov	lr, pc
+	bx	r4
+	cmp	r0, #0
+	bne	.L53
+	add	sp, sp, #16
 	@ sp needed
-	pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
 	bx	lr
-.L62:
+.L57:
 	.align	2
-.L61:
+.L56:
 	.word	redRow1
 	.word	rHeight
 	.word	rWidth
 	.word	redCol1
-	.word	uRow
-	.word	uCol
 	.word	uHeight
 	.word	uWidth
+	.word	uRow
+	.word	uCol
 	.word	collision
 	.word	redRow2
 	.word	redCol2
-	.word	redCol3
+	.word	exit
 	.word	redRow3
+	.word	redCol3
+	.word	redRow4
+	.word	redCol4
+	.word	redRow5
+	.word	redCol5
+	.word	targetRow
+	.word	tHeight
+	.word	tWidth
+	.word	targetCol
 	.size	isCollision, .-isCollision
 	.align	2
 	.global	update
@@ -654,20 +747,20 @@ main:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r7, fp, lr}
-	ldr	r3, .L68
+	ldr	r3, .L63
 	mov	lr, pc
 	bx	r3
-	ldr	fp, .L68+4
-	ldr	r4, .L68+8
-	ldr	r10, .L68+12
-	ldr	r9, .L68+16
-	ldr	r8, .L68+20
-	ldr	r7, .L68+24
-	ldr	r6, .L68+28
-	ldr	r5, .L68+32
-.L66:
+	ldr	fp, .L63+4
+	ldr	r4, .L63+8
+	ldr	r10, .L63+12
+	ldr	r9, .L63+16
+	ldr	r8, .L63+20
+	ldr	r7, .L63+24
+	ldr	r6, .L63+28
+	ldr	r5, .L63+32
+.L61:
 	ldrh	r2, [r4]
-	ldr	r3, .L68+36
+	ldr	r3, .L63+36
 	strh	r2, [fp]	@ movhi
 	ldrh	r2, [r3, #48]
 	strh	r2, [r4]	@ movhi
@@ -683,13 +776,13 @@ main:
 	bx	r6
 	mov	lr, pc
 	bx	r5
-	ldr	r3, .L68+40
+	ldr	r3, .L63+40
 	mov	lr, pc
 	bx	r3
-	b	.L66
-.L69:
+	b	.L61
+.L64:
 	.align	2
-.L68:
+.L63:
 	.word	initialize
 	.word	oldButtons
 	.word	buttons
@@ -722,16 +815,16 @@ drawRectangles:
 	str	r2, [sp]
 	mov	r1, ip
 	mov	r2, r3
-	ldr	r4, .L72
+	ldr	r4, .L67
 	mov	lr, pc
 	bx	r4
 	add	sp, sp, #8
 	@ sp needed
 	pop	{r4, lr}
 	bx	lr
-.L73:
+.L68:
 	.align	2
-.L72:
+.L67:
 	.word	drawRect
 	.size	drawRectangles, .-drawRectangles
 	.align	2
@@ -753,16 +846,16 @@ clearFallingRectangle:
 	str	r2, [sp]
 	mov	r1, ip
 	mov	r2, r3
-	ldr	r4, .L76
+	ldr	r4, .L71
 	mov	lr, pc
 	bx	r4
 	add	sp, sp, #8
 	@ sp needed
 	pop	{r4, lr}
 	bx	lr
-.L77:
+.L72:
 	.align	2
-.L76:
+.L71:
 	.word	drawRect
 	.size	clearFallingRectangle, .-clearFallingRectangle
 	.comm	uWidth,4,4
@@ -773,16 +866,22 @@ clearFallingRectangle:
 	.comm	uOldRow,4,4
 	.comm	uCol,4,4
 	.comm	uRow,4,4
+	.comm	tWidth,4,4
+	.comm	tHeight,4,4
+	.comm	targetCol,4,4
+	.comm	targetRow,4,4
 	.comm	rWidth,4,4
 	.comm	rHeight,4,4
+	.comm	redCol5,4,4
+	.comm	redCol4,4,4
 	.comm	redCol3,4,4
 	.comm	redCol2,4,4
 	.comm	redCol1,4,4
+	.comm	redRow5,4,4
+	.comm	redRow4,4,4
 	.comm	redRow3,4,4
 	.comm	redRow2,4,4
 	.comm	redRow1,4,4
-	.comm	oldButtons,2,2
-	.comm	buttons,2,2
 	.global	arrLength
 	.global	oldrectangleCols2
 	.global	rectangleCols2
@@ -792,67 +891,77 @@ clearFallingRectangle:
 	.global	rectangleCols1
 	.global	oldrectangleRows1
 	.global	rectangleRows1
+	.comm	oldButtons,2,2
+	.comm	buttons,2,2
 	.data
 	.align	2
 	.set	.LANCHOR0,. + 0
 	.type	arrLength, %object
 	.size	arrLength, 4
 arrLength:
-	.word	4
+	.word	5
 	.type	rectangleRows1, %object
-	.size	rectangleRows1, 16
+	.size	rectangleRows1, 20
 rectangleRows1:
 	.word	30
 	.word	20
 	.word	10
 	.word	0
+	.word	60
 	.type	oldrectangleRows1, %object
-	.size	oldrectangleRows1, 16
+	.size	oldrectangleRows1, 20
 oldrectangleRows1:
 	.word	30
 	.word	20
 	.word	10
 	.word	0
+	.word	60
 	.type	rectangleRows2, %object
-	.size	rectangleRows2, 16
+	.size	rectangleRows2, 20
 rectangleRows2:
 	.word	30
-	.word	20
+	.word	100
 	.word	10
-	.word	0
+	.word	150
+	.word	40
 	.type	oldrectangleRows2, %object
-	.size	oldrectangleRows2, 16
+	.size	oldrectangleRows2, 20
 oldrectangleRows2:
 	.word	30
-	.word	20
+	.word	100
 	.word	10
-	.word	0
+	.word	150
+	.word	40
 	.type	rectangleCols1, %object
-	.size	rectangleCols1, 16
+	.size	rectangleCols1, 20
 rectangleCols1:
 	.word	200
 	.word	50
 	.word	65
 	.word	30
+	.word	75
 	.type	rectangleCols2, %object
-	.size	rectangleCols2, 16
+	.size	rectangleCols2, 20
 rectangleCols2:
 	.word	150
 	.word	100
 	.word	250
 	.word	150
+	.word	300
 	.type	oldrectangleCols1, %object
-	.size	oldrectangleCols1, 16
+	.size	oldrectangleCols1, 20
 oldrectangleCols1:
 	.word	200
 	.word	50
 	.word	65
 	.word	30
+	.word	75
 	.type	oldrectangleCols2, %object
-	.size	oldrectangleCols2, 16
+	.size	oldrectangleCols2, 20
 oldrectangleCols2:
 	.word	150
 	.word	100
 	.word	250
 	.word	150
+	.word	300
 	.ident	"GCC: (devkitARM release 53) 9.1.0"
