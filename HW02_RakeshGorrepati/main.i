@@ -847,7 +847,6 @@ void movingRectangles();
 void isCollision();
 void isButton();
 void inBoundry();
-void delay(int time);
 
 
 unsigned short buttons;
@@ -857,42 +856,40 @@ unsigned short oldButtons;
 void exit(int return_code);
 
 
-int rectangleRows1[] = {30,20,10,0,60};
+int rectangleRows1[] = {30,20,10,60};
 int oldrectangleRows1[] = {30,20,10,0,60};
 
-int rectangleCols1[] = {200,50,65,30,75};
-int oldrectangleCols1[] = {200,50,65,30,75};
+int rectangleCols1[] = {200,50,65,75};
+int oldrectangleCols1[] = {200,50,65,75};
 
-int rectangleRows2[] = {30,100,10,150,40};
-int oldrectangleRows2[] = {30,100,10,150,40};
+int rectangleRows2[] = {30,100,150,40};
+int oldrectangleRows2[] = {30,100,150,40};
 
-int rectangleCols2[] = {150,100,250,150,300};
-int oldrectangleCols2[] = {150,100,250,150,300};
-
-
-int arrLength = 5;
+int rectangleCols2[] = {150,100,250,300};
+int oldrectangleCols2[] = {150,100,250,300};
 
 
-int redRow1, redRow2, redRow3, redRow4, redRow5;
-int redCol1, redCol2, redCol3, redCol4, redCol5;
-int rHeight;
-int rWidth;
+int arrLength = 4;
+
+
+int redRow1, redRow2, redRow3, redRow4, redRow5, redRow6;
+int redCol1, redCol2, redCol3, redCol4, redCol5, redCol6;
+int redHeight;
+int redWidth;
 
 
 int targetRow;
 int targetCol;
-int tHeight;
-int tWidth;
+int targetHeight;
+int targetWidth;
 
 
-int uRow;
-int uCol;
-int uOldRow;
-int uOldCol;
-int uRDel;
-int uCDel;
-int uHeight;
-int uWidth;
+int userRow;
+int userCol;
+int userOldRow;
+int userOldCol;
+int userHeight;
+int userWidth;
 
 int main() {
 
@@ -920,8 +917,8 @@ void initialize() {
  fillScreen(0);
 
 
- rHeight = 8;
- rWidth = 8;
+ redHeight = 5;
+ redWidth = 8;
  redRow1 = 160 - 25;
  redCol1 = 240/2 - 100;
  redRow2 = 160 - 25;
@@ -932,21 +929,22 @@ void initialize() {
  redCol4 = 240/2 - 100;
  redRow5 = 160 - 100;
  redCol5 = 240/2 + 50;
+ redRow6 = 160/2;
+ redCol6 = 240/2 + 15;
 
  targetCol = 240/2;
  targetRow = 5;
- tWidth = 10;
- tHeight = 5;
+ targetWidth = 10;
+ targetHeight = 5;
 
 
- uHeight = 5;
- uWidth = 10;
- uRow = (160);
- uCol = (240 / 2);
- uOldRow = uRow;
- uOldCol = uCol;
- uRDel = 1;
- uCDel = 1;
+ userHeight = 5;
+ userWidth = 10;
+ userRow = (160);
+ userCol = (240 / 2);
+ userOldRow = userRow;
+ userOldCol = userCol;
+
 }
 
 
@@ -965,30 +963,33 @@ void update() {
 
 void draw() {
 
- drawRect(uOldCol, uOldRow, uWidth, uHeight, 0);
+ drawRect(userOldCol, userOldRow, userWidth, userHeight, 0);
 
 
- drawRect(uCol, uRow, uWidth, uHeight, ((0) | (31)<<5 | (0)<<10));
+ drawRect(userCol, userRow, userWidth, userHeight, ((31) | (31)<<5 | (31)<<10));
 
 
- drawRect(redCol1, redRow1, rWidth, rHeight, ((31) | (0)<<5 | (0)<<10));
- drawRect(redCol2, redRow2, rWidth, rHeight, ((31) | (0)<<5 | (0)<<10));
- drawRect(redCol3, redRow3, rWidth, rHeight, ((31) | (0)<<5 | (0)<<10));
- drawRect(redCol4, redRow4, rWidth, rHeight, ((31) | (0)<<5 | (0)<<10));
- drawRect(redCol5, redRow5, rWidth, rHeight, ((31) | (0)<<5 | (0)<<10));
- drawRect(targetCol,targetRow,tWidth,tHeight,((31) | (31)<<5 | (0)<<10));
+ drawRect(redCol1, redRow1, redWidth, redHeight, ((31) | (0)<<5 | (0)<<10));
+ drawRect(redCol2, redRow2, redWidth, redHeight, ((31) | (0)<<5 | (0)<<10));
+ drawRect(redCol3, redRow3, redWidth, redHeight, ((31) | (0)<<5 | (0)<<10));
+ drawRect(redCol4, redRow4, redWidth, redHeight, ((31) | (0)<<5 | (0)<<10));
+ drawRect(redCol5, redRow5, redWidth, redHeight, ((31) | (0)<<5 | (0)<<10));
+ drawRect(redCol6, redRow6, redWidth, redHeight, ((31) | (0)<<5 | (0)<<10));
+ drawRect(targetCol,targetRow,targetWidth,targetHeight,((31) | (31)<<5 | (0)<<10));
 
 
- uOldRow = uRow;
- uOldCol = uCol;
+ userOldRow = userRow;
+ userOldCol = userCol;
 }
+
 
 void movingRectangles(){
 
   for (int i = 0; i < arrLength; i++) {
+
         oldrectangleRows1[i] = rectangleRows1[i];
   oldrectangleRows2[i] = rectangleRows2[i];
-  if(collision(uCol, uRow, uWidth, uHeight,rectangleCols1[i], rectangleRows1[i], 8, 8) || collision(uCol, uRow, uWidth, uHeight,rectangleCols2[i], rectangleRows2[i], 8, 8)){
+  if(collision(userCol, userRow, userWidth, userHeight,rectangleCols1[i], rectangleRows1[i], 8, 5) || collision(userCol, userRow, userWidth, userHeight,rectangleCols2[i], rectangleRows2[i], 8, 5)){
 
    exit(0);
 
@@ -999,7 +1000,7 @@ void movingRectangles(){
 
   }
 
-        if (rectangleRows1[i] > 240 - 20 || rectangleRows2[i] > 240 - 20 ) {
+        if (rectangleRows1[i] > 160 || rectangleRows2[i] > 160) {
 
    rectangleRows1[i] = 0;
    rectangleRows2[i] = 0;
@@ -1009,6 +1010,7 @@ void movingRectangles(){
  }
 
 }
+
 
 void fallingRectangles(){
  for(int i = 0; i < arrLength; i++){
@@ -1028,65 +1030,74 @@ void fallingRectangles(){
 
 }
 
+
 void inBoundry(){
- if (uCol < 0) {
-  uOldCol = uCol;
-  uCol = 0;
+
+ if (userCol < 0) {
+  userOldCol = userCol;
+  userCol = 0;
  }
- if (uCol + uWidth - 1 > 240 - 1) {
-  uOldCol = uCol;
-  uCol = (240 - 1) - (uWidth - 1);
+ if (userCol + userWidth - 1 > 240 - 1) {
+  userOldCol = userCol;
+  userCol = (240) - (userWidth);
  }
- if (uRow + uHeight - 1 > 160 - 1) {
-  uOldRow = uRow;
-  uRow = (160 - 1) - (uHeight - 1);
+ if (userRow + userHeight - 1 > 160 - 1) {
+  userOldRow = userRow;
+  userRow = (160) - (userHeight);
  }
 
 }
+
 
 void isButton(){
  if (((!(~oldButtons & ((1<<5)))) && (~buttons & ((1<<5)))) || ((~buttons & ((1<<5))))) {
-   uCol-=1;
+   userCol-= 1;
  }
  if(((!(~oldButtons & ((1<<6)))) && (~buttons & ((1<<6)))) || ((~buttons & ((1<<6))))){
-  uRow-=1;
+  userRow-= 1;
  }
  if(((!(~oldButtons & ((1<<4)))) && (~buttons & ((1<<4)))) || ((~buttons & ((1<<4))))){
-  uCol+=1;
+  userCol+= 1;
  }
  if(((!(~oldButtons & ((1<<7)))) && (~buttons & ((1<<7)))) || ((~buttons & ((1<<7))))){
-  uRow+=1;
+  userRow+= 1;
  }
 }
 
+
 void isCollision(){
- if(collision(uCol, uRow, uWidth, uHeight,redCol1, redRow1, rWidth, rHeight)){
+
+ if(collision(userCol, userRow, userWidth, userHeight,redCol1, redRow1, redWidth, redHeight)){
 
 
   exit(0);
 
  }
- if(collision(uCol, uRow, uWidth, uHeight,redCol2, redRow2, rWidth, rHeight)){
+ if(collision(userCol, userRow, userWidth, userHeight,redCol2, redRow2, redWidth, redHeight)){
 
   exit(0);
 
  }
- if(collision(uCol, uRow, uWidth, uHeight,redCol3, redRow3, rWidth, rHeight)){
+ if(collision(userCol, userRow, userWidth, userHeight,redCol3, redRow3, redWidth, redHeight)){
 
   exit(0);
 
  }
- if(collision(uCol, uRow, uWidth, uHeight,redCol4, redRow4, rWidth, rHeight)){
+ if(collision(userCol, userRow, userWidth, userHeight,redCol4, redRow4, redWidth, redHeight)){
 
   exit(0);
 
  }
- if(collision(uCol, uRow, uWidth, uHeight,redCol5, redRow5, rWidth, rHeight)){
+ if(collision(userCol, userRow, userWidth, userHeight,redCol5, redRow5, redWidth, redHeight)){
 
   exit(0);
 
  }
- if(collision(uCol, uRow, uWidth, uHeight,targetCol,targetRow,tWidth,tHeight)){
+ if(collision(userCol, userRow, userWidth, userHeight,targetCol,targetRow,targetWidth,targetHeight)){
+
+  exit(0);
+ }
+ if(collision(userCol, userRow, userWidth, userHeight,redCol6,redRow6,redWidth,redHeight)){
 
   exit(0);
  }
@@ -1094,12 +1105,12 @@ void isCollision(){
 
 void drawRectangles(int row, int col){
 
- drawRect(col,row,8,8,((31) | (0)<<5 | (0)<<10));
+ drawRect(col,row,8,5,((31) | (0)<<5 | (0)<<10));
 
 }
 
 void clearFallingRectangle(int row, int col){
 
- drawRect(col,row,8,8,0);
+ drawRect(col,row,8,5,0);
 
 }

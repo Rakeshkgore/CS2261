@@ -12,52 +12,49 @@ void movingRectangles();
 void isCollision();
 void isButton();
 void inBoundry();
-void delay(int time);
 
 // buttons
 unsigned short buttons;
 unsigned short oldButtons;
 
-//exit function
+//exit function used to stop when player wins or loses
 void exit(int return_code);
 
 //moving rectanlges 
-int rectangleRows1[] = {30,20,10,0,60};
+int rectangleRows1[] = {30,20,10,60};
 int oldrectangleRows1[] = {30,20,10,0,60};
 
-int rectangleCols1[] = {200,50,65,30,75};
-int oldrectangleCols1[] = {200,50,65,30,75};
+int rectangleCols1[] = {200,50,65,75};
+int oldrectangleCols1[] = {200,50,65,75};
 
-int rectangleRows2[] = {30,100,10,150,40};
-int oldrectangleRows2[] = {30,100,10,150,40};
+int rectangleRows2[] = {30,100,150,40};
+int oldrectangleRows2[] = {30,100,150,40};
 
-int rectangleCols2[] = {150,100,250,150,300};
-int oldrectangleCols2[] = {150,100,250,150,300};
+int rectangleCols2[] = {150,100,250,300};
+int oldrectangleCols2[] = {150,100,250,300};
 
 //array length
-int arrLength = 5;
+int arrLength = 4;
 
 // stationary red rectangles
-int redRow1, redRow2, redRow3, redRow4, redRow5;
-int redCol1, redCol2, redCol3, redCol4, redCol5;
-int rHeight;
-int rWidth;
+int redRow1, redRow2, redRow3, redRow4, redRow5, redRow6;
+int redCol1, redCol2, redCol3, redCol4, redCol5, redCol6;
+int redHeight;
+int redWidth;
 
 //target rectangle
 int targetRow;
 int targetCol;
-int tHeight;
-int tWidth;
+int targetHeight;
+int targetWidth;
 
 // user controlled rectangle
-int uRow;
-int uCol;
-int uOldRow;
-int uOldCol;
-int uRDel;
-int uCDel;
-int uHeight;
-int uWidth;
+int userRow;
+int userCol;
+int userOldRow;
+int userOldCol;
+int userHeight;
+int userWidth;
 
 int main() {
 
@@ -84,9 +81,9 @@ void initialize() {
 	oldButtons = 0;
 	fillScreen(BLACK);
 
-	//stationary 3 red rectangles
-	rHeight = 8;
-	rWidth = 8;
+	//stationary 6 red rectangles
+	redHeight = 5;
+	redWidth = 8;
 	redRow1 = SCREENHEIGHT - 25;
 	redCol1 = SCREENWIDTH/2 - 100;								
 	redRow2 = SCREENHEIGHT - 25;
@@ -96,22 +93,23 @@ void initialize() {
 	redRow4 = SCREENHEIGHT - 100;
 	redCol4 = SCREENWIDTH/2 - 100;
 	redRow5 = SCREENHEIGHT - 100;
-	redCol5 = SCREENWIDTH/2 + 50;  
+	redCol5 = SCREENWIDTH/2 + 50;
+	redRow6 = SCREENHEIGHT/2;
+	redCol6 = SCREENWIDTH/2 + 15;
 
 	targetCol = SCREENWIDTH/2;
 	targetRow = 5;
-	tWidth = 10;
-	tHeight = 5;
+	targetWidth = 10;
+	targetHeight = 5;
 
 	// user controlled rectangle
-	uHeight = 5;
-	uWidth = 10;
-	uRow = (SCREENHEIGHT);
-	uCol = (SCREENWIDTH / 2);
-	uOldRow = uRow;
-	uOldCol = uCol;
-	uRDel = 1;
-	uCDel = 1;
+	userHeight = 5;
+	userWidth = 10;
+	userRow = (SCREENHEIGHT); // bottom middle edge of screen
+	userCol = (SCREENWIDTH / 2); // bottom middle edge of screen
+	userOldRow = userRow;
+	userOldCol = userCol;
+
 }
 
 
@@ -120,7 +118,7 @@ void update() {
 	//stops using controlled rectangle from going off righ,left,or bottom of screen
 	inBoundry();
 	
-	//functionality to movie user controlled rectanle
+	//functionality to move user controlled rectangle
 	isButton();
 
 	//detects collision with with stationary rectangles
@@ -130,31 +128,34 @@ void update() {
 
 void draw() {
 	//erase the previous user controlled rectangle
-	drawRect(uOldCol, uOldRow, uWidth, uHeight, BLACK);
+	drawRect(userOldCol, userOldRow, userWidth, userHeight, BLACK);
 
 	//draws the new user controlled rectangle 
-	drawRect(uCol, uRow, uWidth, uHeight, GREEN);
+	drawRect(userCol, userRow, userWidth, userHeight, WHITE);
 
 	//draws the stationary red rectangles
-	drawRect(redCol1, redRow1, rWidth, rHeight, RED);
-	drawRect(redCol2, redRow2, rWidth, rHeight, RED);
-	drawRect(redCol3, redRow3, rWidth, rHeight, RED);
-	drawRect(redCol4, redRow4, rWidth, rHeight, RED);
-	drawRect(redCol5, redRow5, rWidth, rHeight, RED);
-	drawRect(targetCol,targetRow,tWidth,tHeight,YELLOW);
+	drawRect(redCol1, redRow1, redWidth, redHeight, RED);
+	drawRect(redCol2, redRow2, redWidth, redHeight, RED);
+	drawRect(redCol3, redRow3, redWidth, redHeight, RED);
+	drawRect(redCol4, redRow4, redWidth, redHeight, RED);
+	drawRect(redCol5, redRow5, redWidth, redHeight, RED);
+	drawRect(redCol6, redRow6, redWidth, redHeight, RED);
+	drawRect(targetCol,targetRow,targetWidth,targetHeight,YELLOW);
 	
-	// variable update
-	uOldRow = uRow;
-	uOldCol = uCol;
+	// variable update for user rectangle
+	userOldRow = userRow;
+	userOldCol = userCol;
 }
 
+//draws rectangles that move down and checks for collision to the user rectangle
 void movingRectangles(){
 
 	 for (int i = 0; i < arrLength; i++) {
+
         oldrectangleRows1[i] = rectangleRows1[i];
 		oldrectangleRows2[i] = rectangleRows2[i];
-		if(collision(uCol, uRow, uWidth, uHeight,rectangleCols1[i], rectangleRows1[i], 8, 8) || collision(uCol, uRow, uWidth, uHeight,rectangleCols2[i], rectangleRows2[i], 8, 8)){
-	
+		if(collision(userCol, userRow, userWidth, userHeight,rectangleCols1[i], rectangleRows1[i], 8, 5) || collision(userCol, userRow, userWidth, userHeight,rectangleCols2[i], rectangleRows2[i], 8, 5)){
+
 			exit(0);
 
 		}else{
@@ -164,7 +165,7 @@ void movingRectangles(){
 
 		}
 
-        if (rectangleRows1[i] > 240 - 20 || rectangleRows2[i] > 240 - 20   ) {
+        if (rectangleRows1[i] > 160  || rectangleRows2[i] > 160) {
 
 			rectangleRows1[i] = 0;
 			rectangleRows2[i] = 0;
@@ -175,6 +176,7 @@ void movingRectangles(){
 	
 }
 
+//clears the rectangles that moves down and draws them again inorder to animate the movement
 void fallingRectangles(){
 	for(int i = 0; i < arrLength; i++){
 		clearFallingRectangle(oldrectangleRows1[i],oldrectangleCols1[i]);
@@ -193,79 +195,88 @@ void fallingRectangles(){
 	
 }
 
+//refer to update function
 void inBoundry(){
-	if (uCol < 0) { 
-		uOldCol = uCol;
-		uCol = 0;
+
+	if (userCol < 0) { 
+		userOldCol = userCol;
+		userCol = 0;
 	}
-	if (uCol + uWidth - 1 > SCREENWIDTH - 1) { 
-		uOldCol = uCol;
-		uCol = (SCREENWIDTH - 1) - (uWidth - 1);
+	if (userCol + userWidth - 1 > SCREENWIDTH - 1) { 
+		userOldCol = userCol;
+		userCol = (SCREENWIDTH) - (userWidth);
 	}
-	if (uRow + uHeight - 1 > SCREENHEIGHT - 1) { 
-		uOldRow = uRow;
-		uRow = (SCREENHEIGHT - 1) - (uHeight - 1);
+	if (userRow + userHeight - 1 > SCREENHEIGHT - 1) { 
+		userOldRow = userRow;
+		userRow = (SCREENHEIGHT) - (userHeight);
 	}
-	
+
 }
 
+//refer to update function
 void isButton(){
 	if ((BUTTON_PRESSED(BUTTON_LEFT)) || (BUTTON_HELD(BUTTON_LEFT))) {
-	 	uCol-=1;
+	 	userCol-= 1;
 	}
 	if((BUTTON_PRESSED(BUTTON_UP)) || (BUTTON_HELD(BUTTON_UP))){
-		uRow-=1;
+		userRow-= 1;
 	}
 	if((BUTTON_PRESSED(BUTTON_RIGHT)) || (BUTTON_HELD(BUTTON_RIGHT))){
-		uCol+=1;
+		userCol+= 1;
 	}
 	if((BUTTON_PRESSED(BUTTON_DOWN)) || (BUTTON_HELD(BUTTON_DOWN))){
-		uRow+=1;
+		userRow+= 1;
 	}
 }
 
+//refer to update function
 void isCollision(){
-	if(collision(uCol, uRow, uWidth, uHeight,redCol1, redRow1, rWidth, rHeight)){
-		//uRow = (SCREENHEIGHT);
-		//uCol = (SCREENWIDTH / 2);
+
+	if(collision(userCol, userRow, userWidth, userHeight,redCol1, redRow1, redWidth, redHeight)){
+		//userRow = (SCREENHEIGHT);
+		//userCol = (SCREENWIDTH / 2);
 		exit(0);
 	
 	}
-	if(collision(uCol, uRow, uWidth, uHeight,redCol2, redRow2, rWidth, rHeight)){
-	
+	if(collision(userCol, userRow, userWidth, userHeight,redCol2, redRow2, redWidth, redHeight)){
+		
 		exit(0);
 	
 	}
-	if(collision(uCol, uRow, uWidth, uHeight,redCol3, redRow3, rWidth, rHeight)){
+	if(collision(userCol, userRow, userWidth, userHeight,redCol3, redRow3, redWidth, redHeight)){
+		
+		exit(0);
+
+	}
+	if(collision(userCol, userRow, userWidth, userHeight,redCol4, redRow4, redWidth, redHeight)){
+		
+		exit(0);
+
+	}
+	if(collision(userCol, userRow, userWidth, userHeight,redCol5, redRow5, redWidth, redHeight)){
 	
 		exit(0);
 
 	}
-	if(collision(uCol, uRow, uWidth, uHeight,redCol4, redRow4, rWidth, rHeight)){
-	
+	if(collision(userCol, userRow, userWidth, userHeight,targetCol,targetRow,targetWidth,targetHeight)){
+		
 		exit(0);
-
 	}
-	if(collision(uCol, uRow, uWidth, uHeight,redCol5, redRow5, rWidth, rHeight)){
-	
-		exit(0);
-
-	}
-	if(collision(uCol, uRow, uWidth, uHeight,targetCol,targetRow,tWidth,tHeight)){
-
+	if(collision(userCol, userRow, userWidth, userHeight,redCol6,redRow6,redWidth,redHeight)){
+		
 		exit(0);
 	}
 }
 
 void drawRectangles(int row, int col){
 
-	drawRect(col,row,8,8,RED);
+	drawRect(col,row,8,5,RED);
 
 }
 
 void clearFallingRectangle(int row, int col){
 
-	drawRect(col,row,8,8,BLACK);
+	drawRect(col,row,8,5,BLACK);
 
 }
 
