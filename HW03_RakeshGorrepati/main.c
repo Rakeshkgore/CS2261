@@ -8,22 +8,22 @@ unsigned short oldButtons;
 
 // My States
 int state;
-enum {START, GAME, PAUSE, WIN, LOSE, QUIT};
+enum {START, GAME, WIN, LOSE};
 
 // Prototypes
 void initialize();
 void goToStart();
 void goToGame();
-void goToPause();
+void goToGame();
 void goToWin();
 void goToLose();
-void goToQuit();
 void Start();
 void Game();
-void Pause();
 void Win();
 void Lose();
-void Quit();
+
+
+int seed;
 
 int main() {
 
@@ -43,19 +43,12 @@ int main() {
 		case GAME:
 			Game();
 			break;
-		case PAUSE:
-			Pause();
-			break;
 		case WIN:
 			Win();
 			break;
 		case LOSE:
 			Lose();
 			break;
-		case QUIT:
-			Quit();
-			break;
-
 		default:
 			break;
 		}
@@ -74,11 +67,12 @@ void goToStart(){
 
 	fillScreen(STARTCOLOR);
 	state = START;
+	srand(seed);
 
 } 
 
 void Start(){
-
+	seed++;
 	if(BUTTON_PRESSED(BUTTON_START)) {
 
 		goToGame();
@@ -91,6 +85,7 @@ void goToGame(){
 
 	fillScreen(GAMECOLOR);
 	state = GAME;
+	srand(seed);
 
 }
 
@@ -99,40 +94,15 @@ void Game(){
 	updateGame();
 	waitForVBlank();
 	drawGame();
-	if(BUTTON_PRESSED(BUTTON_START)){
-
-		goToPause();
-
-	}
-	if(asteroidsRemaining == 0){
+	//game will end if either asteroids is 0 or if user collides with target
+	if(asteroidsRemaining == 0 || reachedTarget == 0){
 
 		goToWin();
 
 	}
-	if(BUTTON_PRESSED(BUTTON_B)){
-		
-		goToQuit();
+	if(livesRemaining == 0){
 
-	}
-}
-
-void goToPause(){
-
-	fillScreen(PAUSECOLOR);
-	state = PAUSE;
-
-}
-
-void Pause(){
-	if(BUTTON_PRESSED(BUTTON_START)){
-
-		goToGame();
-
-	}
-	if(BUTTON_PRESSED(BUTTON_B)){
-
-		goToQuit();
-
+		goToLose();
 	}
 }
 
@@ -153,18 +123,17 @@ void Win(){
 
 }
 
-void goToQuit(){
+void goToLose(){
 
-	fillScreen(QUITCOLOR);
-	state = QUIT;
-
+	fillScreen(LOSECOLOR);
+	state = LOSE;
 }
 
-void Quit(){
+void Lose(){
 
 	if(BUTTON_PRESSED(BUTTON_START)){
 
-		goToStart();
+        goToStart();
+    }
 
-	}
 }

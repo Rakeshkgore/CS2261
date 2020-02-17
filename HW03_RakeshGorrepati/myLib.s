@@ -79,6 +79,69 @@ drawRect:
 	.word	.LANCHOR0
 	.size	drawRect, .-drawRect
 	.align	2
+	.global	drawAster
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	drawAster, %function
+drawAster:
+	@ Function supports interworking.
+	@ args = 4, pretend = 0, frame = 8
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+	subs	fp, r3, #0
+	sub	sp, sp, #12
+	ldrh	r8, [sp, #48]
+	ble	.L15
+	mov	r9, #0
+	mov	r5, r9
+	ldr	ip, .L23
+	add	r10, r1, #10
+	rsb	r10, r10, r10, lsl #4
+	ldr	r7, [ip]
+	lsl	r10, r10, #4
+	add	r3, r0, #3
+	add	r3, r3, r10
+	add	r3, r7, r3, lsl #1
+	str	r3, [sp, #4]
+	add	r3, r7, r0, lsl #1
+	str	r3, [sp]
+	sub	r10, r10, #2400
+.L17:
+	cmp	r2, #0
+	ble	.L20
+	mov	r3, #0
+	ldr	ip, [sp]
+	add	r6, r1, r9, asr #1
+	rsb	r6, r6, r6, lsl #4
+	ldr	r4, [sp, #4]
+	add	r6, r0, r6, lsl #4
+	add	lr, ip, r10, lsl #1
+.L18:
+	add	ip, r6, r3, asr #1
+	add	r3, r3, #1
+	lsl	ip, ip, #1
+	cmp	r2, r3
+	strh	r8, [lr], #2	@ movhi
+	strh	r5, [r7, ip]	@ movhi
+	strh	r5, [r4, #2]!	@ movhi
+	bne	.L18
+.L20:
+	add	r9, r9, #1
+	cmp	fp, r9
+	add	r10, r10, #240
+	bne	.L17
+.L15:
+	add	sp, sp, #12
+	@ sp needed
+	pop	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+	bx	lr
+.L24:
+	.align	2
+.L23:
+	.word	.LANCHOR0
+	.size	drawAster, .-drawAster
+	.align	2
 	.global	fillScreen
 	.syntax unified
 	.arm
@@ -89,19 +152,19 @@ fillScreen:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	ldr	r3, .L19
-	ldr	r2, .L19+4
+	ldr	r3, .L29
+	ldr	r2, .L29+4
 	ldr	r1, [r3]
 	sub	r3, r1, #2
 	add	r2, r1, r2
-.L16:
+.L26:
 	strh	r0, [r3, #2]!	@ movhi
 	cmp	r3, r2
-	bne	.L16
+	bne	.L26
 	bx	lr
-.L20:
+.L30:
 	.align	2
-.L19:
+.L29:
 	.word	.LANCHOR0
 	.word	76798
 	.size	fillScreen, .-fillScreen
@@ -117,15 +180,15 @@ waitForVBlank:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	mov	r2, #67108864
-.L22:
+.L32:
 	ldrh	r3, [r2, #6]
 	cmp	r3, #160
-	bhi	.L22
+	bhi	.L32
 	mov	r2, #67108864
-.L23:
+.L33:
 	ldrh	r3, [r2, #6]
 	cmp	r3, #159
-	bls	.L23
+	bls	.L33
 	bx	lr
 	.size	waitForVBlank, .-waitForVBlank
 	.align	2
@@ -142,22 +205,22 @@ collision:
 	ldr	ip, [sp, #4]
 	add	r3, r1, r3
 	cmp	r3, ip
-	blt	.L31
+	blt	.L41
 	ldr	r3, [sp, #12]
 	add	ip, ip, r3
 	cmp	ip, r1
-	blt	.L31
+	blt	.L41
 	ldr	r3, [sp]
 	add	r2, r0, r2
 	cmp	r2, r3
-	blt	.L31
+	blt	.L41
 	ldr	r2, [sp, #8]
 	add	r3, r3, r2
 	cmp	r3, r0
 	movlt	r0, #0
 	movge	r0, #1
 	bx	lr
-.L31:
+.L41:
 	mov	r0, #0
 	bx	lr
 	.size	collision, .-collision

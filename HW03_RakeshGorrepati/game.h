@@ -8,6 +8,7 @@ typedef struct{
     int height;
     int width;
     unsigned short color;
+    int bulletTimer;
     
 } USER;
 
@@ -43,14 +44,42 @@ typedef struct
 } ASTEROID;
 
 // Constants
-#define ASTEROIDCOUNT 6
+#define ASTEROIDCOUNT 3
 #define BULLETCOUNT 6
+#define LIVESCOUNT 1
+#define FALLINGRECTSNGLECOUNT 2
+#define TARGETCOUNT 1
 
 // Variables
 extern USER user;
 extern BULLET bullets[BULLETCOUNT];
 extern ASTEROID asteroids[ASTEROIDCOUNT];
 extern int asteroidsRemaining;
+extern int fallingRectanglesRemaining;
+extern int livesRemaining;
+extern int reachedTarget;
+
+
+// Prototypes
+void updateBoundry();
+void initializeGame();
+void updateGame();
+void drawGame();
+void initializeUser();
+void updateUser();
+void drawUser();
+void initializeBullets();
+void fireBullet();
+void updateBullet(BULLET *);
+void drawBullet(BULLET *);
+void initializeAsteroids();
+void updateAsteroid(ASTEROID *);
+void drawAsteroid(ASTEROID *);
+void movingRectangles();
+void fallingRectangles();
+void clearFallingRectangle(int row, int col);
+void drawRectangles(int row, int col);
+
 
 
 

@@ -10,18 +10,19 @@
 typedef unsigned short u16;
 # 25 "myLib.h"
 extern unsigned short *videoBuffer;
-# 48 "myLib.h"
+# 53 "myLib.h"
 void setPixel(int col, int row, unsigned short color);
 void drawRect(int col, int row, int width, int height, unsigned short color);
 void fillScreen(unsigned short color);
+void drawAster(int col, int row, int width, int height, unsigned short color);
 
 
 
 void waitForVBlank();
-# 75 "myLib.h"
+# 81 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 89 "myLib.h"
+# 95 "myLib.h"
 int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, int widthB, int heightB);
 # 2 "myLib.c" 2
 
@@ -37,6 +38,18 @@ void drawRect(int col, int row, int width, int height, unsigned short color) {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             setPixel(col + j, row + i, color);
+        }
+    }
+}
+
+void drawAster(int col, int row, int width, int height, unsigned short color) {
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            setPixel(col + j, row + i, color);
+            setPixel(col+ j/2, row + i/2, 0);
+            setPixel(col+ (j+4), row + 10, 0);
+
         }
     }
 }

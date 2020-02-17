@@ -821,18 +821,19 @@ extern long double strtold (const char *restrict, char **restrict);
 typedef unsigned short u16;
 # 25 "myLib.h"
 extern unsigned short *videoBuffer;
-# 48 "myLib.h"
+# 53 "myLib.h"
 void setPixel(int col, int row, unsigned short color);
 void drawRect(int col, int row, int width, int height, unsigned short color);
 void fillScreen(unsigned short color);
+void drawAster(int col, int row, int width, int height, unsigned short color);
 
 
 
 void waitForVBlank();
-# 75 "myLib.h"
+# 81 "myLib.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-# 89 "myLib.h"
+# 95 "myLib.h"
 int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, int widthB, int heightB);
 # 3 "main.c" 2
 # 1 "game.h" 1
@@ -846,6 +847,7 @@ typedef struct{
     int height;
     int width;
     unsigned short color;
+    int bulletTimer;
 
 } USER;
 
@@ -879,15 +881,35 @@ typedef struct
     int active;
     int erased;
 } ASTEROID;
-
-
-
-
-
-
+# 54 "game.h"
 extern USER user;
 extern BULLET bullets[6];
+extern ASTEROID asteroids[3];
 extern int asteroidsRemaining;
+extern int fallingRectanglesRemaining;
+extern int livesRemaining;
+extern int reachedTarget;
+
+
+
+void updateBoundry();
+void initializeGame();
+void updateGame();
+void drawGame();
+void initializeUser();
+void updateUser();
+void drawUser();
+void initializeBullets();
+void fireBullet();
+void updateBullet(BULLET *);
+void drawBullet(BULLET *);
+void initializeAsteroids();
+void updateAsteroid(ASTEROID *);
+void drawAsteroid(ASTEROID *);
+void movingRectangles();
+void fallingRectangles();
+void clearFallingRectangle(int row, int col);
+void drawRectangles(int row, int col);
 # 4 "main.c" 2
 
 
@@ -896,22 +918,22 @@ unsigned short oldButtons;
 
 
 int state;
-enum {START, GAME, PAUSE, WIN, LOSE, QUIT};
+enum {START, GAME, WIN, LOSE};
 
 
 void initialize();
 void goToStart();
 void goToGame();
-void goToPause();
+void goToGame();
 void goToWin();
 void goToLose();
-void goToQuit();
 void Start();
 void Game();
-void Pause();
 void Win();
 void Lose();
-void Quit();
+
+
+int seed;
 
 int main() {
 
@@ -931,19 +953,12 @@ int main() {
   case GAME:
    Game();
    break;
-  case PAUSE:
-   Pause();
-   break;
   case WIN:
    Win();
    break;
   case LOSE:
    Lose();
    break;
-  case QUIT:
-   Quit();
-   break;
-
   default:
    break;
   }
@@ -962,5 +977,73 @@ void goToStart(){
 
  fillScreen(((31) | (31)<<5 | (15)<<10));
  state = START;
+ srand(seed);
+
+}
+
+void Start(){
+ seed++;
+ if((!(~oldButtons & ((1<<3)))) && (~buttons & ((1<<3)))) {
+
+  goToGame();
+  initializeGame();
+
+ }
+}
+
+void goToGame(){
+
+ fillScreen(((0) | (0)<<5 | (0)<<10));
+ state = GAME;
+ srand(seed);
+
+}
+
+void Game(){
+
+ updateGame();
+ waitForVBlank();
+ drawGame();
+
+ if(asteroidsRemaining == 0 || reachedTarget == 0){
+
+  goToWin();
+
+ }
+ if(livesRemaining == 0){
+
+  goToLose();
+ }
+}
+
+void goToWin(){
+
+ fillScreen(((15) | (15)<<5 | (31)<<10));
+ state = WIN;
+
+}
+
+void Win(){
+
+ if((!(~oldButtons & ((1<<3)))) && (~buttons & ((1<<3)))){
+
+  goToStart();
+
+ }
+
+}
+
+void goToLose(){
+
+ fillScreen(((31) | (5)<<5 | (5)<<10));
+ state = LOSE;
+}
+
+void Lose(){
+
+ if((!(~oldButtons & ((1<<3)))) && (~buttons & ((1<<3)))){
+
+        goToStart();
+    }
 
 }

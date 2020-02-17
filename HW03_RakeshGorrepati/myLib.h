@@ -34,20 +34,26 @@ extern unsigned short *videoBuffer;
 #define CYAN COLOR(0,31,31)
 #define MAGENTA COLOR(31,0,31)
 #define YELLOW COLOR(31,31,0)
+#define GRAY COLOR(15,15,15)
+
 
 #define STARTCOLOR COLOR(31, 31, 15)
-#define GAMECOLOR COLOR(3, 31, 3)
+#define GAMECOLOR COLOR (0,0,0)
 #define PAUSECOLOR COLOR(31, 31, 31)
 #define WINCOLOR COLOR(15, 15, 31)
 #define LOSECOLOR COLOR(31,5,5)
 #define QUITCOLOR COLOR(31,0,0)
-
-
+#define USERCOLOR COLOR(31,15,10)
+#define ASTEROIDCOLOR1 COLOR (15,31,31)
+#define ASTEROIDCOLOR2 COLOR (31,15,31)
+#define BULLETCOLOR1 COLOR (31,31,20)
+#define BULLETCOLOR2 COLOR (25,31,31)
 
 // mode 3 drawing functions
 void setPixel(int col, int row, unsigned short color);
 void drawRect(int col, int row, int width, int height, unsigned short color);
 void fillScreen(unsigned short color);
+void drawAster(int col, int row, int width, int height, unsigned short color);
 
 
 // miscellaneous drawing functions

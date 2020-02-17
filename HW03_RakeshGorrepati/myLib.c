@@ -16,6 +16,18 @@ void drawRect(int col, int row, int width, int height, unsigned short color) {
     }
 }
 
+void drawAster(int col, int row, int width, int height, unsigned short color) {
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            setPixel(col + j, row + i, color);
+            setPixel(col+ j/2, row + i/2, BLACK);
+            setPixel(col+ (j+4), row + 10, BLACK);
+
+        }
+    }
+}
+
 
 void fillScreen(unsigned short color) {
 
