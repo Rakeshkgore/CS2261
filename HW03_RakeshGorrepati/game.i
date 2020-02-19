@@ -920,18 +920,18 @@ int asteroidsRemaining;
 int livesRemaining;
 int reachedTarget;
 
-int boxHeight = 40;
-int boxWidth = 60;
 
 int rectangleRows1[] = {30,30};
 int oldrectangleRows1[] = {30,30};
 int rectangleCols1[] = {10,165};
 int oldrectangleCols1[] = {10,165};
 
+
 int arrLength = 2;
+
+
 int targetCol = 240/2;
 int targetRow = 0 + 10;
-
 int targetHeight = 10;
 int targetWidth = 20;
 
@@ -949,6 +949,7 @@ void initializeGame(){
 
 
 }
+
 
 void updateGame(){
 
@@ -970,20 +971,25 @@ void updateGame(){
     }
 }
 
+
 void updateBoundry(){
+
 
     if (user.col < 0) {
   user.oldCol = user.col;
   user.col = 0;
  }
+
  if (user.col + user.width > 240 ) {
   user.oldCol = user.col;
   user.col = (240 - user.width);
  }
+
  if (user.row < 0) {
   user.oldRow = user.row;
   user.row = 0;
  }
+
  if (user.row + user.height > 160 ) {
   user.oldRow = user.row;
   user.row = (160 - user.height);
@@ -991,6 +997,7 @@ void updateBoundry(){
 
 
 }
+
 
 void drawGame(){
 
@@ -1010,6 +1017,7 @@ void drawGame(){
 
 }
 
+
 void initializeUser(){
 
     user.row = 160 - user.height;
@@ -1024,28 +1032,37 @@ void initializeUser(){
 
 }
 
+
 void updateUser(){
+
 
     if(((~buttons & ((1<<4)))) || ((!(~oldButtons & ((1<<4)))) && (~buttons & ((1<<4))))){
 
         user.col += user.udel;
 
     }
+
+
     if(((~buttons & ((1<<5)))) || ((!(~oldButtons & ((1<<5)))) && (~buttons & ((1<<5))))){
 
         user.col -= user.udel;
 
     }
+
+
     if(((~buttons & ((1<<7)))) || ((!(~oldButtons & ((1<<7)))) && (~buttons & ((1<<7))))){
 
         user.row += user.udel;
 
     }
+
+
     if(((~buttons & ((1<<6)))) || ((!(~oldButtons & ((1<<6)))) && (~buttons & ((1<<6))))){
 
         user.row -= user.udel;
 
     }
+
 
     if(((!(~oldButtons & ((1<<1)))) && (~buttons & ((1<<1)))) && (user.bulletTimer >= 20)){
 
@@ -1053,17 +1070,21 @@ void updateUser(){
         user.bulletTimer = 0;
 
     }
+
     if(collision(user.col, user.row, user.width, user.height,targetCol, targetRow, targetWidth, targetHeight)){
 
         reachedTarget--;
+
 
     }
 
 
     user.bulletTimer++;
+
     for(int i = 0; i < 3; i++){
 
         if(collision(user.col, user.row, user.width, user.height,asteroids[i].col, asteroids[i].row, asteroids[i].width, asteroids[i].height)){
+
 
             livesRemaining--;
 
@@ -1071,6 +1092,7 @@ void updateUser(){
     }
 
 }
+
 
 void drawUser(){
 
@@ -1082,6 +1104,7 @@ void drawUser(){
     user.oldRow = user.row;
 
 }
+
 
 void initializeBullets(){
 
@@ -1102,6 +1125,7 @@ void initializeBullets(){
 
 }
 
+
 void fireBullet(){
 
     for(int i = 0; i < 6; i++){
@@ -1119,6 +1143,7 @@ void fireBullet(){
     }
 
 }
+
 
 void drawBullet(BULLET *b){
 
@@ -1139,6 +1164,7 @@ void drawBullet(BULLET *b){
 
 }
 
+
 void initializeAsteroids(){
 
     for (int i = 0; i < 3; i++) {
@@ -1158,6 +1184,7 @@ void initializeAsteroids(){
  }
 
 }
+
 
 void updateAsteroid(ASTEROID* a){
 
@@ -1187,6 +1214,7 @@ void updateAsteroid(ASTEROID* a){
      a->active = 0;
 
      asteroidsRemaining--;
+
     }
 
    }
@@ -1225,6 +1253,7 @@ void updateBullet(BULLET* b) {
  }
 }
 
+
 void fallingRectangles(){
  for(int i = 0; i < arrLength; i++){
   clearFallingRectangle(oldrectangleRows1[i],oldrectangleCols1[i]);
@@ -1235,11 +1264,14 @@ void fallingRectangles(){
  }
 
 }
+
+
 void clearFallingRectangle(int row, int col){
 
  drawRect(col,row,8,5,0);
 
 }
+
 
 void drawRectangles(int row, int col){
 
@@ -1247,15 +1279,18 @@ void drawRectangles(int row, int col){
 
 }
 
+
 void movingRectangles(){
 
   for (int i = 0; i < arrLength; i++) {
 
         oldrectangleRows1[i] = rectangleRows1[i];
 
+
   if(collision(user.col, user.row, user.width, user.height,rectangleCols1[i], rectangleRows1[i], 8, 5)){
 
    livesRemaining--;
+
 
   }else{
 

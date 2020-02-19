@@ -10,23 +10,23 @@ int asteroidsRemaining;
 int livesRemaining;
 int reachedTarget;
 
-int boxHeight = 40;
-int boxWidth = 60;
-
+//Arrays for Falling rectangles
 int rectangleRows1[] = {30,30};
 int oldrectangleRows1[] = {30,30};
 int rectangleCols1[] = {10,165};
 int oldrectangleCols1[] = {10,165};
 
+//Array Length Global variable
 int arrLength = 2;
+
+//Target Box location and dimensions
 int targetCol = SCREENWIDTH/2;
 int targetRow = 0 + 10;
-
 int targetHeight = 10;
 int targetWidth = 20;
 
 
-
+// where all items are intiliazed
 void initializeGame(){
 
     
@@ -40,6 +40,8 @@ void initializeGame(){
 
 }
 
+//Updates: User,falling rectanlges, checks for boundry
+// Updates the game each frame
 void updateGame(){
 
     updateUser();
@@ -47,12 +49,14 @@ void updateGame(){
     movingRectangles();
     fallingRectangles();
 
+    //Updates all Bullets
     for( int i = 0; i < BULLETCOUNT; i++ ){
 
         updateBullet(&bullets[i]);
 
     }
 
+    //Updates all asteroids
     for( int i = 0; i < ASTEROIDCOUNT; i++){
 
         updateAsteroid(&asteroids[i]);
@@ -60,20 +64,25 @@ void updateGame(){
     }
 }
 
+//stops using controlled rectangle from going off righ,left,or bottom of screen
 void updateBoundry(){
 
+    //Left
     if (user.col < 0) { 
 		user.oldCol = user.col;
 		user.col = 0;
 	}
+    //Right
 	if (user.col + user.width > SCREENWIDTH ) {
 		user.oldCol = user.col;
 		user.col = (SCREENWIDTH - user.width);
 	}
+    //Top
 	if (user.row < 0) {
 		user.oldRow = user.row;
 		user.row = 0;
 	}
+    //Bottom
 	if (user.row + user.height > SCREENHEIGHT ) {
 		user.oldRow = user.row;
 		user.row = (SCREENHEIGHT - user.height);
@@ -82,16 +91,19 @@ void updateBoundry(){
 
 }
 
+//Draws user, bullets, asteroids
 void drawGame(){
 
     drawUser();
 
+    //Draws all bullets
     for(int i = 0; i < BULLETCOUNT; i++){
 
         drawBullet(&bullets[i]);
 
     }
 
+    //Draws all asteroids
     for(int i = 0; i < ASTEROIDCOUNT; i++){
         
         drawAsteroid(&asteroids[i]);
@@ -100,6 +112,7 @@ void drawGame(){
 
 }
 
+//Object pooling for user
 void initializeUser(){
 
     user.row = SCREENHEIGHT - user.height;
@@ -114,47 +127,60 @@ void initializeUser(){
 
 }
 
+//functionality to move user controlled rectangle
 void updateUser(){
-
+    
+    //To move right
     if((BUTTON_HELD(BUTTON_RIGHT)) || (BUTTON_PRESSED(BUTTON_RIGHT))){
         
         user.col += user.udel;
 
     }
+
+    //To move left
     if((BUTTON_HELD(BUTTON_LEFT)) || (BUTTON_PRESSED(BUTTON_LEFT))){
         
         user.col -= user.udel;
     
     }
+
+    //To move down
     if((BUTTON_HELD(BUTTON_DOWN)) || (BUTTON_PRESSED(BUTTON_DOWN))){
 
         user.row += user.udel;
         
     }
+
+    //To move up
     if((BUTTON_HELD(BUTTON_UP)) || (BUTTON_PRESSED(BUTTON_UP))){
 
         user.row -= user.udel;
 
     }
 
+    //To fire bullets by pressing B
     if((BUTTON_PRESSED(BUTTON_B)) && (user.bulletTimer >= 20)){
 
         fireBullet();
         user.bulletTimer = 0;
 
     }
+    //Checks for collision with target box and user 
     if(collision(user.col, user.row, user.width, user.height,targetCol, targetRow, targetWidth, targetHeight)){
                 
         reachedTarget--;
+        //Game is over
 
     }
     
 
     user.bulletTimer++;
+    //Checks all asteroids for collision with user 
     for(int i = 0; i < ASTEROIDCOUNT; i++){
 
         if(collision(user.col, user.row, user.width, user.height,asteroids[i].col, asteroids[i].row, asteroids[i].width, asteroids[i].height)){
-                
+
+            //game is over      
             livesRemaining--;
 
         }
@@ -162,6 +188,7 @@ void updateUser(){
 
 }
 
+//Clears previous frame and draws user and target 
 void drawUser(){
 
     drawRect(user.oldCol, user.oldRow, user.width, user.height, BLACK);
@@ -173,6 +200,7 @@ void drawUser(){
 
 }
 
+//Pooling for bullets
 void initializeBullets(){
 
     for(int i = 0; i < BULLETCOUNT; i++) {
@@ -192,6 +220,8 @@ void initializeBullets(){
 
 }
 
+//Sets bullet to active and fires it from user
+//Finds first inactive bullet and initialize/set it active
 void fireBullet(){
 
     for(int i = 0; i < BULLETCOUNT; i++){
@@ -210,6 +240,7 @@ void fireBullet(){
 
 }
 
+//Draws bullet by calling drawRect and utilzes a pointer thats passed in
 void drawBullet(BULLET *b){
 
     if(b -> active){
@@ -229,6 +260,7 @@ void drawBullet(BULLET *b){
 
 }
 
+//Pooling for asteroids
 void initializeAsteroids(){
 
     for (int i = 0; i < ASTEROIDCOUNT; i++) {
@@ -249,6 +281,7 @@ void initializeAsteroids(){
 
 }
 
+//Takes in pointer and bounces asteroids from edges
 void updateAsteroid(ASTEROID* a){
 
     if( a -> active){
@@ -268,7 +301,7 @@ void updateAsteroid(ASTEROID* a){
         a->row += a->rdel;
 		a->col += a->cdel;
 
-
+        //Iterates through bullets and checks collision with passed in asteroid pointer
         for(int i = 0; i < BULLETCOUNT; i++){
 			if(bullets[i].active == 1){
 
@@ -277,6 +310,7 @@ void updateAsteroid(ASTEROID* a){
 					a->active = 0;
                     
 					asteroidsRemaining--;
+                    //If all asteroids are gone game is over
 				}
 
 			}
@@ -287,7 +321,7 @@ void updateAsteroid(ASTEROID* a){
 
 }
 
-
+// Takes in pointer and calls drawAster if it is active
 void drawAsteroid(ASTEROID* a) {
 	if(a->active) {
 
@@ -304,7 +338,7 @@ void drawAsteroid(ASTEROID* a) {
 	a->oldCol = a->col;
 }
 
-
+// Takes in pointer and if its active then moves it up and updates bullet
 void updateBullet(BULLET* b) {
 
 	if (b->active) {
@@ -315,6 +349,7 @@ void updateBullet(BULLET* b) {
 	}
 }
 
+//Iterates through array. Clears them then draws them. 
 void fallingRectangles(){
 	for(int i = 0; i < arrLength; i++){
 		clearFallingRectangle(oldrectangleRows1[i],oldrectangleCols1[i]);
@@ -325,27 +360,33 @@ void fallingRectangles(){
 	}
 	
 }
+
+// Clears falling rectangles with drawRect with black color
 void clearFallingRectangle(int row, int col){
 
 	drawRect(col,row,8,5,BLACK);
 
 }
 
+//Draws falling rectangels. Calls drawRect
 void drawRectangles(int row, int col){
 
 	drawRect(col,row,8,5,RED);
 
 }
 
+//Main fucntion for iterating through array and moving the rectangles down the screen
 void movingRectangles(){
 
 	 for (int i = 0; i < arrLength; i++) {
 
         oldrectangleRows1[i] = rectangleRows1[i];
-	
+        
+        //Checks collision with user as falling rectangles move down the screen
 		if(collision(user.col, user.row, user.width, user.height,rectangleCols1[i], rectangleRows1[i], 8, 5)){
 
 			livesRemaining--;
+            //game is over
 
 		}else{
 

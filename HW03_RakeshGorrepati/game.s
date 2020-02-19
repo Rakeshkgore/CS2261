@@ -1028,8 +1028,6 @@ updateGame:
 	.global	rectangleCols1
 	.global	oldrectangleRows1
 	.global	rectangleRows1
-	.global	boxWidth
-	.global	boxHeight
 	.comm	reachedTarget,4,4
 	.comm	livesRemaining,4,4
 	.comm	asteroidsRemaining,4,4
@@ -1079,12 +1077,4 @@ rectangleRows1:
 rectangleCols1:
 	.word	10
 	.word	165
-	.type	boxWidth, %object
-	.size	boxWidth, 4
-boxWidth:
-	.word	60
-	.type	boxHeight, %object
-	.size	boxHeight, 4
-boxHeight:
-	.word	40
 	.ident	"GCC: (devkitARM release 53) 9.1.0"

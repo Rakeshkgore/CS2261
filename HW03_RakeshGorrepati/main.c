@@ -22,11 +22,12 @@ void Game();
 void Win();
 void Lose();
 
-
+// the random seed
 int seed;
 
 int main() {
 
+	// initliazing function
 	initialize();
 
 	while (1)
@@ -63,6 +64,7 @@ void initialize(){
 
 }
 
+// Fills color for Start State
 void goToStart(){
 
 	fillScreen(STARTCOLOR);
@@ -71,6 +73,8 @@ void goToStart(){
 
 } 
 
+// If start is pressed goes to Game state
+// Increments seed
 void Start(){
 	seed++;
 	if(BUTTON_PRESSED(BUTTON_START)) {
@@ -81,14 +85,15 @@ void Start(){
 	}
 } 
 
+// Fills color to Game state & Sets state to Game
 void goToGame(){
 
 	fillScreen(GAMECOLOR);
 	state = GAME;
-	srand(seed);
 
 }
 
+// Main state where game file/logic is called
 void Game(){
 
 	updateGame();
@@ -100,12 +105,15 @@ void Game(){
 		goToWin();
 
 	}
+	// If user either collided with asteroids or moving rectangles then game is over
 	if(livesRemaining == 0){
 
 		goToLose();
+
 	}
 }
 
+//Fill screen color and sets state to win
 void goToWin(){
 
 	fillScreen(WINCOLOR);
@@ -113,6 +121,7 @@ void goToWin(){
 
 }
 
+// After winning if start is pressed then restarts at gotostart
 void Win(){
 
 	if(BUTTON_PRESSED(BUTTON_START)){
@@ -123,12 +132,14 @@ void Win(){
 
 }
 
+// Fills screen to the Lose state and sets state to LOSE
 void goToLose(){
 
 	fillScreen(LOSECOLOR);
 	state = LOSE;
 }
 
+//Lose state where you can restart game by pressing start
 void Lose(){
 
 	if(BUTTON_PRESSED(BUTTON_START)){

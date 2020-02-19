@@ -937,6 +937,7 @@ int seed;
 
 int main() {
 
+
  initialize();
 
  while (1)
@@ -973,6 +974,7 @@ void initialize(){
 
 }
 
+
 void goToStart(){
 
  fillScreen(((31) | (31)<<5 | (15)<<10));
@@ -980,6 +982,7 @@ void goToStart(){
  srand(seed);
 
 }
+
 
 void Start(){
  seed++;
@@ -991,13 +994,14 @@ void Start(){
  }
 }
 
+
 void goToGame(){
 
  fillScreen(((0) | (0)<<5 | (0)<<10));
  state = GAME;
- srand(seed);
 
 }
+
 
 void Game(){
 
@@ -1016,12 +1020,14 @@ void Game(){
  }
 }
 
+
 void goToWin(){
 
  fillScreen(((15) | (15)<<5 | (31)<<10));
  state = WIN;
 
 }
+
 
 void Win(){
 
