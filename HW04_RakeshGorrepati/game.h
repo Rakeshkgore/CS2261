@@ -45,18 +45,17 @@ typedef struct
 } ASTEROID;
 
 // Constants
-#define ASTEROIDCOUNT 3
+#define ASTEROIDCOUNT 5
 #define BULLETCOUNT 6
 #define LIVESCOUNT 1
 #define FALLINGRECTSNGLECOUNT 2
-#define TARGETCOUNT 1
 #define TIMEREMAINING 10
 #define TIME 5000
 
 // Custom Game Colors
 #define NUMCOLORS 6
 // This does an enum trick to make them the last indeces of the palette
-enum {BLACKID=(256-NUMCOLORS), BLUEID, GREENID, REDID, WHITEID, GRAYID};
+enum {BLACKS=(256-NUMCOLORS), BLUES, GREENS, REDS, WHITES, GRAYS};
 extern unsigned short colors[NUMCOLORS];
 
 // Variables

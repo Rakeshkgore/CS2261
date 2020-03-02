@@ -11,19 +11,20 @@ unsigned short oldButtons;
 
 // My States
 int state;
-enum {START, GAME, WIN, LOSE};
+enum {START, GAME, PAUSE, WIN, LOSE};
 
 // Prototypes
 void initialize();
 void goToStart();
 void goToGame();
-void goToGame();
 void goToWin();
 void goToLose();
+void goToPause();
 void Start();
 void Game();
 void Win();
 void Lose();
+void Pause();
 
 // Random Seed
 int seed;
@@ -46,6 +47,9 @@ int main() {
 			break;
 		case GAME:
 			Game();
+			break;
+		case PAUSE:
+			Pause();
 			break;
 		case WIN:
 			Win();
@@ -108,27 +112,57 @@ void Game(){
 	updateGame();
 	drawGame();
 	sprintf(buffer, "Time Remaining: %d", timeRemaining);
-	drawString(5,145,buffer,WHITEID);
-	
+	drawString(5,5,buffer,WHITES);
     waitForVBlank();
     flipPage();
 
 
-	if (asteroidsRemaining == 0 || reachedTarget == 0){
+	if(asteroidsRemaining == 0){
+
         goToWin();
+
 	}
 	if(livesRemaining == 0 || timeRemaining == 0){
 
 		goToLose();
+
+	}
+	if(BUTTON_PRESSED(BUTTON_B)){
+
+		goToPause();
+
 	}
 
+
+}
+
+void goToPause(){
+
+	fillScreen(GRAYS);
+	drawString(SCREENWIDTH/2-15, SCREENHEIGHT/2, "VICTORY", BLACKS);
+	waitForVBlank();
+    flipPage();
+	state = PAUSE;
+
+}
+
+void Pause(){
+
+	if(BUTTON_PRESSED(BUTTON_START)){
+		
+		goToGame();
+
+	}
 
 }
 
 //Fill screen color and sets state to win
 void goToWin(){
 
-	fillScreen(GREENID);
+	fillScreen(GREENS);
+	drawString(SCREENWIDTH/2-15, SCREENHEIGHT/2, "VICTORY", BLACKS);
+	waitForVBlank();
+    flipPage();
 	state = WIN;
 
 }
@@ -147,8 +181,8 @@ void Win(){
 // sets state to lose
 void goToLose(){
 
-	fillScreen(REDID);
-	drawString(100, 50, "LOSE", BLACKID);
+	fillScreen(REDS);
+	drawString(SCREENWIDTH/2-15, SCREENHEIGHT/2, "DEFEATED", BLACKS);
 	waitForVBlank();
     flipPage();
 	state = LOSE;

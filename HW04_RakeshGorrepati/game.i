@@ -897,14 +897,14 @@ typedef struct
     int erased;
     int isAsteroid;
 } ASTEROID;
-# 59 "game.h"
-enum {BLACKID=(256-6), BLUEID, GREENID, REDID, WHITEID, GRAYID};
+# 58 "game.h"
+enum {BLACKS=(256-6), BLUES, GREENS, REDS, WHITES, GRAYS};
 extern unsigned short colors[6];
 
 
 extern USER user;
 extern BULLET bullets[6];
-extern ASTEROID asteroids[3];
+extern ASTEROID asteroids[5];
 extern int asteroidsRemaining;
 extern int fallingRectanglesRemaining;
 extern int livesRemaining;
@@ -944,19 +944,18 @@ extern const unsigned short AsteroidPal[256];
 
 USER user;
 BULLET bullets[6];
-ASTEROID asteroids[3];
+ASTEROID asteroids[5];
 int asteroidsRemaining;
 int livesRemaining;
 int timeRemaining;
-int reachedTarget;
 int time;
 
 
 
-int targetCol = 240/2;
-int targetRow = 0 + 10;
-int targetHeight = 10;
-int targetWidth = 20;
+int safeCol = 240 - 10;
+int safeRow = 160 - 20;
+int safeHeight = 20;
+int safeWidth = 10;
 
 
 
@@ -966,9 +965,8 @@ void initializeGame(){
     initializeUser();
     initializeBullets();
     initializeAsteroids();
-    asteroidsRemaining = 3;
+    asteroidsRemaining = 5;
     livesRemaining = 1;
-    reachedTarget = 1;
     timeRemaining = 10;
     time = 5000;
 
@@ -1002,7 +1000,7 @@ void updateGame(){
     }
 
 
-    for( int i = 0; i < 3; i++){
+    for( int i = 0; i < 5; i++){
 
         updateAsteroid(&asteroids[i]);
 
@@ -1012,7 +1010,7 @@ void updateGame(){
 
 void drawGame(){
 
-    fillScreen(BLACKID);
+    fillScreen(BLACKS);
     drawUser();
 
 
@@ -1023,7 +1021,7 @@ void drawGame(){
     }
 
 
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 5; i++){
 
         drawAsteroid(&asteroids[i]);
 
@@ -1067,7 +1065,7 @@ void initializeUser(){
     user.udel = 1;
     user.height = 10;
     user.width = 5;
-    user.color = REDID;
+    user.color = REDS;
     user.bulletTimer = 20;
 
 }
@@ -1111,17 +1109,9 @@ void updateUser(){
 
     }
 
-    if(collision(user.col, user.row, user.width, user.height,targetCol, targetRow, targetWidth, targetHeight)){
-
-        reachedTarget--;
-
-
-    }
-
-
     user.bulletTimer++;
 
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 5; i++){
 
         if(collision(user.col, user.row, user.width, user.height,asteroids[i].col, asteroids[i].row, asteroids[i].width, asteroids[i].height)){
 
@@ -1136,8 +1126,8 @@ void updateUser(){
 
 void drawUser(){
 
-    drawRect(user.col, user.row, user.width, user.height, REDID);
-    drawRect(targetCol,targetRow,targetWidth,targetHeight,REDID);
+    drawRect(user.col, user.row, user.width, user.height, REDS);
+
 }
 
 
@@ -1150,7 +1140,7 @@ void initializeBullets(){
         bullets[i].col = 0;
         bullets[i].row = -2;
         bullets[i].rdel = -2;
-  bullets[i].color = WHITEID;
+  bullets[i].color = WHITES;
         bullets[i].active = 0;
 
 
@@ -1191,14 +1181,16 @@ void drawBullet(BULLET *b){
 
 void initializeAsteroids(){
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 5; i++) {
 
   asteroids[i].row = rand() % 110;
   asteroids[i].col = rand() % 130 + 10;
   asteroids[i].rdel = 1;
   asteroids[i].cdel = 1;
         asteroids[i].active = 1;
-        asteroids[i].isAsteroid = i & 1;
+        if(i == 1){
+            asteroids[i].isAsteroid = 1;
+        }
 
         if(asteroids[i].isAsteroid){
             asteroids[i].height = 32;
@@ -1265,7 +1257,7 @@ void drawAsteroid(ASTEROID* a) {
             drawImage(a->col, a->row, a->width, a->height, AsteroidBitmap);
         }
         else{
-      drawRect(a->col, a->row, a->width, a->height, BLUEID);
+      drawRect(a->col, a->row, a->width, a->height, BLUES);
         }
 
  }

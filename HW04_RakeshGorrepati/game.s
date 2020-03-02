@@ -185,10 +185,10 @@ drawUser:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, lr}
-	mov	r5, #253
-	sub	sp, sp, #12
-	str	r5, [sp]
+	mov	r3, #253
+	push	{r4, lr}
+	sub	sp, sp, #8
+	str	r3, [sp]
 	ldr	r0, .L32
 	ldr	r4, .L32+4
 	ldr	r3, [r0, #20]
@@ -197,24 +197,15 @@ drawUser:
 	ldr	r0, [r0, #4]
 	mov	lr, pc
 	bx	r4
-	str	r5, [sp]
-	ldr	r0, .L32+8
-	ldr	r3, [r0]
-	ldr	r2, [r0, #4]
-	ldr	r1, [r0, #8]
-	ldr	r0, [r0, #12]
-	mov	lr, pc
-	bx	r4
-	add	sp, sp, #12
+	add	sp, sp, #8
 	@ sp needed
-	pop	{r4, r5, lr}
+	pop	{r4, lr}
 	bx	lr
 .L33:
 	.align	2
 .L32:
 	.word	user
 	.word	drawRect
-	.word	.LANCHOR0
 	.size	drawUser, .-drawUser
 	.align	2
 	.global	initializeBullets
@@ -311,158 +302,139 @@ updateUser:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	ldr	r3, .L107
+	ldr	r3, .L103
 	push	{r4, r5, r6, r7, r8, lr}
 	ldrh	r2, [r3, #48]
-	ldr	r3, .L107+4
+	ldr	r3, .L103+4
 	tst	r2, #16
 	ldrh	r3, [r3]
 	sub	sp, sp, #16
 	beq	.L54
 	tst	r3, #16
-	beq	.L102
-	ldr	r2, .L107+8
+	beq	.L98
+	ldr	r2, .L103+8
 	ldrh	r2, [r2]
 	tst	r2, #16
-	bne	.L102
+	bne	.L98
 .L54:
-	ldr	r4, .L107+12
-	ldr	r2, [r4, #4]
-	ldr	r1, [r4, #16]
+	ldr	r5, .L103+12
+	ldr	r2, [r5, #4]
+	ldr	r1, [r5, #16]
 	add	r2, r2, r1
-	str	r2, [r4, #4]
+	str	r2, [r5, #4]
 .L55:
-	ldr	r2, .L107
+	ldr	r2, .L103
 	ldrh	r2, [r2, #48]
 	tst	r2, #32
 	beq	.L56
 	tst	r3, #32
-	bne	.L103
+	bne	.L100
 .L57:
-	ldr	r2, .L107
+	ldr	r2, .L103
 	ldrh	r2, [r2, #48]
 	tst	r2, #128
 	beq	.L58
 	tst	r3, #128
-	bne	.L104
+	bne	.L101
 .L59:
-	ldr	r2, .L107
+	ldr	r2, .L103
 	ldrh	r2, [r2, #48]
 	tst	r2, #64
 	beq	.L60
 	tst	r3, #64
-	bne	.L105
+	bne	.L102
 .L61:
 	tst	r3, #2
-	beq	.L62
-	ldr	r3, .L107+8
-	ldrh	r3, [r3]
-	ands	r5, r3, #2
-	beq	.L106
-.L62:
-	ldr	r3, .L107+16
-	ldm	r3, {r0, r1, r2, r3}
-	ldr	r6, .L107+20
-	str	r0, [sp, #12]
-	str	r1, [sp, #8]
-	str	r2, [sp, #4]
-	str	r3, [sp]
-	ldr	r2, [r4, #24]
-	ldr	r3, [r4, #20]
-	ldr	r1, [r4]
-	ldr	r0, [r4, #4]
-	mov	lr, pc
-	bx	r6
-	cmp	r0, #0
-	ldrne	r2, .L107+24
-	ldrne	r3, [r2]
-	subne	r3, r3, #1
-	strne	r3, [r2]
-	ldr	r3, [r4, #32]
-	ldr	r5, .L107+28
+	ldr	r3, [r5, #32]
+	beq	.L99
+	ldr	r2, .L103+8
+	ldrh	r2, [r2]
+	tst	r2, #2
+	beq	.L64
+.L99:
 	add	r3, r3, #1
-	str	r3, [r4, #32]
-	ldr	r8, .L107+32
-	add	r7, r5, #144
-.L65:
-	add	r0, r5, #24
-	ldm	r5, {r2, r3}
+.L63:
+	ldr	r4, .L103+16
+	str	r3, [r5, #32]
+	ldr	r7, .L103+20
+	ldr	r8, .L103+24
+	add	r6, r4, #240
+.L67:
+	add	r0, r4, #24
 	ldm	r0, {r0, r1}
-	str	r2, [sp, #4]
+	ldm	r4, {r2, r3}
 	str	r0, [sp, #12]
 	str	r1, [sp, #8]
+	str	r2, [sp, #4]
 	str	r3, [sp]
-	ldr	r2, [r4, #24]
-	ldr	r3, [r4, #20]
-	ldr	r1, [r4]
-	ldr	r0, [r4, #4]
+	ldr	r2, [r5, #24]
+	ldr	r3, [r5, #20]
+	ldr	r1, [r5]
+	ldr	r0, [r5, #4]
 	mov	lr, pc
-	bx	r6
+	bx	r7
 	cmp	r0, #0
 	ldrne	r3, [r8]
-	add	r5, r5, #48
+	add	r4, r4, #48
 	subne	r3, r3, #1
 	strne	r3, [r8]
-	cmp	r5, r7
-	bne	.L65
+	cmp	r4, r6
+	bne	.L67
 	add	sp, sp, #16
 	@ sp needed
 	pop	{r4, r5, r6, r7, r8, lr}
 	bx	lr
-.L105:
-	ldr	r2, .L107+8
+.L102:
+	ldr	r2, .L103+8
 	ldrh	r2, [r2]
 	tst	r2, #64
 	bne	.L61
 .L60:
-	ldr	r2, [r4]
-	ldr	r1, [r4, #16]
+	ldr	r2, [r5]
+	ldr	r1, [r5, #16]
 	sub	r2, r2, r1
-	str	r2, [r4]
+	str	r2, [r5]
 	b	.L61
-.L104:
-	ldr	r2, .L107+8
+.L101:
+	ldr	r2, .L103+8
 	ldrh	r2, [r2]
 	tst	r2, #128
 	bne	.L59
 .L58:
-	ldr	r2, [r4]
-	ldr	r1, [r4, #16]
+	ldr	r2, [r5]
+	ldr	r1, [r5, #16]
 	add	r2, r2, r1
-	str	r2, [r4]
+	str	r2, [r5]
 	b	.L59
-.L103:
-	ldr	r2, .L107+8
+.L100:
+	ldr	r2, .L103+8
 	ldrh	r2, [r2]
 	tst	r2, #32
 	bne	.L57
 .L56:
-	ldr	r2, [r4, #4]
-	ldr	r1, [r4, #16]
+	ldr	r2, [r5, #4]
+	ldr	r1, [r5, #16]
 	sub	r2, r2, r1
-	str	r2, [r4, #4]
+	str	r2, [r5, #4]
 	b	.L57
-.L102:
-	ldr	r4, .L107+12
+.L98:
+	ldr	r5, .L103+12
 	b	.L55
-.L106:
-	ldr	r3, [r4, #32]
+.L64:
 	cmp	r3, #19
-	ble	.L62
+	ble	.L99
 	bl	fireBullet
-	str	r5, [r4, #32]
-	b	.L62
-.L108:
+	mov	r3, #1
+	b	.L63
+.L104:
 	.align	2
-.L107:
+.L103:
 	.word	67109120
 	.word	oldButtons
 	.word	buttons
 	.word	user
-	.word	.LANCHOR0
-	.word	collision
-	.word	reachedTarget
 	.word	asteroids
+	.word	collision
 	.word	livesRemaining
 	.size	updateUser, .-updateUser
 	.align	2
@@ -475,64 +447,55 @@ updateGame:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, lr}
+	push	{r4, r5, r6, lr}
 	bl	updateUser
 	bl	updateBoundry
 	mov	ip, #0
-	ldr	r1, .L127
+	ldr	r1, .L119
 	ldr	r3, [r1]
-	ldr	r0, .L127+4
-	ldr	r2, .L127+8
+	ldr	r0, .L119+4
+	ldr	r2, .L119+8
 	sub	r3, r3, #1
 	mla	r2, r3, r2, r0
-	ldr	r0, .L127+12
+	ldr	r0, .L119+12
 	cmp	r0, r2, ror #2
-	ldrcs	r2, .L127+16
+	ldrcs	r2, .L119+16
 	str	r3, [r1]
 	ldrcs	r3, [r2]
 	subcs	r3, r3, #1
 	strcs	r3, [r2]
-	ldr	r3, .L127+20
+	ldr	r3, .L119+20
 	add	r1, r3, #240
-.L114:
+.L110:
 	ldr	r2, [r3, #32]
 	cmp	r2, #0
-	beq	.L112
+	beq	.L108
 	ldr	r2, [r3]
 	ldr	r0, [r3, #16]
 	add	r2, r2, r0
 	cmp	r2, #0
 	str	r2, [r3]
 	strlt	ip, [r3, #32]
-.L112:
+.L108:
 	add	r3, r3, #40
 	cmp	r3, r1
-	bne	.L114
-	ldr	r4, .L127+24
+	bne	.L110
+	ldr	r4, .L119+24
+	add	r5, r4, #240
+.L112:
 	ldr	r3, [r4, #36]
 	cmp	r3, #0
-	bne	.L126
-.L115:
-	ldr	r3, [r4, #84]
-	cmp	r3, #0
-	ldrne	r0, .L127+28
+	movne	r0, r4
 	blne	updateAsteroid.part.0
-.L116:
-	ldr	r3, [r4, #132]
-	cmp	r3, #0
-	ldrne	r0, .L127+32
-	popne	{r4, lr}
-	bne	updateAsteroid.part.0
-.L109:
-	pop	{r4, lr}
+.L111:
+	add	r4, r4, #48
+	cmp	r4, r5
+	bne	.L112
+	pop	{r4, r5, r6, lr}
 	bx	lr
-.L126:
-	mov	r0, r4
-	bl	updateAsteroid.part.0
-	b	.L115
-.L128:
+.L120:
 	.align	2
-.L127:
+.L119:
 	.word	time
 	.word	85899344
 	.word	-1030792151
@@ -540,8 +503,6 @@ updateGame:
 	.word	timeRemaining
 	.word	bullets
 	.word	asteroids
-	.word	asteroids+48
-	.word	asteroids+96
 	.size	updateGame, .-updateGame
 	.align	2
 	.global	drawBullet
@@ -561,7 +522,7 @@ drawBullet:
 	sub	sp, sp, #8
 	ldr	r3, [r0, #20]
 	str	r2, [sp]
-	ldr	r4, .L138
+	ldr	r4, .L130
 	ldr	r2, [r0, #24]
 	ldr	r1, [r0]
 	ldr	r0, [r0, #4]
@@ -571,9 +532,9 @@ drawBullet:
 	@ sp needed
 	pop	{r4, lr}
 	bx	lr
-.L139:
+.L131:
 	.align	2
-.L138:
+.L130:
 	.word	drawRect
 	.size	drawBullet, .-drawBullet
 	.align	2
@@ -587,52 +548,60 @@ initializeAsteroids:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, r8, r9, r10, lr}
-	mov	r8, #0
-	mov	r9, #1
-	ldr	r4, .L146
-	ldr	r5, .L146+4
-	ldr	r7, .L146+8
-	ldr	r6, .L146+12
-.L143:
+	ldr	r7, .L140
+	mov	r9, #0
+	mov	r8, r7
+	mov	r10, #1
+	ldr	r4, .L140+4
+	ldr	r6, .L140+8
+	ldr	r5, .L140+12
+.L137:
 	mov	lr, pc
-	bx	r5
-	smull	r3, r2, r7, r0
+	bx	r4
+	smull	r3, r2, r6, r0
 	asr	r3, r0, #31
 	rsb	r3, r3, r2, asr #2
 	rsb	r2, r3, r3, lsl #3
 	rsb	r3, r3, r2, lsl #3
 	sub	r0, r0, r3, lsl #1
-	str	r0, [r4]
+	str	r0, [r8]
 	mov	lr, pc
-	bx	r5
-	smull	r3, r2, r6, r0
+	bx	r4
+	smull	r3, r2, r5, r0
 	asr	r3, r0, #31
 	rsb	r3, r3, r2, asr #6
 	add	r3, r3, r3, lsl #6
 	sub	r0, r0, r3, lsl #1
-	and	r3, r8, #1
-	cmp	r3, #0
-	str	r3, [r4, #44]
-	movne	r2, #32
-	moveq	r3, #10
-	movne	r3, #40
-	add	r8, r8, #1
-	strne	r2, [r4, #24]
-	streq	r3, [r4, #24]
+	cmp	r9, #1
 	add	r0, r0, #10
-	cmp	r8, #3
-	str	r9, [r4, #16]
-	str	r9, [r4, #20]
-	str	r9, [r4, #36]
-	str	r0, [r4, #4]
-	str	r3, [r4, #28]
-	add	r4, r4, #48
-	bne	.L143
+	str	r10, [r8, #16]
+	str	r10, [r8, #20]
+	str	r10, [r8, #36]
+	str	r0, [r8, #4]
+	streq	r9, [r7, #92]
+	beq	.L134
+	ldr	r3, [r8, #44]
+	cmp	r3, #0
+	moveq	r3, #10
+	streq	r3, [r8, #24]
+	streq	r3, [r8, #28]
+	bne	.L134
+.L136:
+	add	r9, r9, #1
+	cmp	r9, #5
+	add	r8, r8, #48
+	bne	.L137
 	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
 	bx	lr
-.L147:
+.L134:
+	mov	r2, #32
+	mov	r3, #40
+	str	r2, [r8, #24]
+	str	r3, [r8, #28]
+	b	.L136
+.L141:
 	.align	2
-.L146:
+.L140:
 	.word	asteroids
 	.word	rand
 	.word	156180629
@@ -660,18 +629,18 @@ initializeGame:
 	mov	r4, #0
 	mvn	r2, #1
 	mov	r0, #254
-	ldr	r1, .L152
+	ldr	r1, .L146
 	ldr	r3, [r1, #20]
 	rsb	r3, r3, #160
 	stm	r1, {r3, r10}
-	ldr	r3, .L152+4
+	ldr	r3, .L146+4
 	str	r9, [r1, #20]
 	str	r8, [r1, #24]
 	strh	r7, [r1, #28]	@ movhi
 	str	r6, [r1, #32]
 	str	lr, [r1, #16]
 	add	r1, r3, #240
-.L149:
+.L143:
 	str	ip, [r3, #20]
 	str	r5, [r3, #24]
 	str	r2, [r3, #16]
@@ -680,24 +649,23 @@ initializeGame:
 	stm	r3, {r2, r4}
 	add	r3, r3, #40
 	cmp	r3, r1
-	bne	.L149
+	bne	.L143
 	bl	initializeAsteroids
-	mov	r0, #3
-	mov	ip, #10
-	ldr	r2, .L152+8
-	ldr	r1, .L152+12
-	str	r0, [r2]
-	ldr	r3, .L152+16
-	ldr	r2, .L152+20
-	str	ip, [r1]
-	ldr	lr, .L152+24
-	ldr	ip, .L152+28
-	str	r5, [r3]
-	str	r5, [r2]
+	mov	ip, #5
+	mov	r2, #10
+	ldr	r0, .L146+8
+	ldr	r3, .L146+12
+	ldr	r1, .L146+16
+	str	ip, [r0]
+	ldr	lr, .L146+20
+	ldr	ip, .L146+24
+	str	r2, [r3]
+	str	r5, [r1]
 	mov	r3, #512
 	mov	r2, #83886080
-	ldr	r1, .L152+32
-	ldr	r5, .L152+36
+	mov	r0, #3
+	ldr	r1, .L146+28
+	ldr	r5, .L146+32
 	str	lr, [ip]
 	mov	lr, pc
 	bx	r5
@@ -705,8 +673,8 @@ initializeGame:
 	mov	ip, #992
 	mov	r0, #31
 	mvn	r1, #32768
-	ldr	r3, .L152+40
-	ldr	r2, .L152+44
+	ldr	r3, .L146+36
+	ldr	r2, .L146+40
 	strh	lr, [r3, #246]	@ movhi
 	strh	r4, [r3, #244]	@ movhi
 	strh	ip, [r3, #248]	@ movhi
@@ -715,15 +683,14 @@ initializeGame:
 	strh	r2, [r3, #254]	@ movhi
 	pop	{r4, r5, r6, r7, r8, r9, r10, lr}
 	bx	lr
-.L153:
+.L147:
 	.align	2
-.L152:
+.L146:
 	.word	user
 	.word	bullets
 	.word	asteroidsRemaining
 	.word	timeRemaining
 	.word	livesRemaining
-	.word	reachedTarget
 	.word	5000
 	.word	time
 	.word	AsteroidPal
@@ -769,9 +736,9 @@ drawAsteroid:
 	ldr	r0, [r0, #4]
 	ldr	r3, [r3, #24]
 	sub	sp, sp, #8
-	bne	.L166
+	bne	.L160
 	mov	ip, #251
-	ldr	r4, .L167
+	ldr	r4, .L161
 	str	ip, [sp]
 	mov	lr, pc
 	bx	r4
@@ -779,9 +746,9 @@ drawAsteroid:
 	@ sp needed
 	pop	{r4, lr}
 	bx	lr
-.L166:
-	ldr	ip, .L167+4
-	ldr	r4, .L167+8
+.L160:
+	ldr	ip, .L161+4
+	ldr	r4, .L161+8
 	str	ip, [sp]
 	mov	lr, pc
 	bx	r4
@@ -789,9 +756,9 @@ drawAsteroid:
 	@ sp needed
 	pop	{r4, lr}
 	bx	lr
-.L168:
+.L162:
 	.align	2
-.L167:
+.L161:
 	.word	drawRect
 	.word	AsteroidBitmap
 	.word	drawImage
@@ -807,24 +774,24 @@ drawGame:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
-	ldr	r4, .L178
+	ldr	r4, .L172
 	mov	r0, #250
-	ldr	r3, .L178+4
+	ldr	r3, .L172+4
 	sub	sp, sp, #8
 	mov	lr, pc
 	bx	r3
-	ldr	r6, .L178+8
+	ldr	r6, .L172+8
 	bl	drawUser
 	add	r5, r4, #240
-	b	.L171
-.L170:
+	b	.L165
+.L164:
 	add	r4, r4, #40
 	cmp	r4, r5
-	beq	.L177
-.L171:
+	beq	.L171
+.L165:
 	ldr	r3, [r4, #32]
 	cmp	r3, #0
-	beq	.L170
+	beq	.L164
 	ldrb	r2, [r4, #28]	@ zero_extendqisi2
 	ldr	r3, [r4, #20]
 	ldr	r1, [r4]
@@ -835,26 +802,32 @@ drawGame:
 	mov	lr, pc
 	bx	r6
 	cmp	r4, r5
-	bne	.L171
-.L177:
-	ldr	r0, .L178+12
+	bne	.L165
+.L171:
+	ldr	r0, .L172+12
 	bl	drawAsteroid
-	ldr	r0, .L178+16
+	ldr	r0, .L172+16
 	bl	drawAsteroid
-	ldr	r0, .L178+20
+	ldr	r0, .L172+20
+	bl	drawAsteroid
+	ldr	r0, .L172+24
+	bl	drawAsteroid
+	ldr	r0, .L172+28
 	add	sp, sp, #8
 	@ sp needed
 	pop	{r4, r5, r6, lr}
 	b	drawAsteroid
-.L179:
+.L173:
 	.align	2
-.L178:
+.L172:
 	.word	bullets
 	.word	fillScreen
 	.word	drawRect
 	.word	asteroids
 	.word	asteroids+48
 	.word	asteroids+96
+	.word	asteroids+144
+	.word	asteroids+192
 	.size	drawGame, .-drawGame
 	.align	2
 	.global	updateBullet
@@ -879,35 +852,33 @@ updateBullet:
 	strlt	r3, [r0, #32]
 	bx	lr
 	.size	updateBullet, .-updateBullet
-	.global	targetWidth
-	.global	targetHeight
-	.global	targetRow
-	.global	targetCol
+	.global	safeWidth
+	.global	safeHeight
+	.global	safeRow
+	.global	safeCol
 	.comm	time,4,4
-	.comm	reachedTarget,4,4
 	.comm	timeRemaining,4,4
 	.comm	livesRemaining,4,4
 	.comm	asteroidsRemaining,4,4
-	.comm	asteroids,144,4
+	.comm	asteroids,240,4
 	.comm	bullets,240,4
 	.comm	user,36,4
 	.data
 	.align	2
-	.set	.LANCHOR0,. + 0
-	.type	targetHeight, %object
-	.size	targetHeight, 4
-targetHeight:
+	.type	safeWidth, %object
+	.size	safeWidth, 4
+safeWidth:
 	.word	10
-	.type	targetWidth, %object
-	.size	targetWidth, 4
-targetWidth:
+	.type	safeHeight, %object
+	.size	safeHeight, 4
+safeHeight:
 	.word	20
-	.type	targetRow, %object
-	.size	targetRow, 4
-targetRow:
-	.word	10
-	.type	targetCol, %object
-	.size	targetCol, 4
-targetCol:
-	.word	120
+	.type	safeRow, %object
+	.size	safeRow, 4
+safeRow:
+	.word	140
+	.type	safeCol, %object
+	.size	safeCol, 4
+safeCol:
+	.word	230
 	.ident	"GCC: (devkitARM release 53) 9.1.0"

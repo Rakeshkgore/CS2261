@@ -10,15 +10,14 @@ ASTEROID asteroids[ASTEROIDCOUNT];
 int asteroidsRemaining;
 int livesRemaining;
 int timeRemaining;
-int reachedTarget;
 int time;
 
 
-//Target Box location and dimensions
-int targetCol = SCREENWIDTH/2;
-int targetRow = 0 + 10;
-int targetHeight = 10;
-int targetWidth = 20;
+//SAFE Box location and dimensions
+int safeCol = SCREENWIDTH - 10;
+int safeRow = SCREENHEIGHT - 20;
+int safeHeight = 20;
+int safeWidth = 10;
 
 
 // where all items are intiliazed
@@ -30,7 +29,6 @@ void initializeGame(){
     initializeAsteroids();
     asteroidsRemaining = ASTEROIDCOUNT;
     livesRemaining = LIVESCOUNT;
-    reachedTarget = TARGETCOUNT;
     timeRemaining = TIMEREMAINING;
     time = TIME;
 
@@ -74,7 +72,7 @@ void updateGame(){
 //Draws user, bullets, asteroids
 void drawGame(){
 
-    fillScreen(BLACKID);
+    fillScreen(BLACKS);
     drawUser();
 
     //Draws all bullets
@@ -129,7 +127,7 @@ void initializeUser(){
     user.udel = 1;
     user.height = 10;
     user.width = 5;
-    user.color = REDID;
+    user.color = REDS;
     user.bulletTimer = 20;
 
 }
@@ -172,14 +170,6 @@ void updateUser(){
         user.bulletTimer = 0;
 
     }
-    //Checks for collision with target box and user 
-    if(collision(user.col, user.row, user.width, user.height,targetCol, targetRow, targetWidth, targetHeight)){
-                
-        reachedTarget--;
-        //Game is over
-
-    }
-    
 
     user.bulletTimer++;
     //Checks all asteroids for collision with user 
@@ -195,11 +185,11 @@ void updateUser(){
 
 }
 
-//Clears previous frame and draws user and target 
+//Clears previous frame and draws user and safe 
 void drawUser(){
 
-    drawRect(user.col, user.row, user.width, user.height, REDID);
-    drawRect(targetCol,targetRow,targetWidth,targetHeight,REDID);
+    drawRect(user.col, user.row, user.width, user.height, REDS);
+
 }
 
 //Pooling for bullets
@@ -212,7 +202,7 @@ void initializeBullets(){
         bullets[i].col = 0;
         bullets[i].row = -2;
         bullets[i].rdel = -2;
-		bullets[i].color = WHITEID;
+		bullets[i].color = WHITES;
         bullets[i].active = 0;
         
 
@@ -260,15 +250,23 @@ void initializeAsteroids(){
 		asteroids[i].rdel = 1;
 		asteroids[i].cdel = 1;
         asteroids[i].active = 1;
-        asteroids[i].isAsteroid = i & 1;
+        
+        if(i == 1){
+
+            asteroids[i].isAsteroid = 1;
+    
+        }
 
         if(asteroids[i].isAsteroid){
+
             asteroids[i].height = 32;
             asteroids[i].width = 40;
-        }else
-        {
+
+        }else{
+
             asteroids[i].height = 10;
 		    asteroids[i].width = 10;
+
         }
         
 
@@ -301,14 +299,15 @@ void updateAsteroid(ASTEROID* a){
 
         //Iterates through bullets and checks collision with passed in asteroid pointer
         for(int i = 0; i < BULLETCOUNT; i++){
+
 			if(bullets[i].active == 1){
 
 				if(collision(bullets[i].col, bullets[i].row, bullets[i].width, bullets[i].height,a->col, a->row, a->width, a->height)){
-					bullets[i].active = 0;
+					
+                    bullets[i].active = 0;
 					a->active = 0;
                     
 					asteroidsRemaining--;
-                    //If all asteroids are gone game is over
 				}
 
 			}
@@ -324,10 +323,14 @@ void drawAsteroid(ASTEROID* a) {
 	if(a->active) {
         
         if(a-> isAsteroid){
+
             drawImage(a->col, a->row, a->width, a->height, AsteroidBitmap);
+
         }
         else{
-		    drawRect(a->col, a->row, a->width, a->height, BLUEID);
+
+		    drawRect(a->col, a->row, a->width, a->height, BLUES);
+
         }
 
 	}
@@ -338,25 +341,13 @@ void drawAsteroid(ASTEROID* a) {
 void updateBullet(BULLET* b) {
 
 	if (b->active) {
+
 		b->row += b->rdel;
+
 		if (b->row < 0){
+
 			b->active = 0;
+
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

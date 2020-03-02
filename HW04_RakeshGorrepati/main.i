@@ -902,14 +902,14 @@ typedef struct
     int erased;
     int isAsteroid;
 } ASTEROID;
-# 59 "game.h"
-enum {BLACKID=(256-6), BLUEID, GREENID, REDID, WHITEID, GRAYID};
+# 58 "game.h"
+enum {BLACKS=(256-6), BLUES, GREENS, REDS, WHITES, GRAYS};
 extern unsigned short colors[6];
 
 
 extern USER user;
 extern BULLET bullets[6];
-extern ASTEROID asteroids[3];
+extern ASTEROID asteroids[5];
 extern int asteroidsRemaining;
 extern int fallingRectanglesRemaining;
 extern int livesRemaining;
@@ -1367,19 +1367,20 @@ unsigned short oldButtons;
 
 
 int state;
-enum {START, GAME, WIN, LOSE};
+enum {START, GAME, PAUSE, WIN, LOSE};
 
 
 void initialize();
 void goToStart();
 void goToGame();
-void goToGame();
 void goToWin();
 void goToLose();
+void goToPause();
 void Start();
 void Game();
 void Win();
 void Lose();
+void Pause();
 
 
 int seed;
@@ -1402,6 +1403,9 @@ int main() {
    break;
   case GAME:
    Game();
+   break;
+  case PAUSE:
+   Pause();
    break;
   case WIN:
    Win();
@@ -1464,27 +1468,57 @@ void Game(){
  updateGame();
  drawGame();
  sprintf(buffer, "Time Remaining: %d", timeRemaining);
- drawString(5,145,buffer,WHITEID);
-
+ drawString(5,5,buffer,WHITES);
     waitForVBlank();
     flipPage();
 
 
- if (asteroidsRemaining == 0 || reachedTarget == 0){
+ if(asteroidsRemaining == 0){
+
         goToWin();
+
  }
  if(livesRemaining == 0 || timeRemaining == 0){
 
   goToLose();
+
+ }
+ if((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))){
+
+  goToPause();
+
  }
 
+
+}
+
+void goToPause(){
+
+ fillScreen(GRAYS);
+ drawString(240/2-15, 160/2, "VICTORY", BLACKS);
+ waitForVBlank();
+    flipPage();
+ state = PAUSE;
+
+}
+
+void Pause(){
+
+ if((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))){
+
+  goToGame();
+
+ }
 
 }
 
 
 void goToWin(){
 
- fillScreen(GREENID);
+ fillScreen(GREENS);
+ drawString(240/2-15, 160/2, "VICTORY", BLACKS);
+ waitForVBlank();
+    flipPage();
  state = WIN;
 
 }
@@ -1503,8 +1537,8 @@ void Win(){
 
 void goToLose(){
 
- fillScreen(REDID);
- drawString(100, 50, "LOSE", BLACKID);
+ fillScreen(REDS);
+ drawString(240/2-15, 160/2, "DEFEATED", BLACKS);
  waitForVBlank();
     flipPage();
  state = LOSE;
