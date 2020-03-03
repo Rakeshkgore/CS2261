@@ -54,7 +54,6 @@ typedef struct
 
 // Custom Game Colors
 #define NUMCOLORS 6
-// This does an enum trick to make them the last indeces of the palette
 enum {BLACKS=(256-NUMCOLORS), BLUES, GREENS, REDS, WHITES, GRAYS};
 extern unsigned short colors[NUMCOLORS];
 
@@ -71,6 +70,7 @@ extern int time;
 
 
 // Prototypes
+void drawStationaryRect();
 void updateBoundry();
 void initializeGame();
 void updateGame();

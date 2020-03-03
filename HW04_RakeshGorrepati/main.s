@@ -172,7 +172,7 @@ goToGame:
 	.section	.rodata.str1.4,"aMS",%progbits,1
 	.align	2
 .LC0:
-	.ascii	"VICTORY\000"
+	.ascii	"PAUSED\000"
 	.text
 	.align	2
 	.global	goToPause
@@ -246,6 +246,11 @@ Pause:
 	.word	buttons
 	.word	state
 	.size	Pause, .-Pause
+	.section	.rodata.str1.4
+	.align	2
+.LC1:
+	.ascii	"VICTORY\000"
+	.text
 	.align	2
 	.global	goToWin
 	.syntax unified
@@ -284,7 +289,7 @@ goToWin:
 .L38:
 	.word	fillScreen
 	.word	drawString
-	.word	.LC0
+	.word	.LC1
 	.word	waitForVBlank
 	.word	flipPage
 	.word	state
@@ -312,7 +317,7 @@ Win:
 	.size	Win, .-Win
 	.section	.rodata.str1.4
 	.align	2
-.LC1:
+.LC2:
 	.ascii	"DEFEATED\000"
 	.text
 	.align	2
@@ -353,14 +358,14 @@ goToLose:
 .L46:
 	.word	fillScreen
 	.word	drawString
-	.word	.LC1
+	.word	.LC2
 	.word	waitForVBlank
 	.word	flipPage
 	.word	state
 	.size	goToLose, .-goToLose
 	.section	.rodata.str1.4
 	.align	2
-.LC2:
+.LC3:
 	.ascii	"Time Remaining: %d\000"
 	.text
 	.align	2
@@ -374,81 +379,83 @@ Game:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
-	ldr	r3, .L62
-	ldr	r4, .L62+4
+	ldr	r3, .L65
+	ldr	r4, .L65+4
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L62+8
+	ldr	r3, .L65+8
 	mov	lr, pc
 	bx	r3
 	ldr	r2, [r4]
-	ldr	r1, .L62+12
-	ldr	r3, .L62+16
-	ldr	r0, .L62+20
+	ldr	r1, .L65+12
+	ldr	r3, .L65+16
+	ldr	r0, .L65+20
 	mov	lr, pc
 	bx	r3
 	mov	r1, #5
-	ldr	r2, .L62+20
+	ldr	r2, .L65+20
 	mov	r0, r1
 	mov	r3, #254
-	ldr	r5, .L62+24
+	ldr	r5, .L65+24
 	mov	lr, pc
 	bx	r5
-	ldr	r3, .L62+28
+	ldr	r3, .L65+28
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L62+32
+	ldr	r3, .L65+32
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L62+36
+	ldr	r3, .L65+36
 	ldr	r3, [r3]
 	cmp	r3, #0
-	beq	.L60
+	bne	.L49
+	ldr	r3, [r4]
+	cmp	r3, #0
+	bne	.L63
+.L50:
+	bl	goToLose
+.L51:
+	ldr	r3, .L65+40
+	ldrh	r3, [r3]
+	tst	r3, #1
+	beq	.L48
+	ldr	r3, .L65+44
+	ldrh	r3, [r3]
+	tst	r3, #1
+	beq	.L64
+.L48:
+	pop	{r4, r5, r6, lr}
+	bx	lr
+.L63:
+	bl	goToWin
 .L49:
-	ldr	r3, .L62+40
+	ldr	r3, .L65+48
 	ldr	r3, [r3]
 	cmp	r3, #0
 	beq	.L50
 	ldr	r3, [r4]
 	cmp	r3, #0
-	beq	.L50
-.L51:
-	ldr	r3, .L62+44
-	ldrh	r3, [r3]
-	tst	r3, #2
-	beq	.L48
-	ldr	r3, .L62+48
-	ldrh	r3, [r3]
-	tst	r3, #2
-	beq	.L61
-.L48:
-	pop	{r4, r5, r6, lr}
-	bx	lr
-.L50:
-	bl	goToLose
-	b	.L51
-.L60:
-	bl	goToWin
-	b	.L49
-.L61:
+	bne	.L51
+	b	.L50
+.L64:
 	pop	{r4, r5, r6, lr}
 	b	goToPause
-.L63:
+.L66:
 	.align	2
-.L62:
+.L65:
 	.word	updateGame
 	.word	timeRemaining
 	.word	drawGame
-	.word	.LC2
+	.word	.LC3
 	.word	sprintf
 	.word	buffer
 	.word	drawString
 	.word	waitForVBlank
 	.word	flipPage
 	.word	asteroidsRemaining
-	.word	livesRemaining
 	.word	oldButtons
 	.word	buttons
+	.word	livesRemaining
 	.size	Game, .-Game
 	.section	.text.startup,"ax",%progbits
 	.align	2
@@ -463,78 +470,78 @@ main:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	mov	r3, #67108864
-	ldr	r2, .L80
+	ldr	r2, .L83
 	push	{r4, r7, fp, lr}
-	ldr	r10, .L80+4
-	ldr	r4, .L80+8
+	ldr	r10, .L83+4
+	ldr	r4, .L83+8
 	strh	r2, [r3]	@ movhi
-	ldr	r3, .L80+12
+	ldr	r3, .L83+12
 	mov	lr, pc
 	bx	r3
-	ldr	r9, .L80+16
+	ldr	r9, .L83+16
 	ldr	r2, [r4]
 	ldrh	r0, [r10]
-	ldr	r6, .L80+20
-	ldr	r5, .L80+24
-	ldr	r8, .L80+28
-	ldr	r7, .L80+32
-	ldr	fp, .L80+36
-.L66:
+	ldr	r6, .L83+20
+	ldr	r5, .L83+24
+	ldr	r8, .L83+28
+	ldr	r7, .L83+32
+	ldr	fp, .L83+36
+.L69:
 	strh	r0, [r9]	@ movhi
 	ldrh	r3, [fp, #48]
 	strh	r3, [r10]	@ movhi
 	cmp	r2, #4
 	ldrls	pc, [pc, r2, asl #2]
-	b	.L74
-.L68:
+	b	.L77
+.L71:
+	.word	.L75
+	.word	.L74
+	.word	.L73
 	.word	.L72
-	.word	.L71
 	.word	.L70
-	.word	.L69
-	.word	.L67
-.L67:
+.L70:
 	tst	r0, #8
-	beq	.L74
+	beq	.L77
 	mov	lr, pc
 	bx	r7
 	ldr	r2, [r4]
 	ldrh	r0, [r10]
-	b	.L66
-.L69:
+	b	.L69
+.L72:
 	tst	r0, #8
-	beq	.L74
+	beq	.L77
 	mov	lr, pc
 	bx	r8
 	ldr	r2, [r4]
 	ldrh	r0, [r10]
-	b	.L66
-.L70:
+	b	.L69
+.L73:
 	tst	r0, #8
-	beq	.L74
+	beq	.L77
 	tst	r3, #8
-	bne	.L74
+	bne	.L77
 	mov	r2, #1
 	mov	r0, r3
 	str	r2, [r4]
-	b	.L66
-.L71:
+	b	.L69
+.L74:
 	mov	lr, pc
 	bx	r5
 	ldr	r2, [r4]
 	ldrh	r0, [r10]
-	b	.L66
-.L72:
+	b	.L69
+.L75:
 	mov	lr, pc
 	bx	r6
 	ldr	r2, [r4]
 	ldrh	r0, [r10]
-	b	.L66
-.L74:
+	b	.L69
+.L77:
 	mov	r0, r3
-	b	.L66
-.L81:
+	b	.L69
+.L84:
 	.align	2
-.L80:
+.L83:
 	.word	1044
 	.word	buttons
 	.word	state

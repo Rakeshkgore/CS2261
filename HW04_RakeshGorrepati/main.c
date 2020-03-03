@@ -116,18 +116,21 @@ void Game(){
     waitForVBlank();
     flipPage();
 
-
-	if(asteroidsRemaining == 0){
+	// win if no asteroids and time remaining is greater than 0
+	if(asteroidsRemaining == 0 && timeRemaining != 0){
 
         goToWin();
 
 	}
+	// lose if user has collision or time runs out
 	if(livesRemaining == 0 || timeRemaining == 0){
 
 		goToLose();
 
 	}
-	if(BUTTON_PRESSED(BUTTON_B)){
+	// press B to go to pause screen
+	if(BUTTON_PRESSED(BUTTON_A
+	)){
 
 		goToPause();
 
@@ -136,16 +139,18 @@ void Game(){
 
 }
 
+// sets state to pause and draws Paused on screen
 void goToPause(){
 
 	fillScreen(GRAYS);
-	drawString(SCREENWIDTH/2-15, SCREENHEIGHT/2, "VICTORY", BLACKS);
+	drawString(SCREENWIDTH/2-15, SCREENHEIGHT/2, "PAUSED", BLACKS);
 	waitForVBlank();
     flipPage();
 	state = PAUSE;
 
 }
 
+// Can press start to start again
 void Pause(){
 
 	if(BUTTON_PRESSED(BUTTON_START)){
@@ -156,7 +161,7 @@ void Pause(){
 
 }
 
-//Fill screen color and sets state to win
+//Fill screen color and sets state to win  and draws victory 
 void goToWin(){
 
 	fillScreen(GREENS);

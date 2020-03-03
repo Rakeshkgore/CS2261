@@ -6,7 +6,7 @@ unsigned short *videoBuffer = (unsigned short *)0x6000000;
 // The start of DMA registers
 DMA *dma = (DMA *)0x40000B0;
 
-// ode 4 set pixel function
+// mode 4 set pixel function
 void setPixel(int col, int row, unsigned char colorIndex) {
 
     volatile u16 pixelData = videoBuffer[OFFSET(col,row,SCREENWIDTH)/2];

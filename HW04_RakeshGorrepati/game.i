@@ -897,7 +897,7 @@ typedef struct
     int erased;
     int isAsteroid;
 } ASTEROID;
-# 58 "game.h"
+# 57 "game.h"
 enum {BLACKS=(256-6), BLUES, GREENS, REDS, WHITES, GRAYS};
 extern unsigned short colors[6];
 
@@ -914,6 +914,7 @@ extern int time;
 
 
 
+void drawStationaryRect();
 void updateBoundry();
 void initializeGame();
 void updateGame();
@@ -951,20 +952,25 @@ int timeRemaining;
 int time;
 
 
+int rectangleRows[] = {50,100};
+int rectangleCols[] = {50,200};
+int arrLength = 2;
 
-int safeCol = 240 - 10;
-int safeRow = 160 - 20;
-int safeHeight = 20;
-int safeWidth = 10;
+void drawStationaryRect() {
+ for(int i = 0; i < arrLength; i++){
 
+        drawRect(rectangleCols[i], rectangleRows[i], 8, 8, REDS);
+    }
+
+}
 
 
 void initializeGame(){
 
-
     initializeUser();
     initializeBullets();
     initializeAsteroids();
+
     asteroidsRemaining = 5;
     livesRemaining = 1;
     timeRemaining = 10;
@@ -974,20 +980,21 @@ void initializeGame(){
 
     unsigned short colors[6] = {0, ((0) | (0)<<5 | (31)<<10), ((0) | (31)<<5 | (0)<<10), ((31) | (0)<<5 | (0)<<10), ((31) | (31)<<5 | (31)<<10), ((15) | (15)<<5 | (15)<<10)};
     for (int i = 0; i < 6; i++) {
+
         ((unsigned short *)0x5000000)[256-6 +i] = colors[i];
+
     }
 
 }
-
 
 
 void updateGame(){
 
     updateUser();
     updateBoundry();
-
     time--;
     if(time % 100 == 0){
+
         timeRemaining--;
     }
 
@@ -1012,6 +1019,10 @@ void drawGame(){
 
     fillScreen(BLACKS);
     drawUser();
+    drawStationaryRect();
+
+
+
 
 
     for(int i = 0; i < 6; i++){
@@ -1120,6 +1131,16 @@ void updateUser(){
 
         }
     }
+    for(int i = 0; i < arrLength; i++ ){
+
+        if(collision(user.col, user.row, user.width, user.height,rectangleCols[i], rectangleRows[i], 8, 8)){
+
+
+            livesRemaining--;
+
+        }
+
+    }
 
 }
 
@@ -1188,17 +1209,23 @@ void initializeAsteroids(){
   asteroids[i].rdel = 1;
   asteroids[i].cdel = 1;
         asteroids[i].active = 1;
+
         if(i == 1){
+
             asteroids[i].isAsteroid = 1;
+
         }
 
         if(asteroids[i].isAsteroid){
+
             asteroids[i].height = 32;
             asteroids[i].width = 40;
-        }else
-        {
+
+        }else{
+
             asteroids[i].height = 10;
       asteroids[i].width = 10;
+
         }
 
 
@@ -1231,14 +1258,15 @@ void updateAsteroid(ASTEROID* a){
 
 
         for(int i = 0; i < 6; i++){
+
    if(bullets[i].active == 1){
 
     if(collision(bullets[i].col, bullets[i].row, bullets[i].width, bullets[i].height,a->col, a->row, a->width, a->height)){
-     bullets[i].active = 0;
+
+                    bullets[i].active = 0;
      a->active = 0;
 
      asteroidsRemaining--;
-
     }
 
    }
@@ -1254,10 +1282,14 @@ void drawAsteroid(ASTEROID* a) {
  if(a->active) {
 
         if(a-> isAsteroid){
+
             drawImage(a->col, a->row, a->width, a->height, AsteroidBitmap);
+
         }
         else{
+
       drawRect(a->col, a->row, a->width, a->height, BLUES);
+
         }
 
  }
@@ -1268,9 +1300,13 @@ void drawAsteroid(ASTEROID* a) {
 void updateBullet(BULLET* b) {
 
  if (b->active) {
+
   b->row += b->rdel;
+
   if (b->row < 0){
+
    b->active = 0;
+
   }
  }
 }

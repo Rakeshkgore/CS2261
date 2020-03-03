@@ -12,44 +12,50 @@ int livesRemaining;
 int timeRemaining;
 int time;
 
+//Stationary rectangles array
+int rectangleRows[] = {50,100};
+int rectangleCols[] = {50,200};
+int arrLength = 2;
 
-//SAFE Box location and dimensions
-int safeCol = SCREENWIDTH - 10;
-int safeRow = SCREENHEIGHT - 20;
-int safeHeight = 20;
-int safeWidth = 10;
+void drawStationaryRect() {
+	for(int i = 0; i < arrLength; i++){
 
+        drawRect(rectangleCols[i], rectangleRows[i], 8, 8, REDS);
+    }
+
+}
 
 // where all items are intiliazed
 void initializeGame(){
 
-    
     initializeUser();
     initializeBullets();
     initializeAsteroids();
+
     asteroidsRemaining = ASTEROIDCOUNT;
     livesRemaining = LIVESCOUNT;
     timeRemaining = TIMEREMAINING;
     time = TIME;
 
     DMANow(3,AsteroidPal,PALETTE,AsteroidPalLen);
-    // Load the custom game colors to the end
+    // Colors for this game, mode 4 
     unsigned short colors[NUMCOLORS] = {BLACK, BLUE, GREEN, RED, WHITE, GRAY};
     for (int i = 0; i < NUMCOLORS; i++) {
+
         PALETTE[256-NUMCOLORS+i] = colors[i];
+
     }
 
 }
 
-//Updates: User,falling rectanlges, checks for boundry
-// Updates the game each frame
+// Updates: User, checks for boundry, each frame
 void updateGame(){
 
     updateUser();
     updateBoundry();
-
     time--;
     if(time % 100 == 0){
+        //Game will end if time is 0;
         timeRemaining--;
     }
 
@@ -74,6 +80,10 @@ void drawGame(){
 
     fillScreen(BLACKS);
     drawUser();
+    drawStationaryRect();
+
+
+
 
     //Draws all bullets
     for(int i = 0; i < BULLETCOUNT; i++){
@@ -181,6 +191,17 @@ void updateUser(){
             livesRemaining--;
 
         }
+    }
+    // Checks user collision with stationary red rectangles
+    for(int i = 0; i < arrLength; i++ ){
+        
+        if(collision(user.col, user.row, user.width, user.height,rectangleCols[i], rectangleRows[i], 8, 8)){
+
+            //game is over      
+            livesRemaining--;
+
+        }
+
     }
 
 }

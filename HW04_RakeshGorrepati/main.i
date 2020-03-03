@@ -902,7 +902,7 @@ typedef struct
     int erased;
     int isAsteroid;
 } ASTEROID;
-# 58 "game.h"
+# 57 "game.h"
 enum {BLACKS=(256-6), BLUES, GREENS, REDS, WHITES, GRAYS};
 extern unsigned short colors[6];
 
@@ -919,6 +919,7 @@ extern int time;
 
 
 
+void drawStationaryRect();
 void updateBoundry();
 void initializeGame();
 void updateGame();
@@ -1473,17 +1474,20 @@ void Game(){
     flipPage();
 
 
- if(asteroidsRemaining == 0){
+ if(asteroidsRemaining == 0 && timeRemaining != 0){
 
         goToWin();
 
  }
+
  if(livesRemaining == 0 || timeRemaining == 0){
 
   goToLose();
 
  }
- if((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))){
+
+ if((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))
+  ){
 
   goToPause();
 
@@ -1492,15 +1496,17 @@ void Game(){
 
 }
 
+
 void goToPause(){
 
  fillScreen(GRAYS);
- drawString(240/2-15, 160/2, "VICTORY", BLACKS);
+ drawString(240/2-15, 160/2, "PAUSED", BLACKS);
  waitForVBlank();
     flipPage();
  state = PAUSE;
 
 }
+
 
 void Pause(){
 
