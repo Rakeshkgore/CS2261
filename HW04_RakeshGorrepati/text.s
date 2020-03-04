@@ -64,7 +64,7 @@ drawChar:
 	.align	2
 .L13:
 	.word	fontdata_6x8
-	.word	setPixel
+	.word	setPixel4
 	.size	drawChar, .-drawChar
 	.align	2
 	.global	drawString

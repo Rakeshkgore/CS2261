@@ -11,11 +11,11 @@ typedef unsigned short u16;
 # 27 "myLib.h"
 extern unsigned short *videoBuffer;
 # 47 "myLib.h"
-void setPixel(int col, int row, unsigned char colorIndex);
-void drawRect(int col, int row, int width, int height, volatile unsigned char colorIndex);
-void fillScreen(volatile unsigned char colorIndex);
-void drawImage(int col, int row, int width, int height, const unsigned short *image);
-void drawFullscreenImage(const unsigned short *image);
+void setPixel4(int col, int row, unsigned char colorIndex);
+void drawRect4(int col, int row, int width, int height, volatile unsigned char colorIndex);
+void fillScreen4(volatile unsigned char colorIndex);
+void drawImage4(int col, int row, int width, int height, const unsigned short *image);
+void drawFullscreenImage4(const unsigned short *image);
 
 
 void waitForVBlank();
@@ -56,7 +56,7 @@ void drawChar(int col, int row, char ch, unsigned char colorIndex) {
     for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 6; c++) {
             if (fontdata_6x8[48*ch + ((r)*(6)+(c))]) {
-                setPixel(col+c, row+r, colorIndex);
+                setPixel4(col+c, row+r, colorIndex);
             }
         }
     }

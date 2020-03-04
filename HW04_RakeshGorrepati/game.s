@@ -117,7 +117,7 @@ drawStationaryRect:
 	sub	sp, sp, #12
 	ble	.L19
 	mov	r4, #0
-	mov	r9, #253
+	mov	r9, #254
 	ldr	r8, .L24+4
 	add	r7, r5, #4
 	add	r6, r5, #12
@@ -142,7 +142,7 @@ drawStationaryRect:
 	.align	2
 .L24:
 	.word	.LANCHOR0
-	.word	drawRect
+	.word	drawRect4
 	.size	drawStationaryRect, .-drawStationaryRect
 	.align	2
 	.global	updateBoundry
@@ -196,23 +196,23 @@ initializeUser:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, lr}
-	mov	ip, #5
-	mov	r5, #120
+	push	{r4, lr}
+	mov	r1, #5
 	mov	r4, #1
 	mov	lr, #10
-	mov	r0, #253
-	mov	r1, #20
+	mov	ip, #253
+	mov	r0, #20
 	ldr	r3, .L35
 	ldr	r2, [r3, #20]
 	rsb	r2, r2, #160
-	stm	r3, {r2, r5}
 	str	r4, [r3, #16]
 	str	lr, [r3, #20]
-	str	ip, [r3, #24]
-	strh	r0, [r3, #28]	@ movhi
-	str	r1, [r3, #32]
-	pop	{r4, r5, lr}
+	str	r2, [r3]
+	strh	ip, [r3, #28]	@ movhi
+	str	r0, [r3, #32]
+	str	r1, [r3, #4]
+	str	r1, [r3, #24]
+	pop	{r4, lr}
 	bx	lr
 .L36:
 	.align	2
@@ -249,7 +249,7 @@ drawUser:
 	.align	2
 .L39:
 	.word	user
-	.word	drawRect
+	.word	drawRect4
 	.size	drawUser, .-drawUser
 	.align	2
 	.global	initializeBullets
@@ -609,7 +609,7 @@ drawBullet:
 .L146:
 	.align	2
 .L145:
-	.word	drawRect
+	.word	drawRect4
 	.size	drawBullet, .-drawBullet
 	.align	2
 	.global	initializeAsteroids
@@ -693,11 +693,10 @@ initializeGame:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, r8, r9, r10, lr}
 	mov	lr, #1
-	mov	r10, #120
+	mov	r6, #5
 	mov	r9, #10
-	mov	r8, #5
-	mov	r7, #253
-	mov	r6, #20
+	mov	r8, #253
+	mov	r7, #20
 	mov	r5, lr
 	mov	ip, #2
 	mov	r4, #0
@@ -706,12 +705,13 @@ initializeGame:
 	ldr	r1, .L161
 	ldr	r3, [r1, #20]
 	rsb	r3, r3, #160
-	stm	r1, {r3, r10}
+	str	r3, [r1]
 	ldr	r3, .L161+4
 	str	r9, [r1, #20]
-	str	r8, [r1, #24]
-	strh	r7, [r1, #28]	@ movhi
-	str	r6, [r1, #32]
+	strh	r8, [r1, #28]	@ movhi
+	str	r7, [r1, #32]
+	str	r6, [r1, #4]
+	str	r6, [r1, #24]
 	str	lr, [r1, #16]
 	add	r1, r3, #240
 .L158:
@@ -833,9 +833,9 @@ drawAsteroid:
 .L177:
 	.align	2
 .L176:
-	.word	drawRect
+	.word	drawRect4
 	.word	AsteroidBitmap
-	.word	drawImage
+	.word	drawImage4
 	.size	drawAsteroid, .-drawAsteroid
 	.align	2
 	.global	drawGame
@@ -896,8 +896,8 @@ drawGame:
 	.align	2
 .L187:
 	.word	bullets
-	.word	fillScreen
-	.word	drawRect
+	.word	fillScreen4
+	.word	drawRect4
 	.word	asteroids
 	.word	asteroids+48
 	.word	asteroids+96

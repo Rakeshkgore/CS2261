@@ -29,6 +29,7 @@ void Pause();
 // Random Seed
 int seed;
 char buffer[50];
+
 int main() {
 
 	// initliazing function
@@ -39,7 +40,7 @@ int main() {
 		oldButtons = buttons;
 		buttons = BUTTONS;
 
-		// states
+		// Game States
 		switch (state)
 		{
 		case START:
@@ -76,7 +77,7 @@ void initialize(){
 void goToStart(){
 
     DMANow(3,startPal,PALETTE,startPalLen);
-    drawFullscreenImage(startBitmap);
+    drawFullscreenImage4(startBitmap);
     waitForVBlank();
     flipPage();
 
@@ -129,20 +130,18 @@ void Game(){
 
 	}
 	// press B to go to pause screen
-	if(BUTTON_PRESSED(BUTTON_A
-	)){
+	if(BUTTON_PRESSED(BUTTON_A)){
 
 		goToPause();
 
 	}
-
 
 }
 
 // sets state to pause and draws Paused on screen
 void goToPause(){
 
-	fillScreen(GRAYS);
+	fillScreen4(GRAYS);
 	drawString(SCREENWIDTH/2-15, SCREENHEIGHT/2, "PAUSED", BLACKS);
 	waitForVBlank();
     flipPage();
@@ -164,7 +163,7 @@ void Pause(){
 //Fill screen color and sets state to win  and draws victory 
 void goToWin(){
 
-	fillScreen(GREENS);
+	fillScreen4(GREENS);
 	drawString(SCREENWIDTH/2-15, SCREENHEIGHT/2, "VICTORY", BLACKS);
 	waitForVBlank();
     flipPage();
@@ -186,7 +185,7 @@ void Win(){
 // sets state to lose
 void goToLose(){
 
-	fillScreen(REDS);
+	fillScreen4(REDS);
 	drawString(SCREENWIDTH/2-15, SCREENHEIGHT/2, "DEFEATED", BLACKS);
 	waitForVBlank();
     flipPage();

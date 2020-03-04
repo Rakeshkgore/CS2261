@@ -11,11 +11,11 @@ typedef unsigned short u16;
 # 27 "myLib.h"
 extern unsigned short *videoBuffer;
 # 47 "myLib.h"
-void setPixel(int col, int row, unsigned char colorIndex);
-void drawRect(int col, int row, int width, int height, volatile unsigned char colorIndex);
-void fillScreen(volatile unsigned char colorIndex);
-void drawImage(int col, int row, int width, int height, const unsigned short *image);
-void drawFullscreenImage(const unsigned short *image);
+void setPixel4(int col, int row, unsigned char colorIndex);
+void drawRect4(int col, int row, int width, int height, volatile unsigned char colorIndex);
+void fillScreen4(volatile unsigned char colorIndex);
+void drawImage4(int col, int row, int width, int height, const unsigned short *image);
+void drawFullscreenImage4(const unsigned short *image);
 
 
 void waitForVBlank();
@@ -48,7 +48,7 @@ unsigned short *videoBuffer = (unsigned short *)0x6000000;
 DMA *dma = (DMA *)0x40000B0;
 
 
-void setPixel(int col, int row, unsigned char colorIndex) {
+void setPixel4(int col, int row, unsigned char colorIndex) {
 
     volatile u16 pixelData = videoBuffer[((row)*(240)+(col))/2];
     if(col & 1){
@@ -67,14 +67,14 @@ void setPixel(int col, int row, unsigned char colorIndex) {
 }
 
 
-void drawRect(int col, int row, int width, int height, volatile unsigned char colorIndex) {
+void drawRect4(int col, int row, int width, int height, volatile unsigned char colorIndex) {
 
     volatile u16 pixelData = colorIndex | (colorIndex << 8);
     for(int i = 0; i < height; i++){
 
         if((col & 1) && (width & 1)) {
 
-            setPixel(col, row + i , colorIndex);
+            setPixel4(col, row + i , colorIndex);
             if(width > 1) {
 
                 DMANow(3, &pixelData, &videoBuffer[((row + i)*(240)+(col + 1))/2], (2 << 23) | (width-1) / 2);
@@ -84,11 +84,11 @@ void drawRect(int col, int row, int width, int height, volatile unsigned char co
         }
         if((col & 1) && !(width & 1)){
 
-            setPixel(col, row + i, colorIndex);
+            setPixel4(col, row + i, colorIndex);
             if(width > 2){
                 DMANow(3, &pixelData, &videoBuffer[((row + i)*(240)+(col + 1))/2], (2 << 23) | (width-2) / 2);
             }
-            setPixel(col+width-1, row + i, colorIndex);
+            setPixel4(col+width-1, row + i, colorIndex);
 
 
         }
@@ -101,7 +101,7 @@ void drawRect(int col, int row, int width, int height, volatile unsigned char co
             if(width > 1){
                 DMANow(3, &pixelData, &videoBuffer[((row + i)*(240)+(col))/2], (2 << 23) | width / 2);
             }
-           setPixel(col + width - 1,row + i,colorIndex);
+           setPixel4(col + width - 1,row + i,colorIndex);
 
         }
 
@@ -110,16 +110,15 @@ void drawRect(int col, int row, int width, int height, volatile unsigned char co
 }
 
 
-void fillScreen(volatile unsigned char colorIndex) {
+void fillScreen4(volatile unsigned char colorIndex) {
 
     volatile u16 pixelData = colorIndex | (colorIndex << 8);
     DMANow(3, &pixelData, videoBuffer, (2 << 23) | (240 * 160)/2);
 
-
 }
 
 
-void drawImage(int col, int row, int width, int height, const unsigned short *image) {
+void drawImage4(int col, int row, int width, int height, const unsigned short *image) {
 
     for(int r = 0; r < height; r++){
 
@@ -130,7 +129,7 @@ void drawImage(int col, int row, int width, int height, const unsigned short *im
 }
 
 
-void drawFullscreenImage(const unsigned short *image) {
+void drawFullscreenImage4(const unsigned short *image) {
 
     DMANow(3,image,videoBuffer,(240*160)/2);
 

@@ -7,7 +7,7 @@ unsigned short *videoBuffer = (unsigned short *)0x6000000;
 DMA *dma = (DMA *)0x40000B0;
 
 // mode 4 set pixel function
-void setPixel(int col, int row, unsigned char colorIndex) {
+void setPixel4(int col, int row, unsigned char colorIndex) {
 
     volatile u16 pixelData = videoBuffer[OFFSET(col,row,SCREENWIDTH)/2];
     if(col & 1){
@@ -26,14 +26,14 @@ void setPixel(int col, int row, unsigned char colorIndex) {
 }
 
 // drawRect in mode 4
-void drawRect(int col, int row, int width, int height, volatile unsigned char colorIndex) {
+void drawRect4(int col, int row, int width, int height, volatile unsigned char colorIndex) {
 
     volatile u16 pixelData = colorIndex | (colorIndex << 8);
     for(int i = 0; i < height; i++){
         
         if((col & 1) && (width & 1)) { // odd and odd
 
-            setPixel(col, row + i , colorIndex);
+            setPixel4(col, row + i , colorIndex);
             if(width > 1) {
 
                 DMANow(3, &pixelData, &videoBuffer[OFFSET(col + 1,row + i,SCREENWIDTH)/2], DMA_SOURCE_FIXED | (width-1) / 2);
@@ -43,11 +43,11 @@ void drawRect(int col, int row, int width, int height, volatile unsigned char co
         }
         if((col & 1) && !(width & 1)){ // odd and even
         
-            setPixel(col, row + i, colorIndex);
+            setPixel4(col, row + i, colorIndex);
             if(width > 2){
                 DMANow(3, &pixelData, &videoBuffer[OFFSET(col + 1,row + i,SCREENWIDTH)/2], DMA_SOURCE_FIXED | (width-2) / 2);
             }
-            setPixel(col+width-1, row + i, colorIndex);
+            setPixel4(col+width-1, row + i, colorIndex);
 
         
         }
@@ -60,7 +60,7 @@ void drawRect(int col, int row, int width, int height, volatile unsigned char co
             if(width > 1){
                 DMANow(3, &pixelData, &videoBuffer[OFFSET(col,row + i,SCREENWIDTH)/2], DMA_SOURCE_FIXED | width / 2);
             }
-           setPixel(col + width - 1,row + i,colorIndex);
+           setPixel4(col + width - 1,row + i,colorIndex);
 
         }
 
@@ -69,16 +69,15 @@ void drawRect(int col, int row, int width, int height, volatile unsigned char co
 }
 
 // Fill screen in mode 4
-void fillScreen(volatile unsigned char colorIndex) {
+void fillScreen4(volatile unsigned char colorIndex) {
 
     volatile u16 pixelData = colorIndex | (colorIndex << 8);
     DMANow(3, &pixelData, videoBuffer, DMA_SOURCE_FIXED | (SCREENWIDTH * SCREENHEIGHT)/2);
 
-
 }
 
 // Drawing image in mode 4
-void drawImage(int col, int row, int width, int height, const unsigned short *image) {
+void drawImage4(int col, int row, int width, int height, const unsigned short *image) {
 
     for(int r = 0; r < height; r++){
 
@@ -89,7 +88,7 @@ void drawImage(int col, int row, int width, int height, const unsigned short *im
 }
 
 // Making entire screen a image in mode 4
-void drawFullscreenImage(const unsigned short *image) {
+void drawFullscreenImage4(const unsigned short *image) {
 
     DMANow(3,image,videoBuffer,(SCREENWIDTH*SCREENHEIGHT)/2);
 

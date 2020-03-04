@@ -822,11 +822,11 @@ typedef unsigned short u16;
 # 27 "myLib.h"
 extern unsigned short *videoBuffer;
 # 47 "myLib.h"
-void setPixel(int col, int row, unsigned char colorIndex);
-void drawRect(int col, int row, int width, int height, volatile unsigned char colorIndex);
-void fillScreen(volatile unsigned char colorIndex);
-void drawImage(int col, int row, int width, int height, const unsigned short *image);
-void drawFullscreenImage(const unsigned short *image);
+void setPixel4(int col, int row, unsigned char colorIndex);
+void drawRect4(int col, int row, int width, int height, volatile unsigned char colorIndex);
+void fillScreen4(volatile unsigned char colorIndex);
+void drawImage4(int col, int row, int width, int height, const unsigned short *image);
+void drawFullscreenImage4(const unsigned short *image);
 
 
 void waitForVBlank();
@@ -902,7 +902,7 @@ typedef struct
     int erased;
     int isAsteroid;
 } ASTEROID;
-# 57 "game.h"
+# 56 "game.h"
 enum {BLACKS=(256-6), BLUES, GREENS, REDS, WHITES, GRAYS};
 extern unsigned short colors[6];
 
@@ -911,7 +911,6 @@ extern USER user;
 extern BULLET bullets[6];
 extern ASTEROID asteroids[5];
 extern int asteroidsRemaining;
-extern int fallingRectanglesRemaining;
 extern int livesRemaining;
 extern int reachedTarget;
 extern int timeRemaining;
@@ -1386,6 +1385,7 @@ void Pause();
 
 int seed;
 char buffer[50];
+
 int main() {
 
 
@@ -1433,7 +1433,7 @@ void initialize(){
 void goToStart(){
 
     DMANow(3,startPal,((unsigned short *)0x5000000),512);
-    drawFullscreenImage(startBitmap);
+    drawFullscreenImage4(startBitmap);
     waitForVBlank();
     flipPage();
 
@@ -1486,20 +1486,18 @@ void Game(){
 
  }
 
- if((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))
-  ){
+ if((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))){
 
   goToPause();
 
  }
-
 
 }
 
 
 void goToPause(){
 
- fillScreen(GRAYS);
+ fillScreen4(GRAYS);
  drawString(240/2-15, 160/2, "PAUSED", BLACKS);
  waitForVBlank();
     flipPage();
@@ -1521,7 +1519,7 @@ void Pause(){
 
 void goToWin(){
 
- fillScreen(GREENS);
+ fillScreen4(GREENS);
  drawString(240/2-15, 160/2, "VICTORY", BLACKS);
  waitForVBlank();
     flipPage();
@@ -1543,7 +1541,7 @@ void Win(){
 
 void goToLose(){
 
- fillScreen(REDS);
+ fillScreen4(REDS);
  drawString(240/2-15, 160/2, "DEFEATED", BLACKS);
  waitForVBlank();
     flipPage();

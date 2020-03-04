@@ -48,7 +48,6 @@ typedef struct
 #define ASTEROIDCOUNT 5
 #define BULLETCOUNT 6
 #define LIVESCOUNT 1
-#define FALLINGRECTSNGLECOUNT 2
 #define TIMEREMAINING 10
 #define TIME 5000
 
@@ -62,7 +61,6 @@ extern USER user;
 extern BULLET bullets[BULLETCOUNT];
 extern ASTEROID asteroids[ASTEROIDCOUNT];
 extern int asteroidsRemaining;
-extern int fallingRectanglesRemaining;
 extern int livesRemaining;
 extern int reachedTarget;
 extern int timeRemaining;
@@ -89,7 +87,6 @@ void movingRectangles();
 void fallingRectangles();
 void clearFallingRectangle(int row, int col);
 void drawRectangles(int row, int col);
-
 
 
 

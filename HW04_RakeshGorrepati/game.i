@@ -822,11 +822,11 @@ typedef unsigned short u16;
 # 27 "myLib.h"
 extern unsigned short *videoBuffer;
 # 47 "myLib.h"
-void setPixel(int col, int row, unsigned char colorIndex);
-void drawRect(int col, int row, int width, int height, volatile unsigned char colorIndex);
-void fillScreen(volatile unsigned char colorIndex);
-void drawImage(int col, int row, int width, int height, const unsigned short *image);
-void drawFullscreenImage(const unsigned short *image);
+void setPixel4(int col, int row, unsigned char colorIndex);
+void drawRect4(int col, int row, int width, int height, volatile unsigned char colorIndex);
+void fillScreen4(volatile unsigned char colorIndex);
+void drawImage4(int col, int row, int width, int height, const unsigned short *image);
+void drawFullscreenImage4(const unsigned short *image);
 
 
 void waitForVBlank();
@@ -897,7 +897,7 @@ typedef struct
     int erased;
     int isAsteroid;
 } ASTEROID;
-# 57 "game.h"
+# 56 "game.h"
 enum {BLACKS=(256-6), BLUES, GREENS, REDS, WHITES, GRAYS};
 extern unsigned short colors[6];
 
@@ -906,7 +906,6 @@ extern USER user;
 extern BULLET bullets[6];
 extern ASTEROID asteroids[5];
 extern int asteroidsRemaining;
-extern int fallingRectanglesRemaining;
 extern int livesRemaining;
 extern int reachedTarget;
 extern int timeRemaining;
@@ -956,13 +955,6 @@ int rectangleRows[] = {50,100};
 int rectangleCols[] = {50,200};
 int arrLength = 2;
 
-void drawStationaryRect() {
- for(int i = 0; i < arrLength; i++){
-
-        drawRect(rectangleCols[i], rectangleRows[i], 8, 8, REDS);
-    }
-
-}
 
 
 void initializeGame(){
@@ -977,6 +969,7 @@ void initializeGame(){
     time = 5000;
 
     DMANow(3,AsteroidPal,((unsigned short *)0x5000000),512);
+
 
     unsigned short colors[6] = {0, ((0) | (0)<<5 | (31)<<10), ((0) | (31)<<5 | (0)<<10), ((31) | (0)<<5 | (0)<<10), ((31) | (31)<<5 | (31)<<10), ((15) | (15)<<5 | (15)<<10)};
     for (int i = 0; i < 6; i++) {
@@ -1017,12 +1010,9 @@ void updateGame(){
 
 void drawGame(){
 
-    fillScreen(BLACKS);
+    fillScreen4(BLACKS);
     drawUser();
     drawStationaryRect();
-
-
-
 
 
     for(int i = 0; i < 6; i++){
@@ -1040,6 +1030,15 @@ void drawGame(){
 
 }
 
+
+void drawStationaryRect() {
+
+ for(int i = 0; i < arrLength; i++){
+
+        drawRect4(rectangleCols[i], rectangleRows[i], 8, 8, WHITES);
+    }
+
+}
 
 
 void updateBoundry(){
@@ -1072,7 +1071,7 @@ void updateBoundry(){
 void initializeUser(){
 
     user.row = 160 - user.height;
-    user.col = 240 / 2;
+    user.col = 5;
     user.udel = 1;
     user.height = 10;
     user.width = 5;
@@ -1131,6 +1130,7 @@ void updateUser(){
 
         }
     }
+
     for(int i = 0; i < arrLength; i++ ){
 
         if(collision(user.col, user.row, user.width, user.height,rectangleCols[i], rectangleRows[i], 8, 8)){
@@ -1147,7 +1147,7 @@ void updateUser(){
 
 void drawUser(){
 
-    drawRect(user.col, user.row, user.width, user.height, REDS);
+    drawRect4(user.col, user.row, user.width, user.height, REDS);
 
 }
 
@@ -1193,7 +1193,7 @@ void drawBullet(BULLET *b){
 
     if(b -> active){
 
-        drawRect( b-> col, b -> row, b -> width, b -> height, b -> color);
+        drawRect4( b-> col, b -> row, b -> width, b -> height, b -> color);
 
     }
 
@@ -1228,11 +1228,7 @@ void initializeAsteroids(){
 
         }
 
-
-
-
  }
-
 
 }
 
@@ -1266,6 +1262,7 @@ void updateAsteroid(ASTEROID* a){
                     bullets[i].active = 0;
      a->active = 0;
 
+
      asteroidsRemaining--;
     }
 
@@ -1281,14 +1278,15 @@ void updateAsteroid(ASTEROID* a){
 void drawAsteroid(ASTEROID* a) {
  if(a->active) {
 
+
         if(a-> isAsteroid){
 
-            drawImage(a->col, a->row, a->width, a->height, AsteroidBitmap);
+            drawImage4(a->col, a->row, a->width, a->height, AsteroidBitmap);
 
         }
         else{
 
-      drawRect(a->col, a->row, a->width, a->height, BLUES);
+      drawRect4(a->col, a->row, a->width, a->height, BLUES);
 
         }
 

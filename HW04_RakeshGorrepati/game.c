@@ -17,13 +17,6 @@ int rectangleRows[] = {50,100};
 int rectangleCols[] = {50,200};
 int arrLength = 2;
 
-void drawStationaryRect() {
-	for(int i = 0; i < arrLength; i++){
-
-        drawRect(rectangleCols[i], rectangleRows[i], 8, 8, REDS);
-    }
-
-}
 
 // where all items are intiliazed
 void initializeGame(){
@@ -38,6 +31,7 @@ void initializeGame(){
     time = TIME;
 
     DMANow(3,AsteroidPal,PALETTE,AsteroidPalLen);
+
     // Colors for this game, mode 4 
     unsigned short colors[NUMCOLORS] = {BLACK, BLUE, GREEN, RED, WHITE, GRAY};
     for (int i = 0; i < NUMCOLORS; i++) {
@@ -78,12 +72,9 @@ void updateGame(){
 //Draws user, bullets, asteroids
 void drawGame(){
 
-    fillScreen(BLACKS);
+    fillScreen4(BLACKS);
     drawUser();
     drawStationaryRect();
-
-
-
 
     //Draws all bullets
     for(int i = 0; i < BULLETCOUNT; i++){
@@ -101,6 +92,15 @@ void drawGame(){
 
 }
 
+//draws stationary rectangles
+void drawStationaryRect() {
+
+	for(int i = 0; i < arrLength; i++){
+
+        drawRect4(rectangleCols[i], rectangleRows[i], 8, 8, WHITES);
+    }
+
+}
 
 //stops using controlled rectangle from going off righ,left,or bottom of screen
 void updateBoundry(){
@@ -133,7 +133,7 @@ void updateBoundry(){
 void initializeUser(){
 
     user.row = SCREENHEIGHT - user.height;
-    user.col = SCREENWIDTH / 2;
+    user.col = 5;
     user.udel = 1;
     user.height = 10;
     user.width = 5;
@@ -192,7 +192,7 @@ void updateUser(){
 
         }
     }
-    // Checks user collision with stationary red rectangles
+    // Checks user collision with stationary rectangles
     for(int i = 0; i < arrLength; i++ ){
         
         if(collision(user.col, user.row, user.width, user.height,rectangleCols[i], rectangleRows[i], 8, 8)){
@@ -206,14 +206,14 @@ void updateUser(){
 
 }
 
-//Clears previous frame and draws user and safe 
+//Uses mode 4 to draw 
 void drawUser(){
 
-    drawRect(user.col, user.row, user.width, user.height, REDS);
+    drawRect4(user.col, user.row, user.width, user.height, REDS);
 
 }
 
-//Pooling for bullets
+//Object Pooling for bullets
 void initializeBullets(){
 
     for(int i = 0; i < BULLETCOUNT; i++) {
@@ -255,7 +255,7 @@ void drawBullet(BULLET *b){
 
     if(b -> active){
         
-        drawRect( b-> col, b -> row, b -> width, b -> height, b -> color);
+        drawRect4( b-> col, b -> row, b -> width, b -> height, b -> color);
 
     }
 
@@ -290,15 +290,11 @@ void initializeAsteroids(){
 
         }
         
-
-
-        
 	}
-
 
 }
 
-//Takes in pointer and bounces asteroids from edges
+//Takes in pointer and  makes asteroids bounce off boundry
 void updateAsteroid(ASTEROID* a){
 
     if( a -> active){
@@ -328,6 +324,7 @@ void updateAsteroid(ASTEROID* a){
                     bullets[i].active = 0;
 					a->active = 0;
                     
+                    //decrements asteroids number
 					asteroidsRemaining--;
 				}
 
@@ -343,14 +340,15 @@ void updateAsteroid(ASTEROID* a){
 void drawAsteroid(ASTEROID* a) {
 	if(a->active) {
         
+        // If pointer is an asteroid drawsImage rather than rectangle
         if(a-> isAsteroid){
 
-            drawImage(a->col, a->row, a->width, a->height, AsteroidBitmap);
+            drawImage4(a->col, a->row, a->width, a->height, AsteroidBitmap);
 
         }
         else{
 
-		    drawRect(a->col, a->row, a->width, a->height, BLUES);
+		    drawRect4(a->col, a->row, a->width, a->height, BLUES);
 
         }
 

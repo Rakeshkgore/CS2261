@@ -11,13 +11,13 @@
 	.file	"myLib.c"
 	.text
 	.align	2
-	.global	setPixel
+	.global	setPixel4
 	.arch armv4t
 	.syntax unified
 	.arm
 	.fpu softvfp
-	.type	setPixel, %function
-setPixel:
+	.type	setPixel4, %function
+setPixel4:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
@@ -51,14 +51,14 @@ setPixel:
 	.align	2
 .L6:
 	.word	.LANCHOR0
-	.size	setPixel, .-setPixel
+	.size	setPixel4, .-setPixel4
 	.align	2
-	.global	drawRect
+	.global	drawRect4
 	.syntax unified
 	.arm
 	.fpu softvfp
-	.type	drawRect, %function
-drawRect:
+	.type	drawRect4, %function
+drawRect4:
 	@ Function supports interworking.
 	@ args = 4, pretend = 0, frame = 24
 	@ frame_needed = 0, uses_anonymous_args = 0
@@ -101,7 +101,7 @@ drawRect:
 	mov	r0, r6
 	ldrb	r2, [sp, #64]	@ zero_extendqisi2
 	bne	.L25
-	bl	setPixel
+	bl	setPixel4
 	cmp	r5, #2
 	ble	.L21
 	rsb	r2, fp, fp, lsl #4
@@ -122,7 +122,7 @@ drawRect:
 	mov	r1, fp
 	mov	r0, r10
 	ldrb	r2, [sp, #64]	@ zero_extendqisi2
-	bl	setPixel
+	bl	setPixel4
 .L13:
 	add	fp, fp, #1
 	cmp	fp, r4
@@ -171,7 +171,7 @@ drawRect:
 	str	r3, [r2, #44]
 	b	.L21
 .L25:
-	bl	setPixel
+	bl	setPixel4
 	cmp	r5, #1
 	ble	.L13
 	mov	r0, #0
@@ -194,14 +194,14 @@ drawRect:
 	.align	2
 .L28:
 	.word	.LANCHOR0
-	.size	drawRect, .-drawRect
+	.size	drawRect4, .-drawRect4
 	.align	2
-	.global	fillScreen
+	.global	fillScreen4
 	.syntax unified
 	.arm
 	.fpu softvfp
-	.type	fillScreen, %function
-fillScreen:
+	.type	fillScreen4, %function
+fillScreen4:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 0, uses_anonymous_args = 0
@@ -230,14 +230,14 @@ fillScreen:
 .L32:
 	.word	.LANCHOR0
 	.word	-2130687232
-	.size	fillScreen, .-fillScreen
+	.size	fillScreen4, .-fillScreen4
 	.align	2
-	.global	drawImage
+	.global	drawImage4
 	.syntax unified
 	.arm
 	.fpu softvfp
-	.type	drawImage, %function
-drawImage:
+	.type	drawImage4, %function
+drawImage4:
 	@ Function supports interworking.
 	@ args = 4, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
@@ -279,14 +279,14 @@ drawImage:
 	.align	2
 .L39:
 	.word	.LANCHOR0
-	.size	drawImage, .-drawImage
+	.size	drawImage4, .-drawImage4
 	.align	2
-	.global	drawFullscreenImage
+	.global	drawFullscreenImage4
 	.syntax unified
 	.arm
 	.fpu softvfp
-	.type	drawFullscreenImage, %function
-drawFullscreenImage:
+	.type	drawFullscreenImage4, %function
+drawFullscreenImage4:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
@@ -305,7 +305,7 @@ drawFullscreenImage:
 .L42:
 	.word	.LANCHOR0
 	.word	-2147464448
-	.size	drawFullscreenImage, .-drawFullscreenImage
+	.size	drawFullscreenImage4, .-drawFullscreenImage4
 	.align	2
 	.global	waitForVBlank
 	.syntax unified

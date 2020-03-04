@@ -50,7 +50,7 @@ goToStart:
 	.word	startPal
 	.word	DMANow
 	.word	startBitmap
-	.word	drawFullscreenImage
+	.word	drawFullscreenImage4
 	.word	waitForVBlank
 	.word	flipPage
 	.word	state
@@ -210,7 +210,7 @@ goToPause:
 .L28:
 	.align	2
 .L27:
-	.word	fillScreen
+	.word	fillScreen4
 	.word	drawString
 	.word	.LC0
 	.word	waitForVBlank
@@ -287,7 +287,7 @@ goToWin:
 .L39:
 	.align	2
 .L38:
-	.word	fillScreen
+	.word	fillScreen4
 	.word	drawString
 	.word	.LC1
 	.word	waitForVBlank
@@ -356,7 +356,7 @@ goToLose:
 .L47:
 	.align	2
 .L46:
-	.word	fillScreen
+	.word	fillScreen4
 	.word	drawString
 	.word	.LC2
 	.word	waitForVBlank

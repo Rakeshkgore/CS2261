@@ -44,11 +44,11 @@ extern unsigned short *videoBuffer;
 #define YELLOW COLOR(31,31,0)
 
 // Mode 4 Drawing Functions
-void setPixel(int col, int row, unsigned char colorIndex);
-void drawRect(int col, int row, int width, int height, volatile unsigned char colorIndex);
-void fillScreen(volatile unsigned char colorIndex);
-void drawImage(int col, int row, int width, int height, const unsigned short *image);
-void drawFullscreenImage(const unsigned short *image);
+void setPixel4(int col, int row, unsigned char colorIndex);
+void drawRect4(int col, int row, int width, int height, volatile unsigned char colorIndex);
+void fillScreen4(volatile unsigned char colorIndex);
+void drawImage4(int col, int row, int width, int height, const unsigned short *image);
+void drawFullscreenImage4(const unsigned short *image);
 
 // Miscellaneous Drawing Functions
 void waitForVBlank();
