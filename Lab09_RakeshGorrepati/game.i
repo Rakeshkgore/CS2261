@@ -186,8 +186,9 @@ void updatePlayer() {
 
 
 
+
     if((~((*(volatile unsigned short *)0x04000130)) & ((1<<6)))) {
-        if (pikachu.worldRow > 0 && collisionmapBitmap[((pikachu.worldRow)*(256)+(pikachu.worldCol - 1))] && collisionmapBitmap[((pikachu.worldRow - 1)*(256)+(pikachu.worldCol + pikachu.width - 1))]) {
+        if (pikachu.worldRow > 0 && collisionmapBitmap[((pikachu.worldRow - pikachu.rdel)*(256)+(pikachu.worldCol))] && collisionmapBitmap[((pikachu.worldRow - pikachu.rdel)*(256)+(pikachu.worldCol + pikachu.width - 1))]) {
 
 
 
@@ -207,7 +208,7 @@ void updatePlayer() {
         }
     }
     if((~((*(volatile unsigned short *)0x04000130)) & ((1<<7)))) {
-        if (pikachu.worldRow + pikachu.height < 256 && collisionmapBitmap[((pikachu.worldRow + pikachu.width)*(256)+(pikachu.worldCol))] && collisionmapBitmap[((pikachu.worldRow + pikachu.width)*(256)+(pikachu.worldCol + pikachu.width - 1))]) {
+        if (pikachu.worldRow + pikachu.height < 256 && collisionmapBitmap[((pikachu.worldRow + pikachu.height + pikachu.rdel -1)*(256)+(pikachu.worldCol))] && collisionmapBitmap[((pikachu.worldRow + pikachu.height + pikachu.rdel - 1)*(256)+(pikachu.worldCol + pikachu.width - 1))]) {
 
 
 
@@ -217,7 +218,7 @@ void updatePlayer() {
 
 
 
-            if (vOff < 256 - 160) {
+            if (vOff < 256 - 160 && (pikachu.screenRow > 160 / 2)) {
 
 
 
@@ -226,7 +227,7 @@ void updatePlayer() {
             }
         }
     }
-    if((~((*(volatile unsigned short *)0x04000130)) & ((1<<5)))) {
+ if((~((*(volatile unsigned short *)0x04000130)) & ((1<<5)))) {
         if (pikachu.worldCol - pikachu.width > 0 && collisionmapBitmap[((pikachu.worldRow)*(256)+(pikachu.worldCol - 1))] && collisionmapBitmap[((pikachu.worldRow + pikachu.height - 1)*(256)+(pikachu.worldCol - 1))]) {
 
 
@@ -237,18 +238,19 @@ void updatePlayer() {
 
 
 
-            if (vOff < 256 - 160) {
+            if (hOff < 256 - 240 && pikachu.screenCol >= 240 / 2) {
 
 
 
-                vOff = vOff + pikachu.rdel;
+
+                hOff = hOff + pikachu.cdel;
 
             }
+
         }
     }
     if((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))) {
         if (pikachu.worldCol + pikachu.width < 256 && collisionmapBitmap[((pikachu.worldRow)*(256)+(pikachu.worldCol + pikachu.width))] && collisionmapBitmap[((pikachu.worldRow + pikachu.height - 1)*(256)+(pikachu.worldCol + pikachu.width))]) {
-
 
 
 

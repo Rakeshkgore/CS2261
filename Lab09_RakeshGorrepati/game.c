@@ -63,9 +63,10 @@ void updatePlayer() {
     // TODO 1.0: Update to include complex camera movement
 
 
+
     // TODO 2.2: Update to include collision map
     if(BUTTON_HELD(BUTTON_UP)) {
-        if (pikachu.worldRow > 0 && collisionmapBitmap[OFFSET(pikachu.worldCol - 1, pikachu.worldRow, MAPWIDTH)] && collisionmapBitmap[OFFSET(pikachu.worldCol + pikachu.width - 1,pikachu.worldRow - 1, MAPWIDTH)]) {
+        if (pikachu.worldRow > 0 && collisionmapBitmap[OFFSET(pikachu.worldCol, pikachu.worldRow - pikachu.rdel, MAPWIDTH)] && collisionmapBitmap[OFFSET(pikachu.worldCol + pikachu.width - 1, pikachu.worldRow - pikachu.rdel, MAPWIDTH)]) {
             /*Delete that 1, then:
             for TODO 1.0, make sure pikachu doesn't go off the map here,
             for TODO 2.2, check collision map here as well*/
@@ -85,7 +86,7 @@ void updatePlayer() {
         }
     }
     if(BUTTON_HELD(BUTTON_DOWN)) {
-        if (pikachu.worldRow + pikachu.height < MAPHEIGHT && collisionmapBitmap[OFFSET( pikachu.worldCol, pikachu.worldRow + pikachu.width, MAPWIDTH)] && collisionmapBitmap[OFFSET(pikachu.worldCol + pikachu.width - 1, pikachu.worldRow + pikachu.width, MAPWIDTH)]) {
+        if (pikachu.worldRow + pikachu.height < MAPHEIGHT && collisionmapBitmap[OFFSET( pikachu.worldCol, pikachu.worldRow + pikachu.height + pikachu.rdel -1, MAPWIDTH)] && collisionmapBitmap[OFFSET(pikachu.worldCol + pikachu.width - 1, pikachu.worldRow + pikachu.height + pikachu.rdel - 1, MAPWIDTH)]) {
             /*Delete that 1, then:
             for TODO 1.0, make sure pikachu doesn't go off the map here,
             for TODO 2.2, check collision map here as well*/
@@ -95,7 +96,7 @@ void updatePlayer() {
 
 
 
-            if (vOff < MAPHEIGHT - SCREENHEIGHT) {
+            if (vOff < MAPHEIGHT - SCREENHEIGHT && (pikachu.screenRow > SCREENHEIGHT / 2)) {
                  /*Delete that 1, then:
                 for TODO 1.0, make sure the background offset doesn't show past the edge,
                 and only update the offset variables if pikachu is in the right spot*/
@@ -104,7 +105,7 @@ void updatePlayer() {
             }
         }
     }
-    if(BUTTON_HELD(BUTTON_LEFT)) {
+ if(BUTTON_HELD(BUTTON_LEFT)) {
         if (pikachu.worldCol - pikachu.width  > 0 && collisionmapBitmap[OFFSET(pikachu.worldCol - 1, pikachu.worldRow, MAPHEIGHT)] && collisionmapBitmap[OFFSET(pikachu.worldCol - 1, pikachu.worldRow + pikachu.height - 1, MAPHEIGHT)]) {
             /*Delete that 1, then:
             for TODO 1.0, make sure pikachu doesn't go off the map here,
@@ -115,18 +116,19 @@ void updatePlayer() {
 
 
 
-            if (vOff < MAPHEIGHT - SCREENHEIGHT) { /*Delete that 1, then:
+            if (hOff < MAPWIDTH - SCREENWIDTH && pikachu.screenCol >= SCREENWIDTH / 2) { 
+                /*Delete that 1, then:
                 for TODO 1.0, make sure the background offset doesn't show past the edge,
                 and only update the offset variables if pikachu is in the right spot*/
                 // Update background offset variable if the above is true
-                vOff = vOff + pikachu.rdel;
+                hOff = hOff + pikachu.cdel;
 
             }
+            
         }
     }
     if(BUTTON_HELD(BUTTON_RIGHT)) {
-        if (pikachu.worldCol + pikachu.width < MAPWIDTH && collisionmapBitmap[OFFSET(pikachu.worldCol + pikachu.width, pikachu.worldRow, MAPHEIGHT)] && collisionmapBitmap[OFFSET( pikachu.worldCol + pikachu.width,  pikachu.worldRow + pikachu.height - 1, MAPHEIGHT)]) {
-             /*Delete that 1, then:
+        if (pikachu.worldCol + pikachu.width < MAPWIDTH && collisionmapBitmap[OFFSET(pikachu.worldCol + pikachu.width, pikachu.worldRow, MAPHEIGHT)] && collisionmapBitmap[OFFSET( pikachu.worldCol + pikachu.width,  pikachu.worldRow + pikachu.height - 1, MAPHEIGHT)]) {             /*Delete that 1, then:
             for TODO 1.0, make sure pikachu doesn't go off the map here,
             for TODO 2.2, check collision map here as well*/
 
