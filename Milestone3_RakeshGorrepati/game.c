@@ -2,14 +2,17 @@
 #include "myLib.h"
 #include <stdlib.h>
 
+USERSPRITE user;
 COINSPRTIE coiny[COINTCOUNT];
 BULLET bullets[BULLETCOUNT];
+TARGETSPRITE target[TARGETCOUNT];
 
 //Prototypes
 void initializeGame();
 void initializeUser();
 void initializeCoin();
 void initializeBullets();
+void initializeTargets();
 void updateGame();
 void updateUser();
 void fireBullet();
@@ -21,10 +24,16 @@ void updateCoin(COINSPRTIE *);
 void drawCoin(COINSPRTIE *);
 void updateBullet(BULLET *);
 void drawBullet(BULLET *);
+void drawAmmo(int ammo);
+void updateTarget(TARGETSPRITE *);
+void drawTarget();
+void fireTarget();
 
 //Game ends after a collision
+int ammoRemaining;
 int lives;
 int counter;
+int targetCounter;
 
 //main initialize calls User and coin
 void initializeGame() {
@@ -32,13 +41,19 @@ void initializeGame() {
     initializeUser();
     initializeCoin();
     initializeBullets();
+    initializeTargets();
     counter = 0;
+    ammoRemaining = BULLETCOUNT;
+    targetCounter = TIME;
 
 }
 
 void drawGame(){
 
     drawUser();
+    drawAmmo(ammoRemaining);
+
+
 
     for (int i = 0; i < COINTCOUNT; i++) {
 
@@ -47,6 +62,11 @@ void drawGame(){
     for(int i = 0; i < BULLETCOUNT; i++) {
 
         drawBullet(&bullets[i]);
+
+    }
+    for(int i = 0; i < TARGETCOUNT; i++){
+
+        drawTarget(&target[i]);
 
     }
 
@@ -59,6 +79,7 @@ void updateGame() {
     
     updateUser();
     counter++;
+    targetCounter--;
 
     for (int i = 0; i < COINTCOUNT; i++) {
 
@@ -68,6 +89,16 @@ void updateGame() {
     for(int i = 0; i < BULLETCOUNT; i++) {
 
         updateBullet(&bullets[i]);
+
+    }
+    for(int i = 0; i < TARGETCOUNT; i++) {
+
+        updateTarget(&target[i]);
+
+    }
+    if(targetCounter % 500 == 0){
+        
+        fireTarget();
 
     }
 
@@ -84,6 +115,7 @@ void updateGame() {
     if((BUTTON_PRESSED(BUTTON_B)) && (user.bulletTimer >= 20)){
 
         fireBullet();
+        ammoRemaining--;
         user.bulletTimer = 0;
 
     }
@@ -205,6 +237,22 @@ void initializeCoin() {
 
 }
 
+void initializeTargets() {
+
+    for(int i = 0; i < TARGETCOUNT; i++){
+
+        target[i].width = 8;
+        target[i].height = 8;
+        target[i].col = rand() % 130;
+        target[i].row = rand() % 130;
+        target[i].active = 0;
+        target[i].aniState = TARGET;
+        target[i].index = BULLETCOUNT + COINTCOUNT + i;
+
+    }
+
+}
+
 void drawUser(){
 
     shadowOAM[0].attr0 = (ROWMASK & user.row) | ATTR0_4BPP | ATTR0_SQUARE;
@@ -247,6 +295,22 @@ void drawCoin(COINSPRTIE *c) {
 
 }
 
+void drawTarget(TARGETSPRITE *t){
+
+    if(t -> active) {
+        
+        shadowOAM[t->index].attr0 = (ROWMASK & t -> row) | ATTR0_4BPP | ATTR0_SQUARE;
+        shadowOAM[t->index].attr1 = (COLMASK & t -> col) | ATTR1_TINY;
+        shadowOAM[t->index].attr2 = ATTR2_TILEID(19, 0); // hard coded again for coin sprite
+
+    } else {
+
+        shadowOAM[t->index].attr0 = ATTR0_HIDE;
+
+    }
+    
+}
+
 void fireBullet(){
 
     for(int i = 0; i < BULLETCOUNT; i++){
@@ -282,6 +346,21 @@ void fireCoin() {
 
 }
 
+void fireTarget() { 
+    
+    for(int i = 0; i < TARGETCOUNT; i++){
+
+        if(target[i].active == 0){
+
+            target[i].row = (rand() % (160 - target[i].height));
+            target[i].col = 200;
+            target[i].active = 1;
+            break;
+
+        }
+    }
+}
+
 void updateBullet(BULLET* b) {
 
 	if (b->active) {
@@ -297,7 +376,7 @@ void updateBullet(BULLET* b) {
 
 
 void updateCoin(COINSPRTIE *d){
-
+    d -> col--;
     // check for user coin collision between each active coin
     if (d->active && collision(user.col, user.row, user.width, user.height, d->col, d->row, d->width, d->height)) {
         d->active = 0;
@@ -312,10 +391,6 @@ void updateCoin(COINSPRTIE *d){
 
     }
 
-    //if (d -> active && (BUTTON_PRESSED(BUTTON_RIGHT) || BUTTON_HELD(BUTTON_RIGHT))) {
-        // move the coin to the left no matter what
-        d -> col--;
-    //}
     if (d-> col <= 0 + d -> width) {
 
         d -> active = 0;
@@ -323,6 +398,31 @@ void updateCoin(COINSPRTIE *d){
     }
  
 }
+
+void updateTarget(TARGETSPRITE *t){
+
+    for(int i = 0; i < BULLETCOUNT; i++){
+
+        if (t->active && collision(bullets[i].col, bullets[i].row, bullets[i].width, bullets[i].height, t->col, t->row, t->width, t->height)) {
+            
+            t->active = 0;
+
+        }  
+
+    }
+}
+
+void drawAmmo(int ammo){
+
+    shadowOAM[100].attr0 = (7) | ATTR0_4BPP | ATTR0_SQUARE;
+    shadowOAM[100].attr1 = (SCREENWIDTH /2) | ATTR1_TINY;
+    shadowOAM[100].attr2 = ATTR2_TILEID(ammo + 8, 0); 
+
+    if (ammo < 1) {
+        shadowOAM[100].attr0 = ATTR0_HIDE; // hide if no ammo, can likely make a 0 ammo sprite, too
+    }
+}
+
 
 
 

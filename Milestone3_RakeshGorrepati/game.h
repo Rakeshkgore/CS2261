@@ -48,18 +48,43 @@ typedef struct
     int erased;
     int aniState;
     int index;
+
 } BULLET;
-#define BULLETCOUNT 6
+
+typedef struct {
+
+    int row;
+    int col;
+    int rdel;
+    int cdel;
+    int width; 
+    int height;
+    int aniState;
+    int active;
+    int index;
+
+} TARGETSPRITE;
+
+#define BULLETCOUNT 10
+#define COINTCOUNT 20
+#define TARGETCOUNT 2
+#define TIME 5000
+#define GRAVITY 100
+#define JUMPPOWER 1500
+#define SHIFTUP(num) ((num) << 8)
+#define SHIFTDOWN(num) ((num) >> 8)
+
 
 
 //Lives variable
+
 extern int lives;
-#define UserCOUNT 20
-#define COINTCOUNT 20
+extern int ammoRemaining;
+extern USERSPRITE user;
 extern BULLET bullets[BULLETCOUNT];
 extern COINSPRTIE coiny[COINTCOUNT];
-USERSPRITE user;
-COINSPRTIE coin;
+extern TARGETSPRITE target[TARGETCOUNT];
+
 
 
 //Prototypes
@@ -81,4 +106,4 @@ void updateCoin(COINSPRTIE *);
 
 
 //State enums
-enum { USERUP, USERRIGHT, USERDOWN, USERLEFT, USERBODY, COIN, USERIDLE, BLACKBG, BULLETS};
+enum { USERUP, USERRIGHT, USERDOWN, USERLEFT, USERBODY, COIN, USERIDLE, BLACKBG, BULLETS, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, TARGET};

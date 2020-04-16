@@ -10,9 +10,8 @@
 #include "winScreen.h"
 #include "loseScreen.h"
 #include "InstructionScreen.h"
-#include "trees.h"
-#include "furtherTrees.h"
-#include "text.h"
+
+
 
 
 OBJ_ATTR shadowOAM[128];
@@ -21,7 +20,7 @@ OBJ_ATTR shadowOAM[128];
 unsigned short buttons;
 unsigned short oldButtons;
 unsigned short hOff;
-char buffer[50];
+
 
 // My States
 int state;
@@ -87,7 +86,7 @@ void initialize(){
 	DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen/2);
     DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen/2);
     hideSprites();
-	REG_DISPCTL = MODE0 | SPRITE_ENABLE | MODE4; 
+	REG_DISPCTL = MODE0 | SPRITE_ENABLE; 
 	buttons = BUTTONS;
 	hOff = 0;
 	REG_BG1HOFF  = hOff;
@@ -141,7 +140,6 @@ void goToGame(){
 	REG_BG1CNT = BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(31);
 	DMANow(3, gameScreenTiles, &CHARBLOCK[0], gameScreenTilesLen/2);
     DMANow(3, gameScreenMap, &SCREENBLOCK[31], gameScreenMapLen/2);
-
 	hideSprites();
 	state = GAME;
 

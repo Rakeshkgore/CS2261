@@ -53,18 +53,30 @@ typedef struct
     int erased;
     int aniState;
     int index;
+
 } BULLET;
 
+typedef struct {
 
+    int row;
+    int col;
+    int rdel;
+    int cdel;
+    int width;
+    int height;
+    int aniState;
+    int active;
+    int index;
 
-
+} TARGETSPRITE;
+# 81 "game.h"
 extern int lives;
-
-
-extern BULLET bullets[6];
+extern int ammoRemaining;
+extern USERSPRITE user;
+extern BULLET bullets[10];
 extern COINSPRTIE coiny[20];
-USERSPRITE user;
-COINSPRTIE coin;
+extern TARGETSPRITE target[2];
+
 
 
 
@@ -86,7 +98,7 @@ void updateCoin(COINSPRTIE *);
 
 
 
-enum { USERUP, USERRIGHT, USERDOWN, USERLEFT, USERBODY, COIN, USERIDLE, BLACKBG, BULLETS};
+enum { USERUP, USERRIGHT, USERDOWN, USERLEFT, USERBODY, COIN, USERIDLE, BLACKBG, BULLETS, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, TARGET};
 # 2 "game.c" 2
 # 1 "myLib.h" 1
 
@@ -980,14 +992,17 @@ extern long double strtold (const char *restrict, char **restrict);
 
 
 # 5 "game.c"
+USERSPRITE user;
 COINSPRTIE coiny[20];
-BULLET bullets[6];
+BULLET bullets[10];
+TARGETSPRITE target[2];
 
 
 void initializeGame();
 void initializeUser();
 void initializeCoin();
 void initializeBullets();
+void initializeTargets();
 void updateGame();
 void updateUser();
 void fireBullet();
@@ -999,10 +1014,16 @@ void updateCoin(COINSPRTIE *);
 void drawCoin(COINSPRTIE *);
 void updateBullet(BULLET *);
 void drawBullet(BULLET *);
+void drawAmmo(int ammo);
+void updateTarget(TARGETSPRITE *);
+void drawTarget();
+void fireTarget();
 
 
+int ammoRemaining;
 int lives;
 int counter;
+int targetCounter;
 
 
 void initializeGame() {
@@ -1010,21 +1031,32 @@ void initializeGame() {
     initializeUser();
     initializeCoin();
     initializeBullets();
+    initializeTargets();
     counter = 0;
+    ammoRemaining = 10;
+    targetCounter = 5000;
 
 }
 
 void drawGame(){
 
     drawUser();
+    drawAmmo(ammoRemaining);
+
+
 
     for (int i = 0; i < 20; i++) {
 
         drawCoin(&coiny[i]);
     }
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < 10; i++) {
 
         drawBullet(&bullets[i]);
+
+    }
+    for(int i = 0; i < 2; i++){
+
+        drawTarget(&target[i]);
 
     }
 
@@ -1037,15 +1069,26 @@ void updateGame() {
 
     updateUser();
     counter++;
+    targetCounter--;
 
     for (int i = 0; i < 20; i++) {
 
         updateCoin(&coiny[i]);
 
     }
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < 10; i++) {
 
         updateBullet(&bullets[i]);
+
+    }
+    for(int i = 0; i < 2; i++) {
+
+        updateTarget(&target[i]);
+
+    }
+    if(targetCounter % 500 == 0){
+
+        fireTarget();
 
     }
 
@@ -1062,6 +1105,7 @@ void updateGame() {
     if(((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) && (user.bulletTimer >= 20)){
 
         fireBullet();
+        ammoRemaining--;
         user.bulletTimer = 0;
 
     }
@@ -1150,7 +1194,7 @@ void initializeUser() {
 
 void initializeBullets(){
 
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < 10; i++) {
 
         bullets[i].height = 2;
         bullets[i].width = 1;
@@ -1177,7 +1221,23 @@ void initializeCoin() {
         coiny[i].row = 0;
         coiny[i].active = 0;
         coiny[i].aniState = COIN;
-        coiny[i].index = 6 + 3 + i;
+        coiny[i].index = 10 + 3 + i;
+
+    }
+
+}
+
+void initializeTargets() {
+
+    for(int i = 0; i < 2; i++){
+
+        target[i].width = 8;
+        target[i].height = 8;
+        target[i].col = rand() % 130;
+        target[i].row = rand() % 130;
+        target[i].active = 0;
+        target[i].aniState = TARGET;
+        target[i].index = 10 + 20 + i;
 
     }
 
@@ -1225,9 +1285,25 @@ void drawCoin(COINSPRTIE *c) {
 
 }
 
+void drawTarget(TARGETSPRITE *t){
+
+    if(t -> active) {
+
+        shadowOAM[t->index].attr0 = (0xFF & t -> row) | (0<<13) | (0<<14);
+        shadowOAM[t->index].attr1 = (0x1FF & t -> col) | (0<<14);
+        shadowOAM[t->index].attr2 = ((0)*32+(19));
+
+    } else {
+
+        shadowOAM[t->index].attr0 = (2<<8);
+
+    }
+
+}
+
 void fireBullet(){
 
-    for(int i = 0; i < 6; i++){
+    for(int i = 0; i < 10; i++){
 
         if(bullets[i].active == 0){
 
@@ -1260,6 +1336,21 @@ void fireCoin() {
 
 }
 
+void fireTarget() {
+
+    for(int i = 0; i < 2; i++){
+
+        if(target[i].active == 0){
+
+            target[i].row = (rand() % (160 - target[i].height));
+            target[i].col = 200;
+            target[i].active = 1;
+            break;
+
+        }
+    }
+}
+
 void updateBullet(BULLET* b) {
 
  if (b->active) {
@@ -1275,13 +1366,13 @@ void updateBullet(BULLET* b) {
 
 
 void updateCoin(COINSPRTIE *d){
-
+    d -> col--;
 
     if (d->active && collision(user.col, user.row, user.width, user.height, d->col, d->row, d->width, d->height)) {
         d->active = 0;
         user.coinsCollected++;
     }
-    for(int i = 0; i < 6; i++){
+    for(int i = 0; i < 10; i++){
 
         if (d->active && collision(bullets[i].col, bullets[i].row, bullets[i].width, bullets[i].height, d->col, d->row, d->width, d->height)) {
             d->active = 0;
@@ -1290,14 +1381,34 @@ void updateCoin(COINSPRTIE *d){
 
     }
 
-
-
-        d -> col--;
-
     if (d-> col <= 0 + d -> width) {
 
         d -> active = 0;
 
     }
 
+}
+
+void updateTarget(TARGETSPRITE *t){
+
+    for(int i = 0; i < 10; i++){
+
+        if (t->active && collision(bullets[i].col, bullets[i].row, bullets[i].width, bullets[i].height, t->col, t->row, t->width, t->height)) {
+
+            t->active = 0;
+
+        }
+
+    }
+}
+
+void drawAmmo(int ammo){
+
+    shadowOAM[100].attr0 = (7) | (0<<13) | (0<<14);
+    shadowOAM[100].attr1 = (240 /2) | (0<<14);
+    shadowOAM[100].attr2 = ((0)*32+(ammo + 8));
+
+    if (ammo < 1) {
+        shadowOAM[100].attr0 = (2<<8);
+    }
 }

@@ -82,19 +82,19 @@ initialize:
 	mov	r0, #3
 	ldr	r2, .L8+12
 	ldr	r1, .L8+16
-	mov	r3, #144
+	mov	r3, #16384
 	mov	lr, pc
 	bx	r4
 	ldr	r3, .L8+20
 	mov	lr, pc
 	bx	r3
 	mov	r3, #67108864
+	mov	lr, #4096
 	mov	r2, #0
 	ldr	r1, .L8+24
-	ldr	lr, .L8+28
+	ldr	r0, .L8+28
 	ldrh	ip, [r1, #48]
-	ldr	r0, .L8+32
-	ldr	r1, .L8+36
+	ldr	r1, .L8+32
 	strh	lr, [r3]	@ movhi
 	strh	ip, [r0]	@ movhi
 	strh	r2, [r1]	@ movhi
@@ -111,7 +111,6 @@ initialize:
 	.word	spritesheetTiles
 	.word	hideSprites
 	.word	67109120
-	.word	4100
 	.word	buttons
 	.word	hOff
 	.size	initialize, .-initialize
@@ -158,7 +157,7 @@ goToGame:
 	mov	lr, pc
 	bx	r4
 	mov	r2, #7936
-	mov	r3, #304
+	mov	r3, #704
 	strh	r2, [r5, #10]	@ movhi
 	mov	r0, #3
 	mov	r2, #100663296
@@ -751,11 +750,8 @@ Lose:
 	b	Win
 	.size	Lose, .-Lose
 	.comm	state,4,4
-	.comm	buffer,50,4
 	.comm	hOff,2,2
 	.comm	oldButtons,2,2
 	.comm	buttons,2,2
 	.comm	shadowOAM,1024,4
-	.comm	coin,36,4
-	.comm	user,64,4
 	.ident	"GCC: (devkitARM release 53) 9.1.0"

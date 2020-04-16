@@ -945,18 +945,30 @@ typedef struct
     int erased;
     int aniState;
     int index;
+
 } BULLET;
 
+typedef struct {
 
+    int row;
+    int col;
+    int rdel;
+    int cdel;
+    int width;
+    int height;
+    int aniState;
+    int active;
+    int index;
 
-
+} TARGETSPRITE;
+# 81 "game.h"
 extern int lives;
-
-
-extern BULLET bullets[6];
+extern int ammoRemaining;
+extern USERSPRITE user;
+extern BULLET bullets[10];
 extern COINSPRTIE coiny[20];
-USERSPRITE user;
-COINSPRTIE coin;
+extern TARGETSPRITE target[2];
+
 
 
 
@@ -978,7 +990,7 @@ void updateCoin(COINSPRTIE *);
 
 
 
-enum { USERUP, USERRIGHT, USERDOWN, USERLEFT, USERBODY, COIN, USERIDLE, BLACKBG, BULLETS};
+enum { USERUP, USERRIGHT, USERDOWN, USERLEFT, USERBODY, COIN, USERIDLE, BLACKBG, BULLETS, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, TARGET};
 # 5 "main.c" 2
 # 1 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdio.h" 1 3
 # 36 "c:\\devkitpro\\devkitarm\\arm-none-eabi\\include\\stdio.h" 3
@@ -1407,7 +1419,7 @@ extern const unsigned short startPal[256];
 # 7 "main.c" 2
 # 1 "gameScreen.h" 1
 # 22 "gameScreen.h"
-extern const unsigned short gameScreenTiles[304];
+extern const unsigned short gameScreenTiles[704];
 
 
 extern const unsigned short gameScreenMap[1024];
@@ -1416,11 +1428,8 @@ extern const unsigned short gameScreenMap[1024];
 extern const unsigned short gameScreenPal[256];
 # 8 "main.c" 2
 # 1 "spritesheet.h" 1
-# 22 "spritesheet.h"
-extern const unsigned short spritesheetTiles[144];
-
-
-extern const unsigned short spritesheetMap[1024];
+# 21 "spritesheet.h"
+extern const unsigned short spritesheetTiles[16384];
 
 
 extern const unsigned short spritesheetPal[256];
@@ -1465,31 +1474,8 @@ extern const unsigned short InstructionScreenMap[1024];
 
 extern const unsigned short InstructionScreenPal[256];
 # 13 "main.c" 2
-# 1 "trees.h" 1
-# 22 "trees.h"
-extern const unsigned short treesTiles[5984];
 
 
-extern const unsigned short treesMap[2048];
-
-
-extern const unsigned short treesPal[256];
-# 14 "main.c" 2
-# 1 "furtherTrees.h" 1
-# 22 "furtherTrees.h"
-extern const unsigned short furtherTreesTiles[1856];
-
-
-extern const unsigned short furtherTreesMap[1024];
-
-
-extern const unsigned short furtherTreesPal[256];
-# 15 "main.c" 2
-# 1 "text.h" 1
-
-void drawChar(int col, int row, char ch, unsigned char colorIndex);
-void drawString(int col, int row, char *str, unsigned char colorIndex);
-# 16 "main.c" 2
 
 
 OBJ_ATTR shadowOAM[128];
@@ -1498,7 +1484,7 @@ OBJ_ATTR shadowOAM[128];
 unsigned short buttons;
 unsigned short oldButtons;
 unsigned short hOff;
-char buffer[50];
+
 
 
 int state;
@@ -1562,9 +1548,9 @@ int main() {
 void initialize(){
 
  DMANow(3, spritesheetPal, ((unsigned short *)0x5000200), 512/2);
-    DMANow(3, spritesheetTiles, &((charblock *)0x6000000)[4], 288/2);
+    DMANow(3, spritesheetTiles, &((charblock *)0x6000000)[4], 32768/2);
     hideSprites();
- (*(unsigned short *)0x4000000) = 0 | (1<<12) | 4;
+ (*(unsigned short *)0x4000000) = 0 | (1<<12);
  buttons = (*(volatile unsigned short *)0x04000130);
  hOff = 0;
  (*(volatile unsigned short *)0x04000014) = hOff;
@@ -1616,9 +1602,8 @@ void goToGame(){
  (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<12);
     DMANow(3, gameScreenPal, ((unsigned short *)0x5000000), 512/2);
  (*(volatile unsigned short*)0x400000A) = (0<<14) | ((0)<<2) | ((31)<<8);
- DMANow(3, gameScreenTiles, &((charblock *)0x6000000)[0], 608/2);
+ DMANow(3, gameScreenTiles, &((charblock *)0x6000000)[0], 1408/2);
     DMANow(3, gameScreenMap, &((screenblock *)0x6000000)[31], 2048/2);
-
  hideSprites();
  state = GAME;
 
