@@ -400,21 +400,21 @@ goToPause:
 	mov	lr, pc
 	bx	r4
 	mov	r2, #7936
-	mov	r3, #1024
-	strh	r2, [r5, #10]	@ movhi
 	mov	r0, #3
+	strh	r2, [r5, #10]	@ movhi
+	ldr	r3, .L51+12
 	mov	r2, #100663296
-	ldr	r1, .L51+12
+	ldr	r1, .L51+16
 	mov	lr, pc
 	bx	r4
-	mov	r3, #1024
-	ldr	r2, .L51+16
+	mov	r3, #672
+	ldr	r2, .L51+20
 	mov	r0, #3
-	ldr	r1, .L51+20
+	ldr	r1, .L51+24
 	mov	lr, pc
 	bx	r4
 	mov	r2, #3
-	ldr	r3, .L51+24
+	ldr	r3, .L51+28
 	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
@@ -423,10 +423,11 @@ goToPause:
 .L51:
 	.word	hOff
 	.word	DMANow
-	.word	pauseScreenPal
-	.word	pauseScreenTiles
+	.word	pauseBgPal
+	.word	7008
+	.word	pauseBgTiles
 	.word	100726784
-	.word	pauseScreenMap
+	.word	pauseBgMap
 	.word	state
 	.size	goToPause, .-goToPause
 	.align	2

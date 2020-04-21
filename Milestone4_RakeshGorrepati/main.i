@@ -1435,7 +1435,6 @@ void updateCoin(COINSPRITE *);
 
 enum { USERIDLE};
 # 5 "main.c" 2
-
 # 1 "startbg.h" 1
 # 22 "startbg.h"
 extern const unsigned short startbgTiles[10832];
@@ -1445,7 +1444,7 @@ extern const unsigned short startbgMap[1024];
 
 
 extern const unsigned short startbgPal[256];
-# 7 "main.c" 2
+# 6 "main.c" 2
 # 1 "gameScreen.h" 1
 # 22 "gameScreen.h"
 extern const unsigned short gameScreenTiles[1488];
@@ -1455,7 +1454,7 @@ extern const unsigned short gameScreenMap[1024];
 
 
 extern const unsigned short gameScreenPal[256];
-# 8 "main.c" 2
+# 7 "main.c" 2
 # 1 "gameScreen2.h" 1
 # 22 "gameScreen2.h"
 extern const unsigned short gameScreen2Tiles[1776];
@@ -1465,24 +1464,24 @@ extern const unsigned short gameScreen2Map[2048];
 
 
 extern const unsigned short gameScreen2Pal[256];
-# 9 "main.c" 2
+# 8 "main.c" 2
 # 1 "spritesheet.h" 1
 # 21 "spritesheet.h"
 extern const unsigned short spritesheetTiles[16384];
 
 
 extern const unsigned short spritesheetPal[256];
+# 9 "main.c" 2
+# 1 "pauseBg.h" 1
+# 22 "pauseBg.h"
+extern const unsigned short pauseBgTiles[7008];
+
+
+extern const unsigned short pauseBgMap[672];
+
+
+extern const unsigned short pauseBgPal[256];
 # 10 "main.c" 2
-# 1 "pauseScreen.h" 1
-# 22 "pauseScreen.h"
-extern const unsigned short pauseScreenTiles[1024];
-
-
-extern const unsigned short pauseScreenMap[1024];
-
-
-extern const unsigned short pauseScreenPal[256];
-# 11 "main.c" 2
 # 1 "winBg.h" 1
 # 22 "winBg.h"
 extern const unsigned short winBgTiles[7648];
@@ -1492,7 +1491,7 @@ extern const unsigned short winBgMap[672];
 
 
 extern const unsigned short winBgPal[256];
-# 12 "main.c" 2
+# 11 "main.c" 2
 # 1 "loseBg.h" 1
 # 22 "loseBg.h"
 extern const unsigned short loseBgTiles[7424];
@@ -1502,7 +1501,7 @@ extern const unsigned short loseBgMap[672];
 
 
 extern const unsigned short loseBgPal[256];
-# 13 "main.c" 2
+# 12 "main.c" 2
 # 1 "instructionbg.h" 1
 # 22 "instructionbg.h"
 extern const unsigned short instructionbgTiles[6512];
@@ -1512,14 +1511,14 @@ extern const unsigned short instructionbgMap[672];
 
 
 extern const unsigned short instructionbgPal[256];
-# 14 "main.c" 2
+# 13 "main.c" 2
 # 1 "spritesheetfinal.h" 1
 # 21 "spritesheetfinal.h"
 extern const unsigned short spritesheetfinalTiles[16384];
 
 
 extern const unsigned short spritesheetfinalPal[256];
-# 15 "main.c" 2
+# 14 "main.c" 2
 # 1 "sound.h" 1
 SOUND soundA;
 SOUND soundB;
@@ -1534,7 +1533,7 @@ void interruptHandler();
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 16 "main.c" 2
+# 15 "main.c" 2
 # 1 "letters.h" 1
 # 22 "letters.h"
 extern const unsigned short lettersTiles[640];
@@ -1544,7 +1543,7 @@ extern const unsigned short lettersMap[1024];
 
 
 extern const unsigned short lettersPal[256];
-# 17 "main.c" 2
+# 16 "main.c" 2
 
 
 
@@ -1761,10 +1760,10 @@ void goToPause(){
  hOff = 0;
     (*(volatile unsigned short *)0x04000014) = hOff;
     (*(unsigned short *)0x4000000) = 0 | (1<<9);
- DMANow(3, pauseScreenPal, ((unsigned short *)0x5000000), 512/2);
+ DMANow(3, pauseBgPal, ((unsigned short *)0x5000000), 512/2);
     (*(volatile unsigned short*)0x400000A) = (0<<14) | ((0)<<2) | ((31)<<8);
- DMANow(3, pauseScreenTiles, &((charblock *)0x6000000)[0], 2048/2);
-    DMANow(3, pauseScreenMap, &((screenblock *)0x6000000)[31], 2048/2);
+ DMANow(3, pauseBgTiles, &((charblock *)0x6000000)[0], 14016/2);
+    DMANow(3, pauseBgMap, &((screenblock *)0x6000000)[31], 1344/2);
  state = PAUSE;
 
 }

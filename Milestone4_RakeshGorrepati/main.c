@@ -2,12 +2,11 @@
 #include <stdlib.h>
 #include "myLib.h"
 #include "game.h"
-
 #include "startbg.h"
 #include "gameScreen.h"
 #include "gameScreen2.h"
 #include "spritesheet.h"
-#include "pauseScreen.h"
+#include "pauseBg.h"
 #include "winBg.h"
 #include "loseBg.h"
 #include "instructionbg.h"
@@ -230,10 +229,10 @@ void goToPause(){
 	hOff = 0;
     REG_BG1HOFF = hOff;
     REG_DISPCTL = MODE0 | BG1_ENABLE;
-	DMANow(3, pauseScreenPal, PALETTE, pauseScreenPalLen/2);
+	DMANow(3, pauseBgPal, PALETTE, pauseBgPalLen/2);
     REG_BG1CNT = BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(31);
-	DMANow(3, pauseScreenTiles, &CHARBLOCK[0], pauseScreenTilesLen/2);
-    DMANow(3, pauseScreenMap, &SCREENBLOCK[31], pauseScreenMapLen/2);
+	DMANow(3, pauseBgTiles, &CHARBLOCK[0], pauseBgTilesLen/2);
+    DMANow(3, pauseBgMap, &SCREENBLOCK[31], pauseBgMapLen/2);
 	state = PAUSE;
 	
 }
