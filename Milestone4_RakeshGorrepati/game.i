@@ -1067,7 +1067,7 @@ void initializeGame() {
     initializeBullets();
     initializeTargets();
     initializeRed();
-    lives = 1;
+    lives = 2;
     counter = 0;
     unlimited = 1;
     ammoRemaining = 10;
@@ -1160,17 +1160,11 @@ void updateGame() {
     }
     if(((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))))){
 
-        unlimited = 0;
+        unlimited--;
 
     }
     user.bulletTimer++;
 
-
-    if ((user.row > 150)){
-
-        lives--;
-
-    }
 
 }
 
@@ -1211,12 +1205,27 @@ void updateUser() {
     }
 
 
+    if ((user.row > 150) && lives >= 1){
+
+        lives--;
+        user.col = 240/2 - (user.width/2) - 50;
+        user.row = 160/2 - (user.height/2) - 20;
+
+    }
+    if ((user.row > 150) && unlimited == 0){
+
+        user.col = 240/2 - (user.width/2) - 50;
+        user.row = 160/2 - (user.height/2) - 20;
+
+    }
+
+
 }
 
 
 void initializeUser() {
 
-    user.col = 240/2 - (user.width/2) - 50;
+    user.col = 240/2 - (user.width/2) - 70;
     user.row = 160/2 - (user.height/2) - 20;
     user.width = 8;
     user.height = 8;
@@ -1378,6 +1387,7 @@ void drawTarget(TARGETSPRITE *t){
 
 void drawAmmo(){
 
+
     shadowOAM[100].attr0 = (6) | (0<<13) | (0<<14);
     shadowOAM[100].attr1 = (50) | (0<<14);
     shadowOAM[100].attr2 = ((0)*32+(ammoRemaining + 3));
@@ -1387,6 +1397,7 @@ void drawAmmo(){
         shadowOAM[100].attr0 = ((0)*32+(3));
 
     }
+
 }
 
 void drawCoinCount(){
@@ -1404,10 +1415,18 @@ void drawCoinCount(){
 }
 
 void drawLivesCount(){
+    if(unlimited != 0){
 
     shadowOAM[102].attr0 = (6) | (0<<13) | (0<<14);
     shadowOAM[102].attr1 = (207) | (0<<14);
     shadowOAM[102].attr2 = ((0)*32+(lives + 3));
+
+    }else {
+
+        shadowOAM[102].attr2 = ((0)*32+(14));
+
+    }
+
 
 }
 
@@ -1500,8 +1519,15 @@ void updateCoin(COINSPRITE *d){
     (*(volatile unsigned short *)0x04000014) = hOff/30;
 
     if (d->active && collision(user.col, user.row, user.width, user.height, d->col, d->row, d->width, d->height)) {
+
         d->active = 0;
         lives--;
+
+    }
+    if (d->active && collision(user.col, user.row, user.width, user.height, d->col, d->row, d->width, d->height) && unlimited == 0) {
+
+        d->active = 0;
+
     }
     for(int i = 0; i < 10; i++){
 
@@ -1553,7 +1579,7 @@ void updateTarget(TARGETSPRITE *t){
         if (t->active && collision(bullets[i].col, bullets[i].row, bullets[i].width, bullets[i].height, t->col, t->row, t->width, t->height)) {
 
             t->active = 0;
-            ammoRemaining = ammoRemaining + 2;
+            lives++;
 
         }
 

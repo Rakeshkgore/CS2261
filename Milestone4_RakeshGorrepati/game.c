@@ -52,7 +52,7 @@ void initializeGame() {
     initializeBullets();
     initializeTargets();
     initializeRed();
-    lives = 1;
+    lives = 2;
     counter = 0;
     unlimited = 1;
     ammoRemaining = BULLETCOUNT;
@@ -145,17 +145,11 @@ void updateGame() {
     }
     if((BUTTON_PRESSED(BUTTON_A))){
 
-        unlimited = 0;
+        unlimited--;
 
     }
     user.bulletTimer++;
 
-    //Ends game if User hits bottom of window
-    if ((user.row > 150)){
-
-        lives--;
-        
-    }
 
 }
 
@@ -195,13 +189,28 @@ void updateUser() {
 
     }
 
+    //Ends game if User hits bottom of window
+    if ((user.row > 150) && lives >= 1){
+        
+        lives--;
+        user.col = SCREENWIDTH/2 - (user.width/2) - 50;
+        user.row = SCREENHEIGHT/2 - (user.height/2) - 20;
+        
+    }
+    if ((user.row > 150) && unlimited == 0){
+        
+        user.col = SCREENWIDTH/2 - (user.width/2) - 50;
+        user.row = SCREENHEIGHT/2 - (user.height/2) - 20;
+        
+    }
+
 
 }
 
 //user and additional body parts are initialized 
 void initializeUser() { 
 
-    user.col = SCREENWIDTH/2 - (user.width/2) - 50;
+    user.col = SCREENWIDTH/2 - (user.width/2) - 70;
     user.row = SCREENHEIGHT/2 - (user.height/2) - 20;
     user.width = 8;
     user.height = 8;
@@ -363,6 +372,7 @@ void drawTarget(TARGETSPRITE *t){
 
 void drawAmmo(){
 
+
     shadowOAM[100].attr0 = (6) | ATTR0_4BPP | ATTR0_SQUARE;
     shadowOAM[100].attr1 = (50) | ATTR1_TINY;
     shadowOAM[100].attr2 = ATTR2_TILEID(ammoRemaining + 3 , 0); 
@@ -372,6 +382,7 @@ void drawAmmo(){
         shadowOAM[100].attr0 = ATTR2_TILEID(3 , 0); 
 
     }
+
 }
 
 void drawCoinCount(){
@@ -389,11 +400,19 @@ void drawCoinCount(){
 }
 
 void drawLivesCount(){
+    if(unlimited != 0){
 
     shadowOAM[102].attr0 = (6) | ATTR0_4BPP | ATTR0_SQUARE;
     shadowOAM[102].attr1 = (207) | ATTR1_TINY;
     shadowOAM[102].attr2 = ATTR2_TILEID(lives + 3 , 0); 
 
+    }else {
+
+        shadowOAM[102].attr2 = ATTR2_TILEID(14 , 0); 
+
+    }
+    
+    
 }
 
 void fireBullet(){
@@ -485,8 +504,15 @@ void updateCoin(COINSPRITE *d){
     REG_BG1HOFF = hOff/30;
     // check for user coin collision between each active coin
     if (d->active && collision(user.col, user.row, user.width, user.height, d->col, d->row, d->width, d->height)) {
+
         d->active = 0;
         lives--;   
+
+    }
+    if (d->active && collision(user.col, user.row, user.width, user.height, d->col, d->row, d->width, d->height) && unlimited == 0) {
+        
+        d->active = 0;
+ 
     }
     for(int i = 0; i < BULLETCOUNT; i++){
 
@@ -538,7 +564,7 @@ void updateTarget(TARGETSPRITE *t){
         if (t->active && collision(bullets[i].col, bullets[i].row, bullets[i].width, bullets[i].height, t->col, t->row, t->width, t->height)) {
             
             t->active = 0;
-            ammoRemaining = ammoRemaining + 2;
+            lives++;
 
         }  
 

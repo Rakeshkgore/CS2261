@@ -614,57 +614,58 @@ Game:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, lr}
-	ldr	r3, .L90
+	ldr	r3, .L93
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L90+4
+	ldr	r3, .L93+4
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L90+8
+	ldr	r3, .L93+8
 	mov	lr, pc
 	bx	r3
-	ldr	r4, .L90+12
+	ldr	r4, .L93+12
 	mov	r3, #512
 	mov	r2, #117440512
 	mov	r0, #3
-	ldr	r1, .L90+16
+	ldr	r1, .L93+16
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L90+20
+	ldr	r3, .L93+20
 	ldrh	r3, [r3]
 	tst	r3, #8
 	beq	.L80
-	ldr	r3, .L90+24
+	ldr	r3, .L93+24
 	ldrh	r3, [r3]
 	tst	r3, #8
-	beq	.L87
+	beq	.L90
 .L80:
-	ldr	r3, .L90+28
+	ldr	r3, .L93+28
 	ldr	r3, [r3]
 	cmp	r3, #0
-	beq	.L88
-	ldr	r3, .L90+32
+	bne	.L81
+	ldr	r3, .L93+32
+	ldr	r3, [r3]
+	cmp	r3, #0
+	bne	.L91
+.L81:
+	ldr	r3, .L93+36
 	ldr	r3, [r3, #48]
-	cmp	r3, #3
-	beq	.L89
-.L79:
+	cmp	r3, #10
+	beq	.L92
 	pop	{r4, lr}
 	bx	lr
-.L88:
-	bl	goToLose
-	ldr	r3, .L90+32
-	ldr	r3, [r3, #48]
-	cmp	r3, #3
-	bne	.L79
-.L89:
+.L92:
 	pop	{r4, lr}
 	b	goToWin
-.L87:
+.L91:
+	bl	goToLose
+	b	.L81
+.L90:
 	bl	goToPause
 	b	.L80
-.L91:
+.L94:
 	.align	2
-.L90:
+.L93:
 	.word	updateGame
 	.word	drawGame
 	.word	waitForVBlank
@@ -673,6 +674,7 @@ Game:
 	.word	oldButtons
 	.word	buttons
 	.word	lives
+	.word	unlimited
 	.word	user
 	.size	Game, .-Game
 	.section	.text.startup,"ax",%progbits
@@ -688,18 +690,18 @@ main:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r7, fp, lr}
-	ldr	r3, .L111
+	ldr	r3, .L114
 	mov	lr, pc
 	bx	r3
-	ldr	r5, .L111+4
-	ldr	r4, .L111+8
-	ldr	r9, .L111+12
-	ldr	r8, .L111+16
-	ldr	r7, .L111+20
-	ldr	fp, .L111+24
-	ldr	r10, .L111+28
-	ldr	r6, .L111+32
-.L94:
+	ldr	r5, .L114+4
+	ldr	r4, .L114+8
+	ldr	r9, .L114+12
+	ldr	r8, .L114+16
+	ldr	r7, .L114+20
+	ldr	fp, .L114+24
+	ldr	r10, .L114+28
+	ldr	r6, .L114+32
+.L97:
 	ldrh	r3, [r4]
 	strh	r3, [r5]	@ movhi
 	ldrh	r3, [r6, #48]
@@ -711,51 +713,51 @@ main:
 	ldr	r3, [r7]
 	cmp	r3, #5
 	ldrls	pc, [pc, r3, asl #2]
-	b	.L94
-.L96:
+	b	.L97
+.L99:
+	.word	.L104
+	.word	.L103
+	.word	.L102
 	.word	.L101
 	.word	.L100
-	.word	.L99
 	.word	.L98
-	.word	.L97
-	.word	.L95
-.L95:
-	ldrh	r3, [r5]
-	tst	r3, #8
-	beq	.L94
-	ldr	r3, .L111+36
-	mov	lr, pc
-	bx	r3
-	b	.L94
-.L97:
-	ldrh	r3, [r5]
-	tst	r3, #8
-	beq	.L94
-	ldr	r3, .L111+40
-	mov	lr, pc
-	bx	r3
-	b	.L94
 .L98:
-	ldr	r3, .L111+44
+	ldrh	r3, [r5]
+	tst	r3, #8
+	beq	.L97
+	ldr	r3, .L114+36
 	mov	lr, pc
 	bx	r3
-	b	.L94
-.L99:
-	ldr	r3, .L111+48
-	mov	lr, pc
-	bx	r3
-	b	.L94
+	b	.L97
 .L100:
+	ldrh	r3, [r5]
+	tst	r3, #8
+	beq	.L97
+	ldr	r3, .L114+40
+	mov	lr, pc
+	bx	r3
+	b	.L97
+.L101:
+	ldr	r3, .L114+44
+	mov	lr, pc
+	bx	r3
+	b	.L97
+.L102:
+	ldr	r3, .L114+48
+	mov	lr, pc
+	bx	r3
+	b	.L97
+.L103:
 	mov	lr, pc
 	bx	r10
-	b	.L94
-.L101:
+	b	.L97
+.L104:
 	mov	lr, pc
 	bx	fp
-	b	.L94
-.L112:
+	b	.L97
+.L115:
 	.align	2
-.L111:
+.L114:
 	.word	goToStart
 	.word	oldButtons
 	.word	buttons

@@ -1711,12 +1711,12 @@ void Game(){
   goToPause();
 
     }
- if(lives == 0){
+ if(lives == 0 && unlimited!=0){
 
   goToLose();
 
  }
- if(user.coinsCollected == 3){
+ if(user.coinsCollected == 10){
 
   goToWin();
  }
