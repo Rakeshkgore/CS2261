@@ -110,7 +110,7 @@ goToGame:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
-	mov	r2, #4864
+	mov	r2, #5888
 	mov	r5, #67108864
 	ldr	r4, .L13
 	strh	r2, [r5]	@ movhi
@@ -121,7 +121,7 @@ goToGame:
 	mov	lr, pc
 	bx	r4
 	mov	r2, #7936
-	mov	r3, #1776
+	mov	r3, #1488
 	strh	r2, [r5, #10]	@ movhi
 	mov	r0, #3
 	mov	r2, #100663296
@@ -148,23 +148,37 @@ goToGame:
 	ldr	r1, .L13+36
 	mov	lr, pc
 	bx	r4
+	ldr	r2, .L13+40
+	mov	r3, #640
+	strh	r2, [r5, #12]	@ movhi
+	mov	r0, #3
+	ldr	r2, .L13+44
+	ldr	r1, .L13+48
+	mov	lr, pc
+	bx	r4
+	mov	r3, #1024
+	mov	r0, #3
+	ldr	r2, .L13+52
+	ldr	r1, .L13+56
+	mov	lr, pc
+	bx	r4
 	mov	r3, #256
 	mov	r0, #3
-	ldr	r2, .L13+40
-	ldr	r1, .L13+44
+	ldr	r2, .L13+60
+	ldr	r1, .L13+64
 	mov	lr, pc
 	bx	r4
-	ldr	r2, .L13+48
+	ldr	r2, .L13+68
 	mov	r3, #16384
 	mov	r0, #3
-	ldr	r1, .L13+52
+	ldr	r1, .L13+72
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L13+56
+	ldr	r3, .L13+76
 	mov	lr, pc
 	bx	r3
 	mov	r2, #2
-	ldr	r3, .L13+60
+	ldr	r3, .L13+80
 	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
@@ -181,6 +195,11 @@ goToGame:
 	.word	gameScreen2Tiles
 	.word	100722688
 	.word	gameScreen2Map
+	.word	6920
+	.word	100696064
+	.word	lettersTiles
+	.word	100718592
+	.word	lettersMap
 	.word	83886592
 	.word	spritesheetfinalPal
 	.word	100728832

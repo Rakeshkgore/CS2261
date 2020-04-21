@@ -1049,6 +1049,8 @@ void fireTarget();
 void drawRed(REDCOINSPRITE *);
 void fireRed();
 void updateRed(REDCOINSPRITE *);
+void drawCoinCount();
+void drawLivesCount();
 
 
 int ammoRemaining;
@@ -1078,6 +1080,9 @@ void drawGame(){
     drawUser();
 
     drawAmmo();
+    drawCoinCount();
+    drawLivesCount();
+
 
     for (int i = 0; i < 20; i++) {
 
@@ -1183,7 +1188,7 @@ void updateUser() {
 
  }
 
-    if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<6))) && (!(user.row < 0))) {
+    if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<6))) && (!(user.row < 8 + user.height))) {
 
         user.aniState = USERIDLE;
         user.row-=user.rdel;
@@ -1372,9 +1377,9 @@ void drawTarget(TARGETSPRITE *t){
 }
 
 void drawAmmo(){
-# 398 "game.c"
-    shadowOAM[100].attr0 = (7) | (0<<13) | (0<<14);
-    shadowOAM[100].attr1 = (240 /2 - 20) | (0<<14);
+
+    shadowOAM[100].attr0 = (6) | (0<<13) | (0<<14);
+    shadowOAM[100].attr1 = (50) | (0<<14);
     shadowOAM[100].attr2 = ((0)*32+(ammoRemaining + 3));
 
     if (ammoRemaining < 1) {
@@ -1382,6 +1387,28 @@ void drawAmmo(){
         shadowOAM[100].attr0 = ((0)*32+(3));
 
     }
+}
+
+void drawCoinCount(){
+
+    if (user.coinsCollected < 1) {
+
+        shadowOAM[101].attr0 = ((0)*32+(3));
+
+    }
+
+    shadowOAM[101].attr0 = (5) | (0<<13) | (0<<14);
+    shadowOAM[101].attr1 = (127) | (0<<14);
+    shadowOAM[101].attr2 = ((0)*32+(user.coinsCollected + 3));
+
+}
+
+void drawLivesCount(){
+
+    shadowOAM[102].attr0 = (6) | (0<<13) | (0<<14);
+    shadowOAM[102].attr1 = (207) | (0<<14);
+    shadowOAM[102].attr2 = ((0)*32+(lives + 3));
+
 }
 
 void fireBullet(){

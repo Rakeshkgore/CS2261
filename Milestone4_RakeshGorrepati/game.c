@@ -34,6 +34,8 @@ void fireTarget();
 void drawRed(REDCOINSPRITE *);
 void fireRed();
 void updateRed(REDCOINSPRITE *);
+void drawCoinCount();
+void drawLivesCount();
 
 //Game ends after a collision
 int ammoRemaining;
@@ -63,6 +65,9 @@ void drawGame(){
     drawUser();
 
     drawAmmo();
+    drawCoinCount();
+    drawLivesCount();
+    
 
     for (int i = 0; i < COINTCOUNT; i++) {
 
@@ -168,7 +173,7 @@ void updateUser() {
 
 	}
     //If up is pressed then eyes will be up
-    if (BUTTON_HELD(BUTTON_UP) && (!(user.row < 0))) {
+    if (BUTTON_HELD(BUTTON_UP) && (!(user.row < 8 + user.height))) {
 
         user.aniState = USERIDLE;  
         user.row-=user.rdel;
@@ -357,46 +362,9 @@ void drawTarget(TARGETSPRITE *t){
 }
 
 void drawAmmo(){
-/* 
-    shadowOAM[101].attr0 = 10| ATTR0_4BPP | ATTR0_SQUARE;
-    shadowOAM[101].attr1 = 1 | ATTR1_TINY;
-    shadowOAM[101].attr2 = ATTR2_TILEID(15, 0); 
-    
-    shadowOAM[102].attr0 = (10) | ATTR0_4BPP | ATTR0_SQUARE;
-    shadowOAM[102].attr1 = 3 | ATTR1_TINY;
-    shadowOAM[102].attr2 = ATTR2_TILEID(16, 0); 
 
-    shadowOAM[103].attr0 = (10) | ATTR0_4BPP | ATTR0_SQUARE;
-    shadowOAM[103].attr1 = 4 | ATTR1_TINY;
-    shadowOAM[103].attr2 = ATTR2_TILEID(17, 0); 
-
-    shadowOAM[104].attr0 = (10) | ATTR0_4BPP | ATTR0_SQUARE;
-    shadowOAM[104].attr1 = (SCREENWIDTH /2 - 20) | ATTR1_TINY;
-    shadowOAM[104].attr2 = ATTR2_TILEID(18, 0); 
-
-    shadowOAM[105].attr0 = (10) | ATTR0_4BPP | ATTR0_SQUARE;
-    shadowOAM[105].attr1 = (SCREENWIDTH /2 - 20) | ATTR1_TINY;
-    shadowOAM[105].attr2 = ATTR2_TILEID(19, 0); 
-
-    shadowOAM[106].attr0 = (10) | ATTR0_4BPP | ATTR0_SQUARE;
-    shadowOAM[106].attr1 = (SCREENWIDTH /2 - 20) | ATTR1_TINY;
-    shadowOAM[106].attr2 = ATTR2_TILEID(20, 0); 
-    
-    shadowOAM[107].attr0 = (10) | ATTR0_4BPP | ATTR0_SQUARE;
-    shadowOAM[107].attr1 = (SCREENWIDTH /2 - 20) | ATTR1_TINY;
-    shadowOAM[107].attr2 = ATTR2_TILEID(21, 0); 
- */
-
-
-
-
-
-
-
-
-
-    shadowOAM[100].attr0 = (7) | ATTR0_4BPP | ATTR0_SQUARE;
-    shadowOAM[100].attr1 = (SCREENWIDTH /2 - 20) | ATTR1_TINY;
+    shadowOAM[100].attr0 = (6) | ATTR0_4BPP | ATTR0_SQUARE;
+    shadowOAM[100].attr1 = (50) | ATTR1_TINY;
     shadowOAM[100].attr2 = ATTR2_TILEID(ammoRemaining + 3 , 0); 
 
     if (ammoRemaining < 1) {
@@ -404,6 +372,28 @@ void drawAmmo(){
         shadowOAM[100].attr0 = ATTR2_TILEID(3 , 0); 
 
     }
+}
+
+void drawCoinCount(){
+
+    if (user.coinsCollected < 1) {
+
+        shadowOAM[101].attr0 = ATTR2_TILEID(3 , 0); 
+
+    }
+
+    shadowOAM[101].attr0 = (5) | ATTR0_4BPP | ATTR0_SQUARE;
+    shadowOAM[101].attr1 = (127) | ATTR1_TINY;
+    shadowOAM[101].attr2 = ATTR2_TILEID(user.coinsCollected + 3 , 0); 
+
+}
+
+void drawLivesCount(){
+
+    shadowOAM[102].attr0 = (6) | ATTR0_4BPP | ATTR0_SQUARE;
+    shadowOAM[102].attr1 = (207) | ATTR1_TINY;
+    shadowOAM[102].attr2 = ATTR2_TILEID(lives + 3 , 0); 
+
 }
 
 void fireBullet(){

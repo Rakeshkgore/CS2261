@@ -18,6 +18,22 @@
 	.type	gameScreen2Pal, %object
 	.size	gameScreen2Pal, 512
 gameScreen2Pal:
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	31775
 	.short	4966
 	.short	17228
@@ -33,22 +49,6 @@ gameScreen2Pal:
 	.short	13175
 	.short	9840
 	.short	32721
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -822,133 +822,133 @@ gameScreen2Map:
 	.short	0
 	.short	0
 	.short	0
-	.short	1
-	.short	2
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	3
-	.short	0
-	.short	0
-	.short	4
-	.short	0
-	.short	0
-	.short	0
-	.short	5
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	6
-	.short	0
-	.short	0
-	.short	1027
-	.short	0
-	.short	0
-	.short	7
-	.short	0
-	.short	0
-	.short	8
-	.short	0
-	.short	0
-	.short	9
-	.short	1026
-	.short	10
-	.short	11
-	.short	1026
-	.short	12
-	.short	13
-	.short	1026
-	.short	14
-	.short	15
-	.short	16
-	.short	17
-	.short	18
-	.short	19
-	.short	20
-	.short	21
-	.short	22
-	.short	23
-	.short	2
-	.short	24
-	.short	25
-	.short	1026
-	.short	26
-	.short	27
-	.short	28
-	.short	29
-	.short	30
+	.short	4097
+	.short	4098
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	4099
+	.short	0
+	.short	0
+	.short	4100
+	.short	0
+	.short	0
+	.short	0
+	.short	4101
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	4102
+	.short	0
+	.short	0
+	.short	5123
+	.short	0
+	.short	0
+	.short	4103
+	.short	0
+	.short	0
+	.short	4104
+	.short	0
+	.short	0
+	.short	4105
+	.short	5122
+	.short	4106
+	.short	4107
+	.short	5122
+	.short	4108
+	.short	4109
+	.short	5122
+	.short	4110
+	.short	4111
+	.short	4112
+	.short	4113
+	.short	4114
+	.short	4115
+	.short	4116
+	.short	4117
+	.short	4118
+	.short	4119
+	.short	4098
+	.short	4120
+	.short	4121
+	.short	5122
+	.short	4122
+	.short	4123
+	.short	4124
+	.short	4125
+	.short	4126
 	.short	0
-	.short	31
-	.short	32
-	.short	33
-	.short	34
-	.short	35
-	.short	36
-	.short	37
-	.short	38
-	.short	39
-	.short	37
-	.short	40
-	.short	41
-	.short	37
-	.short	42
-	.short	43
-	.short	37
-	.short	44
-	.short	45
-	.short	37
-	.short	46
-	.short	47
-	.short	37
-	.short	48
-	.short	49
-	.short	50
-	.short	51
-	.short	37
-	.short	52
-	.short	53
-	.short	37
-	.short	54
-	.short	55
-	.short	56
-	.short	37
-	.short	57
-	.short	37
-	.short	37
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
+	.short	4127
+	.short	4128
+	.short	4129
+	.short	4130
+	.short	4131
+	.short	4132
+	.short	4133
+	.short	4134
+	.short	4135
+	.short	4133
+	.short	4136
+	.short	4137
+	.short	4133
+	.short	4138
+	.short	4139
+	.short	4133
+	.short	4140
+	.short	4141
+	.short	4133
+	.short	4142
+	.short	4143
+	.short	4133
+	.short	4144
+	.short	4145
+	.short	4146
+	.short	4147
+	.short	4133
+	.short	4148
+	.short	4149
+	.short	4133
+	.short	4150
+	.short	4151
+	.short	4152
+	.short	4133
+	.short	4153
+	.short	4133
+	.short	4133
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
 	.short	0
 	.short	0
 	.short	0
@@ -1848,10 +1848,10 @@ gameScreen2Map:
 	.short	0
 	.short	0
 	.short	0
-	.short	59
+	.short	4155
 	.short	0
 	.short	0
-	.short	60
+	.short	4156
 	.short	0
 	.short	0
 	.short	0
@@ -1860,7 +1860,7 @@ gameScreen2Map:
 	.short	0
 	.short	0
 	.short	0
-	.short	61
+	.short	4157
 	.short	0
 	.short	0
 	.short	0
@@ -1872,107 +1872,107 @@ gameScreen2Map:
 	.short	0
 	.short	0
 	.short	0
-	.short	1031
+	.short	5127
 	.short	0
 	.short	0
-	.short	1
-	.short	1043
-	.short	2
+	.short	4097
+	.short	5139
+	.short	4098
 	.short	0
-	.short	62
-	.short	63
-	.short	64
+	.short	4158
+	.short	4159
+	.short	4160
 	.short	0
-	.short	65
-	.short	66
+	.short	4161
+	.short	4162
 	.short	0
-	.short	67
-	.short	68
-	.short	2
-	.short	69
-	.short	70
-	.short	1026
-	.short	71
-	.short	72
+	.short	4163
+	.short	4164
+	.short	4098
+	.short	4165
+	.short	4166
+	.short	5122
+	.short	4167
+	.short	4168
 	.short	0
-	.short	73
-	.short	74
-	.short	75
-	.short	76
+	.short	4169
+	.short	4170
+	.short	4171
+	.short	4172
 	.short	0
-	.short	77
-	.short	78
-	.short	2
+	.short	4173
+	.short	4174
+	.short	4098
 	.short	0
-	.short	79
-	.short	80
+	.short	4175
+	.short	4176
 	.short	0
-	.short	81
-	.short	82
-	.short	83
-	.short	84
-	.short	85
-	.short	37
-	.short	86
-	.short	87
-	.short	88
-	.short	52
-	.short	89
-	.short	90
-	.short	37
-	.short	91
-	.short	92
-	.short	93
-	.short	94
-	.short	37
-	.short	95
-	.short	96
-	.short	1076
-	.short	97
-	.short	98
-	.short	99
-	.short	100
-	.short	101
-	.short	37
-	.short	102
-	.short	103
-	.short	1123
-	.short	104
-	.short	105
-	.short	106
-	.short	107
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	108
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	109
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	58
-	.short	110
-	.short	58
-	.short	58
+	.short	4177
+	.short	4178
+	.short	4179
+	.short	4180
+	.short	4181
+	.short	4133
+	.short	4182
+	.short	4183
+	.short	4184
+	.short	4148
+	.short	4185
+	.short	4186
+	.short	4133
+	.short	4187
+	.short	4188
+	.short	4189
+	.short	4190
+	.short	4133
+	.short	4191
+	.short	4192
+	.short	5172
+	.short	4193
+	.short	4194
+	.short	4195
+	.short	4196
+	.short	4197
+	.short	4133
+	.short	4198
+	.short	4199
+	.short	5219
+	.short	4200
+	.short	4201
+	.short	4202
+	.short	4203
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4204
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4205
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4154
+	.short	4206
+	.short	4154
+	.short	4154
 	.short	0
 	.short	0
 	.short	0

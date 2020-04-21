@@ -1448,7 +1448,7 @@ extern const unsigned short startbgPal[256];
 # 7 "main.c" 2
 # 1 "gameScreen.h" 1
 # 22 "gameScreen.h"
-extern const unsigned short gameScreenTiles[1776];
+extern const unsigned short gameScreenTiles[1488];
 
 
 extern const unsigned short gameScreenMap[1024];
@@ -1537,7 +1537,7 @@ void stopSound();
 # 16 "main.c" 2
 # 1 "letters.h" 1
 # 22 "letters.h"
-extern const unsigned short lettersTiles[176];
+extern const unsigned short lettersTiles[640];
 
 
 extern const unsigned short lettersMap[1024];
@@ -1674,21 +1674,21 @@ void Start(){
 
 void goToGame(){
 
- (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<12) | (1<<8);
+ (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<12) | (1<<8) | (1<<10);
 
     DMANow(3, gameScreenPal, ((unsigned short *)0x5000000), 512/2);
 
  (*(volatile unsigned short*)0x400000A) = (0<<14) | ((0)<<2) | ((31)<<8);
- DMANow(3, gameScreenTiles, &((charblock *)0x6000000)[0], 3552/2);
+ DMANow(3, gameScreenTiles, &((charblock *)0x6000000)[0], 2976/2);
     DMANow(3, gameScreenMap, &((screenblock *)0x6000000)[31], 2048/2);
 
  (*(volatile unsigned short*)0x4000008) = (1<<14) | ((1)<<2) | ((29)<<8);
     DMANow(3, gameScreen2Tiles, &((charblock *)0x6000000)[1], 3552/2);
     DMANow(3, gameScreen2Map, &((screenblock *)0x6000000)[29], 4096/2);
 
-
-
-
+ (*(volatile unsigned short*)0x400000C) = (0<<14) | ((2)<<2) | ((27)<<8);
+ DMANow(3, lettersTiles, &((charblock *)0x6000000)[2], 1280/2);
+    DMANow(3, lettersMap, &((screenblock *)0x6000000)[27], 2048/2);
 
  DMANow(3, spritesheetfinalPal, ((unsigned short *)0x5000200), 512/2);
     DMANow(3, spritesheetfinalTiles, &((charblock *)0x6000000)[4], 32768/2);

@@ -143,7 +143,7 @@ void Start(){
 // goes to game state
 void goToGame(){
 
-	REG_DISPCTL = MODE0 | BG1_ENABLE | SPRITE_ENABLE | BG0_ENABLE; //BG2_ENABLE;
+	REG_DISPCTL = MODE0 | BG1_ENABLE | SPRITE_ENABLE | BG0_ENABLE | BG2_ENABLE;
 
     DMANow(3, gameScreenPal, PALETTE, gameScreenPalLen/2);
 	
@@ -155,9 +155,9 @@ void goToGame(){
     DMANow(3, gameScreen2Tiles, &CHARBLOCK[1], gameScreen2TilesLen/2);
     DMANow(3, gameScreen2Map, &SCREENBLOCK[29], gameScreen2MapLen/2);
 	
-	//REG_BG2CNT = BG_SIZE_SMALL | BG_CHARBLOCK(2) | BG_SCREENBLOCK(27);
-	//DMANow(3, lettersTiles, &CHARBLOCK[2], lettersTilesLen/2);
-    //DMANow(3, lettersMap, &SCREENBLOCK[27], lettersMapLen/2)
+	REG_BG2CNT = BG_SIZE_SMALL | BG_CHARBLOCK(2) | BG_SCREENBLOCK(27);
+	DMANow(3, lettersTiles, &CHARBLOCK[2], lettersTilesLen/2);
+    DMANow(3, lettersMap, &SCREENBLOCK[27], lettersMapLen/2);
 
 	DMANow(3, spritesheetfinalPal, SPRITEPALETTE, spritesheetfinalPalLen/2);
     DMANow(3, spritesheetfinalTiles, &CHARBLOCK[4], spritesheetfinalTilesLen/2);
