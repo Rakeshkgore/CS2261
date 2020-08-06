@@ -1,1 +1,1 @@
-# CS2261
+# Media Device & Architecture CS2261
